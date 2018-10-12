@@ -1,0 +1,10 @@
+{
+  "name": "eip792-react-frontend",
+  "version": "0.0.1",
+  "description": "A sample React application that integrates an EIP 792 Arbitrator",
+  "main": "index.js",
+  "repository": "https://github.com/kleros/eip792-react-frontend",
+  "author": "Ferit Tunçer <ferit@cryptolab.net>",
+  "license": "MIT",
+  "private": false
+}
