@@ -6,5 +6,10 @@
   "repository": "https://github.com/kleros/eip792-react-frontend",
   "author": "Ferit Tunçer <ferit@cryptolab.net>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "next": "4.1.4",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  }
 }
