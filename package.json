@@ -11,5 +11,8 @@
     "next": "4.1.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
+  },
+  "scripts": {
+    "dev": "next dev"
   }
 }
