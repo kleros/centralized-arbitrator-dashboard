@@ -3,6 +3,7 @@ const Web3 = require('web3');
 const centralizedArbitrator = require('../node_modules/kleros-interaction/build/contracts/CentralizedArbitrator.json');
 
 const mnemonic = 'emerge cabbage panel need lens sweet assault benefit broken lunch insect differ';
+
 const provider = new HDWalletProvider(
   mnemonic,
   'https://rinkeby.infura.io/v3/344bdb3c652c4ce6acc12f10a7557ba6'
@@ -20,6 +21,6 @@ const deploy = async () => {
   const result = await contract.deploy({ data: centralizedArbitrator.bytecode, arguments: [arbitratorFee] })
   .send({ gas: '1000000', from: accounts[0] });
 
-  console.log('Contract deployed to', result.options.address);
+  console.log('Contract deployed to', result.options.address); // TODO Write deployed address somewhere and read from centralizedArbitrator.js
 };
 deploy();
