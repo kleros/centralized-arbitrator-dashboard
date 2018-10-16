@@ -2,7 +2,7 @@
   "name": "eip792-react-frontend",
   "version": "0.0.1",
   "description": "A sample React application that integrates an EIP 792 Arbitrator",
-  "main": "index.js",
+  "main": "dashboard.js",
   "repository": "https://github.com/kleros/eip792-react-frontend",
   "author": "Ferit Tunçer <ferit@cryptolab.net>",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "truffle-contract": "^3.0.6",
+    "truffle-hdwallet-provider": "0.0.3",
     "web3": "^1.0.0-beta.36"
   },
   "scripts": {
