@@ -1,14 +1,18 @@
 import React from 'react';
-import CentralizedArbitrator from '../ethereum/centralizedArbitrator'
+import centralizedArbitrator from '../ethereum/centralizedArbitrator'
 
 class Dashboard extends React.Component {
-  async componentDidMount(){
-    const owner = await CentralizedArbitrator.owner()
+  static async getInitialProps() {
+    const owner = await centralizedArbitrator.methods.owner().call()
     console.log(owner)
+    return {owner}
+  }
+  async componentDidMount(){
+
   }
 
   render() {
-    return <div>Dashboard</div>
+    return <div>The owner is: {this.props.owner}</div>
   }
 }
 
