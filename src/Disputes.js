@@ -6,21 +6,20 @@ class Disputes extends React.Component {
     super(props)
   }
 
-  disputes = () => this.props.items.map((item) => {
-    console.log(item)
-    return <Dispute key={item.key} id={item.key} arbitrable={item.arbitrable} choices="0" fee="0" ruling={item.ruling || "0"} status={item.status || "0"}/>
+  disputes = () => this.props.items.sort().filter(dispute => dispute.status == "0").map((item) => {
+    return <Dispute key={item.key} id={item.key} arbitrated={item.arbitrated} choices={item.choices} fee={item.fee} ruling={item.ruling || "0"} status={item.status || "0"}/>
   })
 
   render() {
     return(
       <div>
-        <label>Disputes</label>
+        <h1>Disputes That Await Your Arbitration</h1>
 
         <table>
           <tbody>
             <tr>
-              <th>Index</th>
-              <th>Arbitrable</th>
+              <th>ID</th>
+              <th>Arbitrated</th>
               <th>Choices</th>
               <th>Fee(ETH)</th>
               <th>Ruling</th>

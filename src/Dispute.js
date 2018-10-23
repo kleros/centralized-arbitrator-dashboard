@@ -32,7 +32,7 @@ disputeStatusToString = (code) => {
     return (
       <tr>
         <td>{this.props.id}</td>
-        <td>{this.props.arbitrable.substring(0, 12) + "..."}</td>
+        <td>{this.props.arbitrated.substring(0, 12) + "..."}</td>
         <td>{this.props.choices}</td>
         <td>{web3.utils.fromWei(this.props.fee, 'ether')}</td>
         <td>{this.props.ruling}</td>
