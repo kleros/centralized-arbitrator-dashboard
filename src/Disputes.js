@@ -8,7 +8,7 @@ class Disputes extends React.Component {
 
   disputes = () => this.props.items.map((item) => {
     console.log(item)
-    return <Dispute key={item.key} id={item.key} arbitrable={item.arbitrable} choices="0" fee="0" ruling="0" status="0"/>
+    return <Dispute key={item.key} id={item.key} arbitrable={item.arbitrable} choices="0" fee="0" ruling={item.ruling || "0"} status={item.status || "0"}/>
   })
 
   render() {

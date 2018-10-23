@@ -1,6 +1,7 @@
 import web3 from './ethereum/web3'
 import React from 'react';
-import {instance, getOwner, getArbitrationCost, getDispute, setArbitrationPrice, disputeCreationEvent} from './ethereum/centralizedArbitrator'
+import {arbitratorInstance, getOwner, getArbitrationCost, getDisputeStatus, setArbitrationPrice, disputeCreationEvent} from './ethereum/centralizedArbitrator'
+import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
 import Disputes from './Disputes'
 
 class Dashboard extends React.Component {
@@ -25,10 +26,10 @@ class Dashboard extends React.Component {
     // this.setState({disputes})
 
     let result
-    instance.events.DisputeCreation()
+    arbitratorInstance.events.DisputeCreation({}, {fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
         console.log(event); // same results as the optional callback above
-        this.updateDisputes(event)
+        this.addDispute(event)
     })
     .on('changed', function(event){
         // remove event from local database
@@ -38,10 +39,25 @@ class Dashboard extends React.Component {
 
   }
 
-  updateDisputes = (event) => {
+  addDispute = (event) => {
     let disputes = this.state.disputes
     disputes.push({key: event.returnValues._disputeID, arbitrable: event.returnValues._arbitrable})
+
+    arbitrableInstanceAt(event.returnValues._arbitrable).events.Ruling({}, {fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      console.log(event)
+      this.updateDispute(event)
+    })
+
     this.setState({disputes: disputes})
+  }
+
+  updateDispute = async (event) => {
+    let disputes = this.state.disputes
+    disputes[event.returnValues._disputeID].ruling = event.returnValues[3]
+    disputes[event.returnValues._disputeID].status = await getDisputeStatus(event.returnValues._disputeID)
+    this.setState({disputes: disputes})
+    console.log(this.state.disputes)
   }
 
   setArbitrationCost = async (newCost) => {

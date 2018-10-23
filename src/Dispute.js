@@ -23,7 +23,7 @@ disputeStatusToString = (code) => {
       break;
 
     default:
-      return "Translation error."
+      return ""+code
   }
 
 }
