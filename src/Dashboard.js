@@ -17,28 +17,31 @@ class Dashboard extends React.Component {
     const arbitrationCost = await getArbitrationCost("")
     this.setState({owner, arbitrationCost})
 
-    let disputes = await Promise.all([0,1,2,3,4].map(async x => getDispute(x)))
-    for(let key = 0; key < 5; key++){
-      disputes[key].key = key
-    }
-    console.log(disputes)
-    this.setState({disputes})
+    // let disputes = await Promise.all([0,1,2,3,4].map(async x => getDispute(x)))
+    // for(let key = 0; key < 5; key++){
+    //   disputes[key].key = key
+    // }
+    // console.log(disputes)
+    // this.setState({disputes})
 
-    let event = instance.events.DisputeCreation()
-    console.log(event)
-
-    instance.events.DisputeCreation({
-    }, function(error, event){
-      console.log(event);
-    })
-    .on('data', function(event){
+    let result
+    instance.events.DisputeCreation()
+    .on('data', (event) => {
         console.log(event); // same results as the optional callback above
+        this.updateDisputes(event)
     })
     .on('changed', function(event){
         // remove event from local database
     })
     .on('error', console.error);
 
+
+  }
+
+  updateDisputes = (event) => {
+    let disputes = this.state.disputes
+    disputes.push({key: event.returnValues._disputeID, arbitrable: event.returnValues._arbitrable})
+    this.setState({disputes: disputes})
   }
 
   setArbitrationCost = async (newCost) => {
