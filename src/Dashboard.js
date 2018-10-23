@@ -24,20 +24,20 @@ class Dashboard extends React.Component {
     console.log(disputes)
     this.setState({disputes})
 
-    // let event = instance.events.DisputeCreation()
-    // console.log(event)
-    //
-    // instance.events.DisputeCreation({
-    // }, function(error, event){
-    //   console.log(event);
-    // })
-    // .on('data', function(event){
-    //     console.log(event); // same results as the optional callback above
-    // })
-    // .on('changed', function(event){
-    //     // remove event from local database
-    // })
-    // .on('error', console.error);
+    let event = instance.events.DisputeCreation()
+    console.log(event)
+
+    instance.events.DisputeCreation({
+    }, function(error, event){
+      console.log(event);
+    })
+    .on('data', function(event){
+        console.log(event); // same results as the optional callback above
+    })
+    .on('changed', function(event){
+        // remove event from local database
+    })
+    .on('error', console.error);
 
   }
 
