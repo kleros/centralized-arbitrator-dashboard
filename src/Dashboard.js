@@ -67,7 +67,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <h4>Owner: {this.state.owner}</h4>
+        <h4>Owner: {web3.eth.accounts[0] == this.state.owner ? "You" : this.state.owner}</h4>
         <form onSubmit={(e) => {e.preventDefault();this.setArbitrationCost(this.state.arbitrationCost)}}>
           <label>
             Arbitration Price: <input type="text" value={this.state.arbitrationCost} onChange={(e) => {this.setState({arbitrationCost: e.target.value})}} />
