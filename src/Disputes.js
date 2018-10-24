@@ -15,9 +15,19 @@ class Disputes extends React.Component {
       <div>
         <h1>Disputes That Await Your Arbitration</h1>
 
-        <div className="accordion" id="accordionExample">
-          {this.disputes()}
-        </div>
+        <table className="table table-hover" id="disputes">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Arbitrable</th>
+              <th>Fee(ETH)</th>
+              <th>Ruling</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+            {this.disputes()}
+        </table>
 
       </div>
     )
