@@ -3,7 +3,6 @@ import React from 'react';
 import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice, disputeCreationEvent} from './ethereum/centralizedArbitrator'
 import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
 import Disputes from './Disputes'
-import Archon from '@kleros/archon'
 
 class Dashboard extends React.Component {
   constructor() {
@@ -14,7 +13,6 @@ class Dashboard extends React.Component {
       disputes: []
     }
 
-    var archon = new Archon('https://kovan.infura.io/v3/344bdb3c652c4ce6acc12f10a7557ba6')
   }
   async componentDidMount(){
     const owner = await getOwner()
