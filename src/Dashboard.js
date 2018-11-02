@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
 
     if(disputes[disputeID])
     {
-      disputes[disputeID].metaevidence = event.returnValues._evidence
+      disputes[disputeID].metaevidence = event.returnValues[1]
       this.setState({disputes: disputes})
     }
 

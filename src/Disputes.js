@@ -7,7 +7,7 @@ class Disputes extends React.Component {
   }
 
   disputes = () => this.props.items.sort().filter(dispute => dispute.status != "10").sort().map((item) => {
-    return <Dispute key={item.key} id={item.key} arbitrated={item.arbitrated} choices={item.choices} fee={item.fee} ruling={item.ruling || "0"} status={item.status || "0"} metaevidence={item.metaevidence || "{}"}/>
+    return <Dispute key={item.key} id={item.key} arbitrated={item.arbitrated} choices={item.choices} fee={item.fee} ruling={item.ruling || "0"} status={item.status || "0"} metaevidence={item.metaevidence || "metaevidence is null"}/>
   })
 
   render() {

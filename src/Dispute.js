@@ -31,18 +31,18 @@ class Dispute extends React.Component {
 
 
   parsedMetaEvidence = () => {
-    let parsed = ""
-    try{
-      parsed = JSON.parse(this.props.metaevidence)
-    }
-    catch(e)
-    {
-      console.error(e)
-    }
-    console.warn("casd")
-    console.log(parsed)
-    return parsed
+    console.log("url " + this.props.metaevidence)
+    fetch(this.props.metaevidence)
+      .then(function(response) {
+        console.log(response)
+        console.log(response.json())
+        return response.json()
+      })
+      .then(function(myJson) {
+        console.log(myJson);
+      });
   }
+
 
   render(){
     return (
@@ -60,7 +60,7 @@ class Dispute extends React.Component {
               <tr>
                   <td colSpan="5">
                       <div id={'accordion' + this.props.id} className="collapse">
-                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={this.props.metaevidence} />
+                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={this.parsedMetaEvidence()} />
                       </div>
                   </td>
               </tr>
