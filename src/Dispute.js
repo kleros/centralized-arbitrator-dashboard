@@ -60,7 +60,7 @@ class Dispute extends React.Component {
               <tr>
                   <td colSpan="5">
                       <div id={'accordion' + this.props.id} className="collapse">
-                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={this.parsedMetaEvidence()} />
+                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence="" />
                       </div>
                   </td>
               </tr>
