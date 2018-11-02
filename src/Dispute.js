@@ -5,28 +5,44 @@ import DisputeDetail from './DisputeDetail'
 
 class Dispute extends React.Component {
 
-constructor(props){
-  super(props)
-  console.log(props)
-}
-
-disputeStatusToString = (code) => {
-  switch (code) {
-    case "0":
-      return "Waiting"
-      break;
-    case "1":
-      return "Appealable"
-      break;
-    case "2":
-      return "Solved"
-      break;
-
-    default:
-      return ""+code
+  constructor(props){
+    super(props)
+    console.warn("here")
+    console.log(props)
   }
 
-}
+  disputeStatusToString = (code) => {
+    switch (code) {
+      case "0":
+        return "Waiting"
+        break;
+      case "1":
+        return "Appealable"
+        break;
+      case "2":
+        return "Solved"
+        break;
+
+      default:
+        return ""+code
+    }
+
+  }
+
+
+  parsedMetaEvidence = () => {
+    let parsed = ""
+    try{
+      parsed = JSON.parse(this.props.metaevidence)
+    }
+    catch(e)
+    {
+      console.error(e)
+    }
+    console.warn("casd")
+    console.log(parsed)
+    return parsed
+  }
 
   render(){
     return (
@@ -43,7 +59,9 @@ disputeStatusToString = (code) => {
             <tbody>
               <tr>
                   <td colSpan="5">
-                      <div id={'accordion' + this.props.id} className="collapse"> Hidden by default</div>
+                      <div id={'accordion' + this.props.id} className="collapse">
+                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={this.props.metaevidence} />
+                      </div>
                   </td>
               </tr>
             </tbody>

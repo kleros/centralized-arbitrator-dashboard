@@ -3,6 +3,7 @@ import React from 'react';
 import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice, disputeCreationEvent} from './ethereum/centralizedArbitrator'
 import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
 import Disputes from './Disputes'
+import Archon from '@kleros/archon'
 
 class Dashboard extends React.Component {
   constructor() {
@@ -12,6 +13,8 @@ class Dashboard extends React.Component {
       arbitrationCost: "",
       disputes: []
     }
+
+    var archon = new Archon('https://kovan.infura.io/v3/344bdb3c652c4ce6acc12f10a7557ba6')
   }
   async componentDidMount(){
     const owner = await getOwner()
@@ -28,6 +31,40 @@ class Dashboard extends React.Component {
     })
     .on('error', console.error);
 
+  }
+
+  updateMetaEvidence = async (event) => {
+    console.log(event)
+    let disputes = this.state.disputes
+    let disputeID = event.returnValues[0]
+
+    if(disputes[disputeID])
+    {
+      disputes[disputeID].metaevidence = event.returnValues._evidence
+      this.setState({disputes: disputes})
+    }
+
+  }
+
+  updateEvidence = async (event) => {
+    console.log(event)
+
+  }
+
+  updateDispute = async (event) => {
+    console.log(event)
+  }
+
+
+  updateRuling = async (event) => {
+    let disputes = this.state.disputes
+    disputes[event.returnValues._disputeID].ruling = event.returnValues[3]
+    disputes[event.returnValues._disputeID].status = await getDisputeStatus(event.returnValues._disputeID)
+    this.setState({disputes: disputes})
+  }
+
+
+  updateDispute = async (event) => {
 
   }
 
@@ -43,18 +80,29 @@ class Dashboard extends React.Component {
 
     arbitrableInstanceAt(event.returnValues._arbitrable).events.Ruling({}, {fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
+      this.updateRuling(event)
+    })
+
+    arbitrableInstanceAt(event.returnValues._arbitrable).events.MetaEvidence({}, {fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      this.updateMetaEvidence(event)
+    })
+
+    arbitrableInstanceAt(event.returnValues._arbitrable).events.Evidence({}, {fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      console.log("Evidence")
+      this.updateDispute(event)
+    })
+
+    arbitrableInstanceAt(event.returnValues._arbitrable).events.Dispute({}, {fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      console.log(event)
       this.updateDispute(event)
     })
 
     this.setState({disputes: disputes})
   }
 
-  updateDispute = async (event) => {
-    let disputes = this.state.disputes
-    disputes[event.returnValues._disputeID].ruling = event.returnValues[3]
-    disputes[event.returnValues._disputeID].status = await getDisputeStatus(event.returnValues._disputeID)
-    this.setState({disputes: disputes})
-  }
 
   setArbitrationCost = async (newCost) => {
     this.setState({arbitrationCost: "awaiting..."})
