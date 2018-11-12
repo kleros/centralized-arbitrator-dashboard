@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
 
   setArbitrationCost = async (newCost) => {
     this.setState({arbitrationCost: "awaiting..."})
-    await setArbitrationPrice(newCost, {from: this.state.owner})
+    await setArbitrationPrice(newCost)
     const arbitrationCost = await getArbitrationCost("")
     this.setState({arbitrationCost})
   }
@@ -135,6 +135,7 @@ class Dashboard extends React.Component {
             <input type="submit" value="Change Price" />
           </label>
         </form>
+        <br/>
         <Disputes items={this.state.disputes}/>
       </div>
     )
