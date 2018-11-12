@@ -23,6 +23,11 @@ asd = {
     return (
       <div>
         <h4>{this.props.category}</h4>
+        <h4>{this.props.fileURI}</h4>
+        <h4>{this.props.fileHash}</h4>
+        <h4>{this.props.title}</h4>
+        <h4>{this.props.description}</h4>
+        <h4>{this.props.question}</h4>
         <div className="dropdown">
           <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Dropdown button
