@@ -22,6 +22,7 @@ asd = {
   render() {
     return (
       <div>
+
         <h4>{"Category: " + this.props.category}</h4>
         <h4>{"File URI: " + this.props.fileURI}</h4>
         <h4>{"File Hash: " + this.props.fileHash}</h4>
@@ -30,7 +31,7 @@ asd = {
         <h4>{"Question: " + this.props.question}</h4>
         <div className="dropdown">
           <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown button
+            Rule
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a className="dropdown-item" href="#">Action</a>
