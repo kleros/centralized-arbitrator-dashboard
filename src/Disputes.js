@@ -20,7 +20,7 @@ class Disputes extends React.Component {
             <tr>
               <th>ID</th>
               <th>Arbitrable</th>
-              <th>Fee(ETH)</th>
+              <th>Fee (Finney)</th>
               <th>Ruling</th>
               <th>Status</th>
             </tr>

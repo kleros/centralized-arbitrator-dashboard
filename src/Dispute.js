@@ -55,7 +55,7 @@ class Dispute extends React.Component {
               <tr className="clickable" data-toggle="collapse" data-target={'#accordion' + this.props.id}  aria-expanded="false" aria-controls={'accordion' + this.props.id}>
                   <td>{this.props.id}</td>
                   <td><a href={"https://kovan.etherscan.io/address/" + this.props.arbitrated} target="_blank">{this.props.arbitrated.substring(0, 10) + '...'}</a></td>
-                  <td>{web3.utils.fromWei(this.props.fee, 'ether')}</td>
+                  <td>{web3.utils.fromWei(this.props.fee, 'finney')}</td>
                   <td>{this.props.ruling}</td>
                   <td>{this.disputeStatusToString(this.props.status)}</td>
               </tr>
