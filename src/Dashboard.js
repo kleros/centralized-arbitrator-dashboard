@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
 
   setArbitrationCost = async (newCost) => {
     this.setState({arbitrationCost: "awaiting..."})
-    await setArbitrationPrice(newCost)
+    await setArbitrationPrice(newCost, {from: this.state.owner})
     const arbitrationCost = await getArbitrationCost("")
     this.setState({arbitrationCost})
   }
