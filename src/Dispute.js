@@ -31,16 +31,20 @@ class Dispute extends React.Component {
 
 
   parsedMetaEvidence = () => {
+    console.log("parsedMetaEvidence")
     console.log("url " + this.props.metaevidence)
-    fetch(this.props.metaevidence)
-      .then(function(response) {
-        console.log(response)
-        console.log(response.json())
-        return response.json()
-      })
-      .then(function(myJson) {
-        console.log(myJson);
-      });
+    if(this.props.metaevidence){
+      fetch(this.props.metaevidence)
+        .then(function(response) {
+          console.warn(response)
+          return response.json()
+        })
+        .then(function(myJson) {
+          console.log(myJson);
+          return myJson;
+        });
+    }
+
   }
 
 
@@ -60,7 +64,7 @@ class Dispute extends React.Component {
               <tr>
                   <td colSpan="5">
                       <div id={'accordion' + this.props.id} className="collapse">
-                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence="" />
+                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={0} />
                       </div>
                   </td>
               </tr>

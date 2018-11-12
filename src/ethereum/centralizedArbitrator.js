@@ -5,8 +5,7 @@ console.log(web3)
 
 export const arbitratorInstance = new web3.eth.Contract(
   centralizedArbitrator.abi,
-  '0x0874e3736ace91c09946872bcd17d4851E689a0a',
-  {from: "0x93814d65E91850FE137A23317e2708baD04F0867", gasPrice: 20000000000} // TODO Refactor hardcoded from address
+  '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913'
 )
 
 console.log(arbitratorInstance)
