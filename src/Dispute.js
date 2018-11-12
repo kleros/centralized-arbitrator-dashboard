@@ -7,7 +7,7 @@ class Dispute extends React.Component {
 
   constructor(props){
     super(props)
-    console.warn("here")
+    console.warn("HeRe")
     console.log(props)
   }
 
@@ -27,6 +27,16 @@ class Dispute extends React.Component {
         return ""+code
     }
 
+  }
+
+  disputeDetails = () => {
+    return <DisputeDetail fileURI={this.props.metaevidence.fileURI}
+                    fileHash={this.props.metaevidence.fileHash}
+                    category={this.props.metaevidence.category}
+                    title={this.props.metaevidence.title}
+                    description={this.props.metaevidence.description}
+                    question={this.props.metaevidence.question}
+                    rulingOptions={this.props.metaevidence.rulingOptions}/>
   }
 
 
@@ -64,7 +74,7 @@ class Dispute extends React.Component {
               <tr>
                   <td colSpan="5">
                       <div id={'accordion' + this.props.id} className="collapse">
-                        <DisputeDetail fileURI="" fileHash="" category="" title="" description="" question="" rulingOptions="" metaevidence={0} />
+                        {this.disputeDetails()}
                       </div>
                   </td>
               </tr>

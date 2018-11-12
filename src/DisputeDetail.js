@@ -22,9 +22,7 @@ asd = {
   render() {
     return (
       <div>
-        test
-        <br/>
-        {this.props.metaevidence}
+        <h4>{this.props.category}</h4>
         <div className="dropdown">
           <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Dropdown button

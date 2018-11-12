@@ -54,13 +54,11 @@ class Dashboard extends React.Component {
     let disputes = this.state.disputes
     arbitrableInstanceAt(arbitrableAddress).events.MetaEvidence({_metaEvidenceID: metaEvidenceID ,fromBlock: 0, toBlock: "latest"})
       .on('data', (event) => {
-          disputes[disputeID].metaevidence = fetch(event.returnValues._evidence)
-            .then(function(response) {
-              return response.json()
-            })
-            .then(function(result){
-              return result
-            })
+
+
+        fetch(event.returnValues._evidence).then(response =>
+          response.json().then(data =>
+            disputes[disputeID].metaevidence = data))
       })
 
     this.setState({disputes: disputes})
