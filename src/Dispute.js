@@ -55,7 +55,7 @@ class Dispute extends React.Component {
             <tbody>
               <tr>
                   <td colSpan="5">
-                      <div id={'accordion' + this.props.id} className="collapse.show">
+                      <div id={'accordion' + this.props.id} className="collapse">
                         {this.disputeDetails()}
                       </div>
                   </td>
