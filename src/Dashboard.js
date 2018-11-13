@@ -11,7 +11,7 @@ class Dashboard extends React.Component {
       owner: "",
       arbitrationCost: "",
       disputes: [],
-      metaEvidences: {}
+      metaEvidences: {} // Unused
     }
 
   }
