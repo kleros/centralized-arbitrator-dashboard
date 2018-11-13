@@ -30,6 +30,7 @@ class Dispute extends React.Component {
     return <DisputeDetail
                     id = {this.props.id}
                     key = {this.props.id}
+                    aliases = {this.props.metaevidence.aliases}
                     fileURI = {this.props.metaevidence.fileURI}
                     fileHash = {this.props.metaevidence.fileHash}
                     category = {this.props.metaevidence.category}
@@ -38,25 +39,6 @@ class Dispute extends React.Component {
                     question = {this.props.metaevidence.question}
                     rulingOptions = {this.props.metaevidence.rulingOptions}/>
   }
-
-
-  parsedMetaEvidence = () => {
-    console.log("parsedMetaEvidence")
-    console.log("url " + this.props.metaevidence)
-    if(this.props.metaevidence){
-      fetch(this.props.metaevidence)
-        .then(function(response) {
-          console.warn(response)
-          return response.json()
-        })
-        .then(function(myJson) {
-          console.log(myJson);
-          return myJson;
-        });
-    }
-
-  }
-
 
   render(){
     return (
