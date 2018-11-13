@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
     let result
     arbitratorInstance.events.DisputeCreation({}, {fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
-        this.addDispute(event)
+        this.addDispute(event.returnValues._disputeID, event.returnValues._arbitrable)
     })
     .on('changed', function(event){
         // remove event from local database
@@ -44,26 +44,27 @@ class Dashboard extends React.Component {
 
   }
 
-  updateDispute = async (event, arbitrableAddress) => {
-    console.log("Check this out?")
-
-    console.log(event)
-    let disputeID = parseInt(event.returnValues._disputeID)
-    let metaEvidenceID = parseInt(event.returnValues._metaEvidenceID)
+  updateDispute = (arbitrableAddress, disputeID, metaEvidenceID) => {
+    console.warn("Inside Update Dispute")
 
     let disputes = this.state.disputes
-    arbitrableInstanceAt(arbitrableAddress).events.MetaEvidence({_metaEvidenceID: metaEvidenceID ,fromBlock: 0, toBlock: "latest"})
+
+    arbitrableInstanceAt(arbitrableAddress).events.MetaEvidence({filter: {_metaEvidenceID: metaEvidenceID} ,fromBlock: 0, toBlock: "latest"})
       .on('data', (event) => {
-
-
-        fetch(event.returnValues._evidence).then(response =>
+        console.warn("MetaEvidence")
+        console.log(event)
+        fetch(event.returnValues._evidence)
+        .then(response =>
           response.json().then(data =>
-            disputes[disputeID].metaevidence = data))
+          disputes[disputeID].metaevidence = data))
+        .then(
+          this.setState({disputes: disputes})
+        )
       })
 
-    this.setState({disputes: disputes})
-    console.log("Check this out")
     console.log(this.state.disputes)
+    console.warn("Exit Update Dispute")
+
   }
 
 
@@ -76,39 +77,29 @@ class Dashboard extends React.Component {
 
 
 
-  addDispute = async (event) => {
+  addDispute = async (disputeID, arbitrableAddress) => {
 
     let disputes = this.state.disputes
-    let disputeID = event.returnValues._disputeID
 
     let dispute = await getDispute(disputeID)
+    dispute.key = disputeID
     console.log(dispute)
     const length = disputes.push(dispute)
-    disputes[length-1].key = disputeID
 
-    let arbitrableAddress = event.returnValues._arbitrable
+    arbitrableInstanceAt(arbitrableAddress).events.Dispute({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      console.warn("Calling updateDispute")
+      console.log(event)
+      this.updateDispute(arbitrableAddress, event.returnValues._disputeID, event.returnValues._metaEvidenceID)
+    })
 
-    arbitrableInstanceAt(arbitrableAddress).events.Ruling({filter: {_arbitrator: '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913'}, fromBlock: 0, toBlock: "latest"})
+    arbitrableInstanceAt(arbitrableAddress).events.Ruling({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
       this.updateRuling(event)
     })
 
-    arbitrableInstanceAt(arbitrableAddress).events.MetaEvidence({fromBlock: 0, toBlock: "latest"})
-    .on('data', (event) => {
-      this.updateMetaEvidence(event)
-    })
 
-    arbitrableInstanceAt(arbitrableAddress).events.Evidence({filter: {_arbitrator: '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913'}, fromBlock: 0, toBlock: "latest"})
-    .on('data', (event) => {
-      console.log("Evidence")
-      this.updateDispute(event)
-    })
 
-    arbitrableInstanceAt(arbitrableAddress).events.Dispute({filter: {_arbitrator: '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913'}, fromBlock: 0, toBlock: "latest"})
-    .on('data', (event) => {
-      console.log(event)
-      this.updateDispute(event, arbitrableAddress)
-    })
 
     this.setState({disputes: disputes})
   }
