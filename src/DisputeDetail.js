@@ -1,7 +1,8 @@
 import React from 'react'
+import {giveRuling} from './ethereum/centralizedArbitrator'
+
 
 class DisputeDetail extends React.Component {
-
 
   render() {
     return (
@@ -18,9 +19,8 @@ class DisputeDetail extends React.Component {
             Rule
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" href="#">Action</a>
-            <a className="dropdown-item" href="#">Another action</a>
-            <a className="dropdown-item" href="#">Something else here</a>
+            <a className="dropdown-item" href="#" onClick={(e) => {e.preventDefault();giveRuling(this.props.id, 0)}}>{this.props.rulingOptions && this.props.rulingOptions.titles[0]}</a>
+            <a className="dropdown-item" href="#" onClick={(e) => {e.preventDefault();giveRuling(this.props.id, 1)}}>{this.props.rulingOptions && this.props.rulingOptions.titles[1]}</a>
           </div>
         </div>
       </div>

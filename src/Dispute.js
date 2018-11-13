@@ -27,13 +27,16 @@ class Dispute extends React.Component {
   }
 
   disputeDetails = () => {
-    return <DisputeDetail fileURI={this.props.metaevidence.fileURI}
-                    fileHash={this.props.metaevidence.fileHash}
-                    category={this.props.metaevidence.category}
-                    title={this.props.metaevidence.title}
-                    description={this.props.metaevidence.description}
-                    question={this.props.metaevidence.question}
-                    rulingOptions={this.props.metaevidence.rulingOptions}/>
+    return <DisputeDetail
+                    id = {this.props.id}
+                    key = {this.props.id}
+                    fileURI = {this.props.metaevidence.fileURI}
+                    fileHash = {this.props.metaevidence.fileHash}
+                    category = {this.props.metaevidence.category}
+                    title = {this.props.metaevidence.title}
+                    description = {this.props.metaevidence.description}
+                    question = {this.props.metaevidence.question}
+                    rulingOptions = {this.props.metaevidence.rulingOptions}/>
   }
 
 

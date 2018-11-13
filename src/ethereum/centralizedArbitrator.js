@@ -28,6 +28,10 @@ export const getDispute = async (index) => {
   return arbitratorInstance.methods.disputes(index).call()
 }
 
-export const getDisputeStatus = (index) => {
+export const getDisputeStatus = async (index) => {
   return arbitratorInstance.methods.disputeStatus(index).call()
+}
+
+export const giveRuling = async (disputeID, ruling) => {
+  return arbitratorInstance.methods.giveRuling(disputeID, ruling).send()
 }
