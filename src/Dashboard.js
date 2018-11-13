@@ -44,10 +44,12 @@ class Dashboard extends React.Component {
 
   }
 
-  updateDispute = (arbitrableAddress, disputeID, metaEvidenceID) => {
+  updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
     console.warn("Inside Update Dispute")
 
     let disputes = this.state.disputes
+    console.log(disputes.slice())
+    console.log(disputeID)
 
     arbitrableInstanceAt(arbitrableAddress).events.MetaEvidence({filter: {_metaEvidenceID: metaEvidenceID} ,fromBlock: 0, toBlock: "latest"})
       .on('data', (event) => {
@@ -57,7 +59,7 @@ class Dashboard extends React.Component {
         .then(response =>
           response.json().then(data =>
           disputes[disputeID].metaevidence = data))
-        .then(
+        .then(data =>
           this.setState({disputes: disputes})
         )
       })
@@ -79,30 +81,27 @@ class Dashboard extends React.Component {
 
   addDispute = async (disputeID, arbitrableAddress) => {
 
-    let disputes = this.state.disputes
 
     let dispute = await getDispute(disputeID)
     dispute.key = disputeID
-    console.log(dispute)
-    const length = disputes.push(dispute)
 
-    arbitrableInstanceAt(arbitrableAddress).events.Dispute({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
+    this.setState({
+      disputes: [...this.state.disputes, dispute]
+    })
+
+    await arbitrableInstanceAt(arbitrableAddress).events.Dispute({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
       console.warn("Calling updateDispute")
       console.log(event)
       this.updateDispute(arbitrableAddress, event.returnValues._disputeID, event.returnValues._metaEvidenceID)
     })
 
-    arbitrableInstanceAt(arbitrableAddress).events.Ruling({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
+    await arbitrableInstanceAt(arbitrableAddress).events.Ruling({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
     .on('data', (event) => {
       this.updateRuling(event)
     })
-
-
-
-
-    this.setState({disputes: disputes})
   }
+
 
 
   setArbitrationCost = async (newCost) => {
