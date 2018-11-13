@@ -28,12 +28,6 @@ export const getDispute = async (index) => {
   return arbitratorInstance.methods.disputes(index).call()
 }
 
-export const disputeCreationEvent = () => {
-  let event = arbitratorInstance.events.DisputeCreation
-  console.log("event: " + event)
-  return event
-}
-
 export const getDisputeStatus = (index) => {
   return arbitratorInstance.methods.disputeStatus(index).call()
 }

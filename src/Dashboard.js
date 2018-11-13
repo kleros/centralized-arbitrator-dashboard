@@ -1,6 +1,6 @@
 import web3 from './ethereum/web3'
 import React from 'react';
-import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice, disputeCreationEvent} from './ethereum/centralizedArbitrator'
+import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice} from './ethereum/centralizedArbitrator'
 import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
 import Disputes from './Disputes'
 
@@ -126,7 +126,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <h4>Owner: {web3.eth.accounts[0] == this.state.owner ? "You" : this.state.owner}</h4>
-        <h4>Arbitrator: <a href={"https://kovan.etherscan.io/address/" + arbitratorInstance.options.address} target="_blank">{arbitratorInstance.options.address}</a></h4>
+        <h4>Arbitrator: <a href={"https://kovan.etherscan.io/address/" + arbitratorInstance.options.address} target="_blank" rel="noopener noreferrer">{arbitratorInstance.options.address}</a></h4>
         <form onSubmit={(e) => {e.preventDefault();this.setArbitrationCost(this.state.arbitrationCost)}}>
           <label>
             Arbitration Price: <input type="text" value={this.state.arbitrationCost} onChange={(e) => {this.setState({arbitrationCost: e.target.value})}} />

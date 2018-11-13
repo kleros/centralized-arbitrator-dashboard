@@ -15,13 +15,10 @@ class Dispute extends React.Component {
     switch (code) {
       case "0":
         return "Waiting"
-        break;
       case "1":
         return "Appealable"
-        break;
       case "2":
         return "Solved"
-        break;
 
       default:
         return ""+code
@@ -64,7 +61,7 @@ class Dispute extends React.Component {
             <tbody>
               <tr className="clickable" data-toggle="collapse" data-target={'#accordion' + this.props.id}  aria-expanded="false" aria-controls={'accordion' + this.props.id}>
                   <td>{this.props.id}</td>
-                  <td><a href={"https://kovan.etherscan.io/address/" + this.props.arbitrated} target="_blank">{this.props.arbitrated.substring(0, 8) + '...'}</a></td>
+                  <td><a href={"https://kovan.etherscan.io/address/" + this.props.arbitrated} target="_blank" rel="noopener noreferrer">{this.props.arbitrated.substring(0, 8) + '...'}</a></td>
                   <td>{parseFloat(web3.utils.fromWei(this.props.fee, 'ether')).toExponential()}</td>
                   <td>{this.props.ruling}</td>
                   <td><b>{this.disputeStatusToString(this.props.status)}</b></td>
