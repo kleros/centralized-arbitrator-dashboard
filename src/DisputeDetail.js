@@ -38,7 +38,7 @@ class DisputeDetail extends React.Component {
         <h4>{"Category: " + this.props.category}</h4>
         <h4>{"Description: " + this.props.description}</h4>
         <br/>
-        <h4>{"File URI: " + this.props.fileURI}</h4>
+        <h4>File URI: <a href={this.props.fileURI} target="_blank" rel="noopener noreferrer">{this.props.fileURI && this.props.fileURI.substring(0, 38) + '...'}</a></h4>
         <h4>{"File Hash: " + this.props.fileHash}</h4>
         <br/>
         <h4>{"Question: " + this.props.question}</h4>
