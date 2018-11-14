@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
     console.warn("Inside Update Dispute")
 
-    let disputes = this.state.disputes
+    let disputes = this.state.disputes.sort(function(a, b){return a.id - b.id})
     console.log(disputes.slice())
     console.log(disputeID)
 
@@ -83,7 +83,9 @@ class Dashboard extends React.Component {
 
 
     let dispute = await getDispute(disputeID)
-    dispute.key = disputeID
+    //dispute.key = disputeID
+    dispute.id = disputeID
+
 
     this.setState({
       disputes: [...this.state.disputes, dispute]

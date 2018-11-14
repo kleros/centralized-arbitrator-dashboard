@@ -28,8 +28,8 @@ class Dispute extends React.Component {
 
   disputeDetails = () => {
     return <DisputeDetail
-                    id = {this.props.id}
                     key = {this.props.id}
+                    id = {this.props.id}
                     aliases = {this.props.metaevidence.aliases}
                     fileURI = {this.props.metaevidence.fileURI}
                     fileHash = {this.props.metaevidence.fileHash}
@@ -55,7 +55,7 @@ class Dispute extends React.Component {
             <tbody>
               <tr>
                   <td colSpan="5">
-                      <div id={'accordion' + this.props.id} className="collapse">
+                      <div id={'accordion' + this.props.id} className="collapse.show">
                         {this.disputeDetails()}
                       </div>
                   </td>

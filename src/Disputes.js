@@ -6,11 +6,11 @@ class Disputes extends React.Component {
     super(props)
   }
 
-  disputes = () => this.props.items.filter(dispute => dispute.status !== "22").sort(function(a, b){return a.key - b.key}).map((item) => {
+  disputes = () => this.props.items.filter(dispute => dispute.status !== "123").sort(function(a, b){return a.id - b.id}).map((item) => {
     console.warn("here")
     console.log(item)
-    return <Dispute key={item.key}
-                    id={item.key}
+    return <Dispute key={item.id}
+                    id={item.id}
                     arbitrated={item.arbitrated}
                     choices={item.choices}
                     fee={item.fee}
