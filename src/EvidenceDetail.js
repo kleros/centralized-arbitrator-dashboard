@@ -1,9 +1,7 @@
 import React from 'react'
-import {giveRuling} from './ethereum/centralizedArbitrator'
-import EvidenceList from './EvidenceList'
 
 
-class DisputeDetail extends React.Component {
+class EvidenceDetail extends React.Component {
 
 
   render() {
@@ -20,21 +18,14 @@ class DisputeDetail extends React.Component {
         <h4>{"Question: " + this.props.question}</h4>
         {this.props.aliases && Object.keys(this.props.aliases).map((address) =>
           <h4 key={address}>{this.props.aliases[address] + ": "} <a href={"https://kovan.etherscan.io/address/" + address} target="_blank" rel="noopener noreferrer">{address}</a></h4>)}
-          <div class="modal-body row">
-            <div class="col-md-6">
-              <EvidenceList/>
-            </div>
-            <div class="col-md-6">
-              <EvidenceList/>
-            </div>
-          </div>
+
         <div className="dropdown">
           <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Give Ruling
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" href="#" onClick={(e) => {e.preventDefault();giveRuling(this.props.id, 1)}}>{this.props.rulingOptions && this.props.rulingOptions.titles[0] + ": " + this.props.rulingOptions.descriptions[0]}</a>
-            <a className="dropdown-item" href="#" onClick={(e) => {e.preventDefault();giveRuling(this.props.id, 2)}}>{this.props.rulingOptions && this.props.rulingOptions.titles[1] + ": " + this.props.rulingOptions.descriptions[1]}</a>
+            <a className="dropdown-item" href="#" >{this.props.rulingOptions && this.props.rulingOptions.titles[0] + ": " + this.props.rulingOptions.descriptions[0]}</a>
+            <a className="dropdown-item" href="#" >{this.props.rulingOptions && this.props.rulingOptions.titles[1] + ": " + this.props.rulingOptions.descriptions[1]}</a>
           </div>
         </div>
       </div>
@@ -42,4 +33,4 @@ class DisputeDetail extends React.Component {
   }
 }
 
-export default DisputeDetail
+export default EvidenceDetail
