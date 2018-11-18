@@ -1,4 +1,4 @@
-import arbitrable from '@kleros/kleros-interaction/build/contracts/Arbitrable.json'
+import arbitrable from 'kleros-interaction/build/contracts/Arbitrable.json'
 
 import web3 from './web3'
 
