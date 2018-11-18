@@ -1,6 +1,6 @@
-import web3 from './ethereum/web3'
-
 import React from 'react'
+
+import web3 from './ethereum/web3'
 import DisputeDetail from './dispute-detail'
 
 class Dispute extends React.Component {

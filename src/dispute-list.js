@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Dispute from './dispute'
 
 class DisputeList extends React.Component {

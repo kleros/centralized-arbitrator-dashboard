@@ -1,4 +1,5 @@
 import React from 'react'
+
 import EvidenceDetail from './evidence-detail'
 
 class Evidence extends React.Component {

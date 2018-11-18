@@ -16,7 +16,7 @@ const isLocalhost = Boolean(
     window.location.hostname === '[::1]' ||
     // 127.0.0.1/8 is considered localhost for IPv4.
     window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+      /^127(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3}$/
     )
 )
 
@@ -24,12 +24,11 @@ export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location)
-    if (publicUrl.origin !== window.location.origin) {
+    if (publicUrl.origin !== window.location.origin)
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return
-    }
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
@@ -46,10 +45,9 @@ export function register(config) {
               'worker. To learn more, visit http://bit.ly/CRA-PWA'
           )
         })
-      } else {
-        // Is not localhost. Just register service worker
-        registerValidSW(swUrl, config)
       }
+      // Is not localhost. Just register service worker
+      else registerValidSW(swUrl, config)
     })
   }
 }
@@ -61,7 +59,7 @@ function registerValidSW(swUrl, config) {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
         installingWorker.onstatechange = () => {
-          if (installingWorker.state === 'installed') {
+          if (installingWorker.state === 'installed')
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
@@ -72,9 +70,7 @@ function registerValidSW(swUrl, config) {
               )
 
               // Execute callback
-              if (config && config.onUpdate) {
-                config.onUpdate(registration)
-              }
+              if (config && config.onUpdate) config.onUpdate(registration)
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
@@ -82,11 +78,8 @@ function registerValidSW(swUrl, config) {
               console.log('Content is cached for offline use.')
 
               // Execute callback
-              if (config && config.onSuccess) {
-                config.onSuccess(registration)
-              }
+              if (config && config.onSuccess) config.onSuccess(registration)
             }
-          }
         }
       }
     })
@@ -103,17 +96,15 @@ function checkValidServiceWorker(swUrl, config) {
       if (
         response.status === 404 ||
         response.headers.get('content-type').indexOf('javascript') === -1
-      ) {
+      )
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then(registration => {
           registration.unregister().then(() => {
             window.location.reload()
           })
         })
-      } else {
-        // Service worker found. Proceed as normal.
-        registerValidSW(swUrl, config)
-      }
+      // Service worker found. Proceed as normal.
+      else registerValidSW(swUrl, config)
     })
     .catch(() => {
       console.log(
@@ -123,9 +114,8 @@ function checkValidServiceWorker(swUrl, config) {
 }
 
 export function unregister() {
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator)
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister()
     })
-  }
 }

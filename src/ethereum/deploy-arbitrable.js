@@ -1,5 +1,6 @@
 const HDWalletProvider = require('truffle-hdwallet-provider')
 const Web3 = require('web3')
+
 const multipleArbitrableTransaction = require('../../node_modules/kleros-interaction/build/contracts/MultipleArbitrableTransaction.json')
 
 const mnemonic =

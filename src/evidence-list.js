@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Evidence from './evidence'
 
 class EvidenceList extends React.Component {
@@ -11,28 +12,24 @@ class EvidenceList extends React.Component {
   evidences = () => {
     console.warn('EVIDENCES')
     console.log(this.props)
-    if (!this.props.evidences) {
-      return <Evidence name="loading" />
-    } else {
-      const items = this.props.evidences.map(item => {
-        return (
-          <Evidence
-            key={item.name}
-            name={item.name}
-            description={item.description}
-            fileURI={item.fileURI}
-          />
-        )
-      })
+    if (!this.props.evidences) return <Evidence name="loading" />
+    else {
+      const items = this.props.evidences.map(item => (
+        <Evidence
+          key={item.name}
+          name={item.name}
+          description={item.description}
+          fileURI={item.fileURI}
+        />
+      ))
 
       return items
     }
   }
 
   render() {
-    if (!this.props.evidences) {
+    if (!this.props.evidences)
       return <h1>No Evidence From {this.props.name}</h1>
-    }
 
     return (
       <div>

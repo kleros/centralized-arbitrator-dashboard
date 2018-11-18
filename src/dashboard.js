@@ -1,5 +1,6 @@
-import web3 from './ethereum/web3'
 import React from 'react'
+
+import web3 from './ethereum/web3'
 import {
   arbitratorInstance,
   getOwner,
@@ -41,7 +42,7 @@ class Dashboard extends React.Component {
   }
 
   updateEvidence = async (disputeID, party, evidence) => {
-    let disputes = this.state.disputes.sort(function(a, b) {
+    const disputes = this.state.disputes.sort(function(a, b) {
       return a.id - b.id
     })
 
@@ -61,7 +62,7 @@ class Dashboard extends React.Component {
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
     console.warn('Inside Update Dispute')
 
-    let disputes = this.state.disputes.sort(function(a, b) {
+    const disputes = this.state.disputes.sort(function(a, b) {
       return a.id - b.id
     })
     console.log(disputes.slice())
@@ -90,7 +91,7 @@ class Dashboard extends React.Component {
   }
 
   updateRuling = async event => {
-    let disputes = this.state.disputes
+    const disputes = this.state.disputes
     disputes[parseInt(event.returnValues._disputeID)].ruling =
       event.returnValues[3]
     disputes[event.returnValues._disputeID].status = await getDisputeStatus(
@@ -100,8 +101,8 @@ class Dashboard extends React.Component {
   }
 
   addDispute = async (disputeID, arbitrableAddress) => {
-    let dispute = await getDispute(disputeID)
-    //dispute.key = disputeID
+    const dispute = await getDispute(disputeID)
+    // dispute.key = disputeID
     dispute.id = disputeID
     dispute.evidences = {}
 

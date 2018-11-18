@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
 
