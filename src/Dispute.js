@@ -26,21 +26,6 @@ class Dispute extends React.Component {
 
   }
 
-  disputeDetails = () => {
-    return <DisputeDetail
-                    key = {this.props.id}
-                    id = {this.props.id}
-                    aliases = {this.props.metaevidence.aliases}
-                    fileURI = {this.props.metaevidence.fileURI}
-                    fileHash = {this.props.metaevidence.fileHash}
-                    category = {this.props.metaevidence.category}
-                    title = {this.props.metaevidence.title}
-                    description = {this.props.metaevidence.description}
-                    question = {this.props.metaevidence.question}
-                    rulingOptions = {this.props.metaevidence.rulingOptions}
-                    evidences = {this.props.evidences}/>
-  }
-
   render(){
     return (
           <React.Fragment>
@@ -54,9 +39,19 @@ class Dispute extends React.Component {
             </tbody>
             <tbody>
               <tr>
-                  <td colSpan="5">
+                  <td colSpan="4">
                       <div id={'accordion' + this.props.id} className="collapse">
-                        {this.disputeDetails()}
+                      <DisputeDetail key = {this.props.id}
+                                      id = {this.props.id}
+                                      aliases = {this.props.metaevidence.aliases}
+                                      fileURI = {this.props.metaevidence.fileURI}
+                                      fileHash = {this.props.metaevidence.fileHash}
+                                      category = {this.props.metaevidence.category}
+                                      title = {this.props.metaevidence.title}
+                                      description = {this.props.metaevidence.description}
+                                      question = {this.props.metaevidence.question}
+                                      rulingOptions = {this.props.metaevidence.rulingOptions}
+                                      evidences = {this.props.evidences}/>
                       </div>
                   </td>
               </tr>

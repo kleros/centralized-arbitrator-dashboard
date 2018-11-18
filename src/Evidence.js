@@ -13,15 +13,14 @@ class Evidence extends React.Component {
             <tbody>
               <tr className="clickable" data-toggle="collapse" data-target={'#accordion' + this.props.id}  aria-expanded="false" aria-controls={'accordion' + this.props.id}>
                   <td>{this.props.name}</td>
-                  <td>{this.props.description}</td>
-                  <td>{this.props.fileURI}</td>
+                  <td><a href={"//" + this.props.fileURI} target="_blank" rel="noopener noreferrer">{this.props.fileURI}</a></td>
               </tr>
             </tbody>
             <tbody>
               <tr>
                 <td colSpan="5">
                     <div id={'accordion' + this.props.id} className="collapse">
-                      <EvidenceDetail name="TODO"/>
+                      <EvidenceDetail description={this.props.description} fileTypeExtension={this.props.fileTypeExtension} selfHash={this.props.selfHash}/>
                     </div>
                 </td>
               </tr>

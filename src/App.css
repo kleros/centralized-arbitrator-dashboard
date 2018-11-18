@@ -35,4 +35,6 @@
   color: #282c34;
 }
 
-
+.clickable {
+    cursor: pointer;
+}

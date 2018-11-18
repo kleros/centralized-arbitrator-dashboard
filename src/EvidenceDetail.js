@@ -10,7 +10,9 @@ class EvidenceDetail extends React.Component {
   render() {
     return (
       <div>
-          <span>{this.props.name}</span>
+          <h5>{"Description: " + this.props.description}</h5>
+          <h5>{"Extension: " + this.props.fileTypeExtension}</h5>
+          <h5>{"Self Hash: " + this.props.selfHash}</h5>
       </div>
     )
   }

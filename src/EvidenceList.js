@@ -26,15 +26,19 @@ class EvidenceList extends React.Component {
 }
 
   render() {
+    if (!this.props.evidences){
+      return (<h1>No Evidence From {this.props.name}</h1>)
+    }
+
     return(
       <div>
-        <h1>Evidences from {this.props.name}</h1>
+
+        <h1>Evidences From {this.props.name}</h1>
 
         <table className="table table-hover evidence-table">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
               <th>File URI</th>
             </tr>
           </thead>
