@@ -2,7 +2,7 @@ import web3 from './ethereum/web3'
 import React from 'react';
 import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice} from './ethereum/centralizedArbitrator'
 import {arbitrableInstanceAt} from './ethereum/arbitrable'
-import Disputes from './Disputes'
+import DisputeList from './DisputeList'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -132,7 +132,7 @@ class Dashboard extends React.Component {
           </label>
         </form>
         <br/>
-        <Disputes items={this.state.disputes}/>
+        <DisputeList items={this.state.disputes}/>
       </div>
     )
   }

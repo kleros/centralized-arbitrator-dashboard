@@ -1,7 +1,7 @@
 import React from 'react';
 import Dispute from './Dispute'
 
-class Disputes extends React.Component {
+class DisputeList extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -42,4 +42,4 @@ class Disputes extends React.Component {
   }
 }
 
-export default Disputes
+export default DisputeList
