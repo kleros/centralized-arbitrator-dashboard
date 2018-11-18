@@ -1,7 +1,7 @@
 import web3 from './ethereum/web3'
 import React from 'react';
 import {arbitratorInstance, getOwner, getArbitrationCost, getDispute, getDisputeStatus, setArbitrationPrice} from './ethereum/centralizedArbitrator'
-import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
+import {arbitrableInstanceAt} from './ethereum/arbitrable'
 import Disputes from './Disputes'
 
 class Dashboard extends React.Component {
