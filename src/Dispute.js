@@ -7,7 +7,7 @@ class Dispute extends React.Component {
 
   constructor(props){
     super(props)
-    console.warn("HeRe")
+    console.warn("Dispute constructor")
     console.log(props)
   }
 
@@ -37,7 +37,8 @@ class Dispute extends React.Component {
                     title = {this.props.metaevidence.title}
                     description = {this.props.metaevidence.description}
                     question = {this.props.metaevidence.question}
-                    rulingOptions = {this.props.metaevidence.rulingOptions}/>
+                    rulingOptions = {this.props.metaevidence.rulingOptions}
+                    evidences = {this.props.evidences}/>
   }
 
   render(){

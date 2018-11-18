@@ -4,15 +4,33 @@ import Evidence from './Evidence'
 class EvidenceList extends React.Component {
   constructor(props) {
     super(props)
+    console.warn("EvidenceList constructor")
+    console.log(props)
   }
 
+  evidences = () => {
+    console.warn("EVIDENCES")
+    console.log(this.props)
+    if (!this.props.evidences){
+      return (<Evidence name="loading"/>)
+    }
+    else
+    {
+      const items = this.props.evidences.map(item => {
+        return (<Evidence key={item.name} name={item.name}/>)
+      })
 
+      return items
+    }
+
+}
 
   render() {
     return(
       <div>
-        <h1>Evidences</h1>
-        <table className="table table-hover" id="disputes">
+        <h1>Evidences from {this.props.name}</h1>
+
+        <table className="table table-hover evidence-table">
           <thead>
             <tr>
               <th>Name</th>
@@ -20,12 +38,13 @@ class EvidenceList extends React.Component {
               <th>File URI</th>
             </tr>
           </thead>
-            <h2>asda</h2>
+            {this.evidences()}
         </table>
+
       </div>
     )
   }
 
 }
 
-export default Evidence
+export default EvidenceList

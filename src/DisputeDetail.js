@@ -4,6 +4,21 @@ import EvidenceList from './EvidenceList'
 
 
 class DisputeDetail extends React.Component {
+  constructor(props)
+  {
+    super(props)
+    console.warn("DisputeDetail constructor")
+    console.log(props)
+  }
+
+  getFirstAddress = () => {
+    if(!this.props.aliases)
+      return ""
+    console.warn("SUCCESSFULLY LOADED ADDRESS")
+    console.log(Object.keys(this.props.aliases)[0])
+    console.log(this.props.evidences)
+    return  Object.keys(this.props.aliases)[0]
+  }
 
 
   render() {
@@ -20,12 +35,12 @@ class DisputeDetail extends React.Component {
         <h4>{"Question: " + this.props.question}</h4>
         {this.props.aliases && Object.keys(this.props.aliases).map((address) =>
           <h4 key={address}>{this.props.aliases[address] + ": "} <a href={"https://kovan.etherscan.io/address/" + address} target="_blank" rel="noopener noreferrer">{address}</a></h4>)}
-          <div class="modal-body row">
-            <div class="col-md-6">
-              <EvidenceList/>
+          <div className="modal-body row">
+            <div className="col-md-6">
+              <EvidenceList name="Party A" evidences={[{name: "asparagas"}]}/>
             </div>
-            <div class="col-md-6">
-              <EvidenceList/>
+            <div className="col-md-6">
+              <EvidenceList name="Party B" evidences={this.props.evidences[this.getFirstAddress()]}/>
             </div>
           </div>
         <div className="dropdown">

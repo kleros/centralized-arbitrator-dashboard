@@ -5,8 +5,8 @@ import {arbitrableInstanceAt} from './ethereum/multipleArbitrableTransaction'
 import Disputes from './Disputes'
 
 class Dashboard extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       owner: "",
       arbitrationCost: "",
@@ -39,9 +39,16 @@ class Dashboard extends React.Component {
     this.setState({metaEvidences: metaEvidences})
   }
 
-  updateEvidence = async (event) => {
-    console.log(event)
+  updateEvidence = async (disputeID, party, evidence) => {
+    let disputes = this.state.disputes.sort(function(a, b){return a.id - b.id})
 
+    disputes[disputeID].evidences[party] = disputes[disputeID].evidences[party] || []
+
+    fetch(evidence)
+    .then(response => response.json().then(data => disputes[disputeID].evidences[party].push(data)))
+
+    console.warn("data structure")
+    console.log(disputes[disputeID])
   }
 
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
@@ -85,6 +92,7 @@ class Dashboard extends React.Component {
     let dispute = await getDispute(disputeID)
     //dispute.key = disputeID
     dispute.id = disputeID
+    dispute.evidences = {}
 
 
     this.setState({
@@ -96,6 +104,11 @@ class Dashboard extends React.Component {
       console.warn("Calling updateDispute")
       console.log(event)
       this.updateDispute(arbitrableAddress, event.returnValues._disputeID, event.returnValues._metaEvidenceID)
+    })
+
+    await arbitrableInstanceAt(arbitrableAddress).events.Evidence({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
+    .on('data', (event) => {
+      this.updateEvidence(disputeID, event.returnValues._party, event.returnValues._evidence)
     })
 
     await arbitrableInstanceAt(arbitrableAddress).events.Ruling({filter: {_arbitrator: arbitratorInstance.options.address, _disputeID: disputeID}, fromBlock: 0, toBlock: "latest"})
