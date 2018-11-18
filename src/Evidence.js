@@ -6,9 +6,6 @@ class Evidence extends React.Component {
     super(props)
   }
 
-  evidenceDetails = () => {
-    return <EvidenceDetail/>
-  }
 
   render() {
     return (
@@ -16,15 +13,15 @@ class Evidence extends React.Component {
             <tbody>
               <tr className="clickable" data-toggle="collapse" data-target={'#accordion' + this.props.id}  aria-expanded="false" aria-controls={'accordion' + this.props.id}>
                   <td>{this.props.name}</td>
-                  <td>asdas</td>
-                  <td>dummy</td>
+                  <td>{this.props.description}</td>
+                  <td>{this.props.fileURI}</td>
               </tr>
             </tbody>
             <tbody>
               <tr>
                 <td colSpan="5">
                     <div id={'accordion' + this.props.id} className="collapse">
-                      {this.evidenceDetails()}
+                      <EvidenceDetail name="TODO"/>
                     </div>
                 </td>
               </tr>

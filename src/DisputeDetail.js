@@ -36,12 +36,11 @@ class DisputeDetail extends React.Component {
         {this.props.aliases && Object.keys(this.props.aliases).map((address) =>
           <h4 key={address}>{this.props.aliases[address] + ": "} <a href={"https://kovan.etherscan.io/address/" + address} target="_blank" rel="noopener noreferrer">{address}</a></h4>)}
           <div className="modal-body row">
+          {this.props.aliases && Object.keys(this.props.aliases).map((address) =>
             <div className="col-md-6">
-              <EvidenceList name="Party A" evidences={[{name: "asparagas"}]}/>
+              <EvidenceList name={this.props.aliases[address]} evidences={this.props.evidences[address]}/>
             </div>
-            <div className="col-md-6">
-              <EvidenceList name="Party B" evidences={this.props.evidences[this.getFirstAddress()]}/>
-            </div>
+          )}
           </div>
         <div className="dropdown">
           <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

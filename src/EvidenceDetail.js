@@ -10,7 +10,7 @@ class EvidenceDetail extends React.Component {
   render() {
     return (
       <div>
-        Evidence should be displayed here
+          <span>{this.props.name}</span>
       </div>
     )
   }

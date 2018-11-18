@@ -17,7 +17,7 @@ class EvidenceList extends React.Component {
     else
     {
       const items = this.props.evidences.map(item => {
-        return (<Evidence key={item.name} name={item.name}/>)
+        return (<Evidence key={item.name} name={item.name} description={item.description} fileURI={item.fileURI}/>)
       })
 
       return items
