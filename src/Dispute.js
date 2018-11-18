@@ -49,7 +49,6 @@ class Dispute extends React.Component {
                   <td>{this.props.id}</td>
                   <td><a href={"https://kovan.etherscan.io/address/" + this.props.arbitrated} target="_blank" rel="noopener noreferrer">{this.props.arbitrated.substring(0, 8) + '...'}</a></td>
                   <td>{parseFloat(web3.utils.fromWei(this.props.fee, 'ether')).toExponential()}</td>
-                  <td>{this.props.ruling}</td>
                   <td><b>{this.disputeStatusToString(this.props.status)}</b></td>
               </tr>
             </tbody>

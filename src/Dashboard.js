@@ -11,7 +11,6 @@ class Dashboard extends React.Component {
       owner: "",
       arbitrationCost: "",
       disputes: [],
-      metaEvidences: {} // Unused
     }
 
   }
@@ -32,12 +31,6 @@ class Dashboard extends React.Component {
 
   }
 
-  updateMetaEvidence = async (event) => {
-    console.log(event)
-    let metaEvidences = this.state.metaEvidences
-    metaEvidences[parseInt(event.returnValues._metaEvidenceID)] = "event.returnValues._evidence"
-    this.setState({metaEvidences: metaEvidences})
-  }
 
   updateEvidence = async (disputeID, party, evidence) => {
     let disputes = this.state.disputes.sort(function(a, b){return a.id - b.id})

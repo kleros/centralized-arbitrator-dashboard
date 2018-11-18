@@ -14,7 +14,6 @@ class Disputes extends React.Component {
                     arbitrated = {item.arbitrated}
                     choices = {item.choices}
                     fee = {item.fee}
-                    ruling = {item.ruling || "0"}
                     status = {item.status || "0"}
                     metaevidence = {item.metaevidence || "NO META EVIDENCE"}
                     evidences = {item.evidences} />
@@ -31,7 +30,6 @@ class Disputes extends React.Component {
               <th>ID</th>
               <th>Arbitrable</th>
               <th>Fee (Ether)</th>
-              <th>Ruling</th>
               <th>Status</th>
             </tr>
           </thead>
