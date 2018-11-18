@@ -1,19 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-class EvidenceDetail extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+const EvidenceDetail = ({ description, fileTypeExtension, selfHash }) => (
+  <div>
+    <h5>{'Description: ' + description}</h5>
+    <h5>{'Extension: ' + fileTypeExtension}</h5>
+    <h5>{'Self Hash: ' + selfHash}</h5>
+  </div>
+)
 
-  render() {
-    return (
-      <div>
-        <h5>{'Description: ' + this.props.description}</h5>
-        <h5>{'Extension: ' + this.props.fileTypeExtension}</h5>
-        <h5>{'Self Hash: ' + this.props.selfHash}</h5>
-      </div>
-    )
-  }
+EvidenceDetail.propTypes = {
+  description: PropTypes.string.isRequired,
+  fileTypeExtension: PropTypes.string.isRequired,
+  selfHash: PropTypes.string.isRequired
 }
 
 export default EvidenceDetail

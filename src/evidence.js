@@ -1,51 +1,56 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import EvidenceDetail from './evidence-detail'
 
-class Evidence extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+const Evidence = ({
+  name,
+  id,
+  description,
+  fileURI,
+  fileTypeExtension,
+  selfHash
+}) => (
+  <React.Fragment>
+    <tbody>
+      <tr
+        className="clickable"
+        data-toggle="collapse"
+        data-target={'#accordion' + id}
+        aria-expanded="false"
+        aria-controls={'accordion' + id}
+      >
+        <td>{name}</td>
+        <td>
+          <a href={'//' + fileURI} target="_blank" rel="noopener noreferrer">
+            {fileURI}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td colSpan="5">
+          <div id={'accordion' + id} className="collapse">
+            <EvidenceDetail
+              description={description}
+              fileTypeExtension={fileTypeExtension}
+              selfHash={selfHash}
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </React.Fragment>
+)
 
-  render() {
-    return (
-      <React.Fragment>
-        <tbody>
-          <tr
-            className="clickable"
-            data-toggle="collapse"
-            data-target={'#accordion' + this.props.id}
-            aria-expanded="false"
-            aria-controls={'accordion' + this.props.id}
-          >
-            <td>{this.props.name}</td>
-            <td>
-              <a
-                href={'//' + this.props.fileURI}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {this.props.fileURI}
-              </a>
-            </td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td colSpan="5">
-              <div id={'accordion' + this.props.id} className="collapse">
-                <EvidenceDetail
-                  description={this.props.description}
-                  fileTypeExtension={this.props.fileTypeExtension}
-                  selfHash={this.props.selfHash}
-                />
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </React.Fragment>
-    )
-  }
+Evidence.propTypes = {
+  name: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  fileURI: PropTypes.string.isRequired,
+  fileTypeExtension: PropTypes.string.isRequired,
+  selfHash: PropTypes.string.isRequired
 }
 
 export default Evidence
