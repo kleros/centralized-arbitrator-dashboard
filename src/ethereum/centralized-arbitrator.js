@@ -8,8 +8,6 @@ export const arbitratorInstance = new web3.eth.Contract(
   { from: '0x93814d65E91850FE137A23317e2708baD04F0867', gasPrice: 20000000000 } // TODO Refactor hardcoded from address
 )
 
-console.log(arbitratorInstance)
-
 export const getOwner = async () => arbitratorInstance.methods.owner().call()
 
 export const getArbitrationCost = async extraData =>
