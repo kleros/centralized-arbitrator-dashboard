@@ -11,6 +11,6 @@ script:
   - yarn run lint
   - yarn test
   - if [ -n "$COVERALLS_REPO_TOKEN" ]; then yarn run test:coveralls; fi
-  - yarn run build
+  - yarn run build --verbose
 notifications:
   slack: 'kleros:Ub8n81EgKJ3iRrMDyWyQIVJp'
