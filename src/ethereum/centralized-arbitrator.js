@@ -2,8 +2,6 @@ import centralizedArbitrator from 'kleros-interaction/build/contracts/Centralize
 
 import web3 from './web3'
 
-console.log(web3)
-
 export const arbitratorInstance = new web3.eth.Contract(
   centralizedArbitrator.abi,
   '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913',
