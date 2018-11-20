@@ -1,14 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Dispute from './dispute'
 
 class DisputeList extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  disputes = () =>
-    this.props.items
+  disputes = items =>
+    items
       .filter(dispute => dispute.status !== '2')
       .sort(function(a, b) {
         return a.id - b.id
@@ -31,6 +28,8 @@ class DisputeList extends React.Component {
       })
 
   render() {
+    const { items } = this.props
+
     return (
       <div>
         <h1>Disputes That Await Your Arbitration</h1>
@@ -45,11 +44,15 @@ class DisputeList extends React.Component {
             </tr>
           </thead>
 
-          {this.disputes()}
+          {this.disputes(items)}
         </table>
       </div>
     )
   }
+}
+
+DisputeList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default DisputeList

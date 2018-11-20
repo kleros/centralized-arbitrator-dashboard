@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Evidence from './evidence'
 
@@ -9,15 +10,13 @@ class EvidenceList extends React.Component {
     console.log(props)
   }
 
-  evidences = () => {
-    console.warn('EVIDENCES')
-    console.log(this.props)
-    if (!this.props.evidences) return <Evidence name="loading" />
+  evidences = (name, evidences) => {
+    if (!evidences) return <Evidence name="loading" />
     else {
-      const items = this.props.evidences.map(item => (
+      const items = evidences.map(item => (
         <Evidence
-          key={item.name}
-          name={item.name}
+          key={name}
+          name={name}
           description={item.description}
           fileURI={item.fileURI}
         />
@@ -28,12 +27,12 @@ class EvidenceList extends React.Component {
   }
 
   render() {
-    if (!this.props.evidences)
-      return <h1>No Evidence From {this.props.name}</h1>
+    const { name, evidences } = this.props
+    if (!evidences) return <h1>No Evidence From {name}</h1>
 
     return (
       <div>
-        <h1>Evidences From {this.props.name}</h1>
+        <h1>Evidences From {name}</h1>
 
         <table className="table table-hover evidence-table">
           <thead>
@@ -42,11 +41,16 @@ class EvidenceList extends React.Component {
               <th>File URI</th>
             </tr>
           </thead>
-          {this.evidences()}
+          {this.evidences(name, evidences)}
         </table>
       </div>
     )
   }
+}
+
+EvidenceList.propTypes = {
+  name: PropTypes.string.isRequired,
+  evidences: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default EvidenceList

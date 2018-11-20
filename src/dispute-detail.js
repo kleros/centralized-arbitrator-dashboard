@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
@@ -10,39 +11,39 @@ class DisputeDetail extends React.Component {
     console.log(props)
   }
 
-  getFirstAddress = () => {
-    if (!this.props.aliases) return ''
-    console.warn('SUCCESSFULLY LOADED ADDRESS')
-    console.log(Object.keys(this.props.aliases)[0])
-    console.log(this.props.evidences)
-    return Object.keys(this.props.aliases)[0]
-  }
-
   render() {
+    const {
+      id,
+      title,
+      category,
+      description,
+      fileURI,
+      fileHash,
+      question,
+      aliases,
+      rulingOptions,
+      evidences
+    } = this.props
+
     return (
       <div>
-        <h4>{this.props.id}</h4>
-        <h4>{'Title: ' + this.props.title}</h4>
-        <h4>{'Category: ' + this.props.category}</h4>
-        <h4>{'Description: ' + this.props.description}</h4>
+        <h4>{'Title: ' + title}</h4>
+        <h4>{'Category: ' + category}</h4>
+        <h4>{'Description: ' + description}</h4>
         <br />
         <h4>
           File URI:{' '}
-          <a
-            href={this.props.fileURI}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {this.props.fileURI && this.props.fileURI.substring(0, 38) + '...'}
+          <a href={fileURI} target="_blank" rel="noopener noreferrer">
+            {fileURI && fileURI.substring(0, 38) + '...'}
           </a>
         </h4>
-        <h4>{'File Hash: ' + this.props.fileHash}</h4>
+        <h4>{'File Hash: ' + fileHash}</h4>
         <br />
-        <h4>{'Question: ' + this.props.question}</h4>
-        {this.props.aliases &&
-          Object.keys(this.props.aliases).map(address => (
+        <h4>{'Question: ' + question}</h4>
+        {aliases &&
+          Object.keys(aliases).map(address => (
             <h4 key={address}>
-              {this.props.aliases[address] + ': '}{' '}
+              {aliases[address] + ': '}{' '}
               <a
                 href={'https://kovan.etherscan.io/address/' + address}
                 target="_blank"
@@ -53,12 +54,12 @@ class DisputeDetail extends React.Component {
             </h4>
           ))}
         <div className="modal-body row">
-          {this.props.aliases &&
-            Object.keys(this.props.aliases).map(address => (
+          {aliases &&
+            Object.keys(aliases).map(address => (
               <div key={address} className="col-md-6">
                 <EvidenceList
-                  name={this.props.aliases[address]}
-                  evidences={this.props.evidences[address]}
+                  name={aliases[address]}
+                  evidences={evidences[address]}
                 />
               </div>
             ))}
@@ -75,37 +76,44 @@ class DisputeDetail extends React.Component {
             Give Ruling
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a
+            <button
               className="dropdown-item"
-              href="#"
               onClick={e => {
                 e.preventDefault()
-                giveRuling(this.props.id, 1)
+                giveRuling(id, 1)
               }}
             >
-              {this.props.rulingOptions &&
-                this.props.rulingOptions.titles[0] +
-                  ': ' +
-                  this.props.rulingOptions.descriptions[0]}
-            </a>
-            <a
+              {rulingOptions &&
+                rulingOptions.titles[0] + ': ' + rulingOptions.descriptions[0]}
+            </button>
+            <button
               className="dropdown-item"
-              href="#"
               onClick={e => {
                 e.preventDefault()
-                giveRuling(this.props.id, 2)
+                giveRuling(id, 2)
               }}
             >
-              {this.props.rulingOptions &&
-                this.props.rulingOptions.titles[1] +
-                  ': ' +
-                  this.props.rulingOptions.descriptions[1]}
-            </a>
+              {rulingOptions &&
+                rulingOptions.titles[1] + ': ' + rulingOptions.descriptions[1]}
+            </button>
           </div>
         </div>
       </div>
     )
   }
+}
+
+DisputeDetail.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  category: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  fileURI: PropTypes.string.isRequired,
+  fileHash: PropTypes.string.isRequired,
+  question: PropTypes.string.isRequired,
+  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
+  rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  evidences: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default DisputeDetail
