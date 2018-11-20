@@ -11,6 +11,15 @@ class DisputeDetail extends React.Component {
     console.log(props)
   }
 
+  cb(id, ruling) {
+    console.log('CB')
+    giveRuling(id, ruling)
+  }
+
+  handleGiveRulingButtonClick = (id, ruling) => () => {
+    giveRuling(id, ruling)
+  }
+
   render() {
     const {
       id,
@@ -78,20 +87,14 @@ class DisputeDetail extends React.Component {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <button
               className="dropdown-item"
-              onClick={e => {
-                e.preventDefault()
-                giveRuling(id, 1)
-              }}
+              onClick={this.handleGiveRulingButtonClick(id, 1)}
             >
               {rulingOptions &&
                 rulingOptions.titles[0] + ': ' + rulingOptions.descriptions[0]}
             </button>
             <button
               className="dropdown-item"
-              onClick={e => {
-                e.preventDefault()
-                giveRuling(id, 2)
-              }}
+              onClick={this.handleGiveRulingButtonClick(id, 2)}
             >
               {rulingOptions &&
                 rulingOptions.titles[1] + ': ' + rulingOptions.descriptions[1]}

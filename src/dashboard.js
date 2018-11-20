@@ -167,6 +167,19 @@ class Dashboard extends React.Component {
     this.setState({ arbitrationCost })
   }
 
+  handleSetArbitrationPriceButtonClick = newCost => async e => {
+    e.preventDefault()
+    this.setState({ arbitrationCost: 'awaiting...' })
+    await setArbitrationPrice(newCost)
+    const arbitrationCost = await getArbitrationCost('')
+    this.setState({ arbitrationCost })
+  }
+
+  handleArbitrationPriceChange = () => e => {
+    console.log(e)
+    this.setState({ arbitrationCost: e.target.value })
+  }
+
   render() {
     const { owner, arbitrationCost, disputes } = this.state
     return (
@@ -186,19 +199,14 @@ class Dashboard extends React.Component {
           </a>
         </h4>
         <form
-          onSubmit={e => {
-            e.preventDefault()
-            this.setArbitrationCost(arbitrationCost)
-          }}
+          onSubmit={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
         >
           <label>
             Arbitration Price:{' '}
             <input
               type="text"
               value={arbitrationCost}
-              onChange={e => {
-                this.setState({ arbitrationCost: e.target.value })
-              }}
+              onChange={this.handleArbitrationPriceChange()}
             />
             <input type="submit" value="Change Price" />
           </label>
