@@ -26,7 +26,6 @@ class Dashboard extends React.Component {
     const arbitrationCost = await getArbitrationCost('')
     this.setState({ owner, arbitrationCost })
 
-    let result
     arbitratorInstance.events
       .DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
@@ -35,37 +34,38 @@ class Dashboard extends React.Component {
           event.returnValues._arbitrable
         )
       })
-      .on('changed', function(event) {
-        // remove event from local database
-      })
       .on('error', console.error)
   }
 
   updateEvidence = async (disputeID, party, evidence) => {
-    const disputes = this.state.disputes.sort(function(a, b) {
+    const { disputes } = this.state
+
+    const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
 
-    disputes[disputeID].evidences[party] =
-      disputes[disputeID].evidences[party] || []
+    sortedDisputes[disputeID].evidences[party] =
+      sortedDisputes[disputeID].evidences[party] || []
 
     fetch(evidence).then(response =>
       response
         .json()
-        .then(data => disputes[disputeID].evidences[party].push(data))
+        .then(data => sortedDisputes[disputeID].evidences[party].push(data))
     )
 
     console.warn('data structure')
-    console.log(disputes[disputeID])
+    console.log(sortedDisputes[disputeID])
   }
 
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
+    const { disputes } = this.state
+
     console.warn('Inside Update Dispute')
 
-    const disputes = this.state.disputes.sort(function(a, b) {
+    const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
-    console.log(disputes.slice())
+    console.log(sortedDisputes.slice())
     console.log(disputeID)
 
     arbitrableInstanceAt(arbitrableAddress)
@@ -81,17 +81,17 @@ class Dashboard extends React.Component {
           .then(response =>
             response
               .json()
-              .then(data => (disputes[disputeID].metaevidence = data))
+              .then(data => (sortedDisputes[disputeID].metaevidence = data))
           )
-          .then(data => this.setState({ disputes: disputes }))
+          .then(() => this.setState({ disputes: sortedDisputes }))
       })
 
-    console.log(this.state.disputes)
+    console.log(disputes)
     console.warn('Exit Update Dispute')
   }
 
   updateRuling = async event => {
-    const disputes = this.state.disputes
+    const { disputes } = this.state
     disputes[parseInt(event.returnValues._disputeID)].ruling =
       event.returnValues[3]
     disputes[event.returnValues._disputeID].status = await getDisputeStatus(
@@ -106,9 +106,9 @@ class Dashboard extends React.Component {
     dispute.id = disputeID
     dispute.evidences = {}
 
-    this.setState({
-      disputes: [...this.state.disputes, dispute]
-    })
+    this.setState(state => ({
+      disputes: [...state.disputes, dispute]
+    }))
 
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
@@ -168,12 +168,10 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    const { owner, arbitrationCost, disputes } = this.state
     return (
       <div>
-        <h4>
-          Owner:{' '}
-          {web3.eth.accounts[0] == this.state.owner ? 'You' : this.state.owner}
-        </h4>
+        <h4>Owner: {web3.eth.accounts[0] === owner ? 'You' : owner}</h4>
         <h4>
           Arbitrator:{' '}
           <a
@@ -190,14 +188,14 @@ class Dashboard extends React.Component {
         <form
           onSubmit={e => {
             e.preventDefault()
-            this.setArbitrationCost(this.state.arbitrationCost)
+            this.setArbitrationCost(arbitrationCost)
           }}
         >
           <label>
             Arbitration Price:{' '}
             <input
               type="text"
-              value={this.state.arbitrationCost}
+              value={arbitrationCost}
               onChange={e => {
                 this.setState({ arbitrationCost: e.target.value })
               }}
@@ -206,7 +204,7 @@ class Dashboard extends React.Component {
           </label>
         </form>
         <br />
-        <DisputeList items={this.state.disputes} />
+        <DisputeList items={disputes} />
       </div>
     )
   }

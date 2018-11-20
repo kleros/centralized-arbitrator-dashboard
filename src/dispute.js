@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import web3 from './ethereum/web3'
 import DisputeDetail from './dispute-detail'
@@ -25,54 +26,51 @@ class Dispute extends React.Component {
   }
 
   render() {
+    const { id, arbitrated, fee, status, metaevidence, evidences } = this.props
     return (
       <React.Fragment>
         <tbody>
           <tr
             className="clickable"
             data-toggle="collapse"
-            data-target={'#accordion' + this.props.id}
+            data-target={'#accordion' + id}
             aria-expanded="false"
-            aria-controls={'accordion' + this.props.id}
+            aria-controls={'accordion' + id}
           >
-            <td>{this.props.id}</td>
+            <td>{id}</td>
             <td>
               <a
-                href={
-                  'https://kovan.etherscan.io/address/' + this.props.arbitrated
-                }
+                href={'https://kovan.etherscan.io/address/' + arbitrated}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {this.props.arbitrated.substring(0, 8) + '...'}
+                {arbitrated.substring(0, 8) + '...'}
               </a>
             </td>
             <td>
-              {parseFloat(
-                web3.utils.fromWei(this.props.fee, 'ether')
-              ).toExponential()}
+              {parseFloat(web3.utils.fromWei(fee, 'ether')).toExponential()}
             </td>
             <td>
-              <b>{this.disputeStatusToString(this.props.status)}</b>
+              <b>{this.disputeStatusToString(status)}</b>
             </td>
           </tr>
         </tbody>
         <tbody>
           <tr>
             <td colSpan="4">
-              <div id={'accordion' + this.props.id} className="collapse">
+              <div id={'accordion' + id} className="collapse">
                 <DisputeDetail
-                  key={this.props.id}
-                  id={this.props.id}
-                  aliases={this.props.metaevidence.aliases}
-                  fileURI={this.props.metaevidence.fileURI}
-                  fileHash={this.props.metaevidence.fileHash}
-                  category={this.props.metaevidence.category}
-                  title={this.props.metaevidence.title}
-                  description={this.props.metaevidence.description}
-                  question={this.props.metaevidence.question}
-                  rulingOptions={this.props.metaevidence.rulingOptions}
-                  evidences={this.props.evidences}
+                  key={id}
+                  id={id}
+                  aliases={metaevidence.aliases}
+                  fileURI={metaevidence.fileURI}
+                  fileHash={metaevidence.fileHash}
+                  category={metaevidence.category}
+                  title={metaevidence.title}
+                  description={metaevidence.description}
+                  question={metaevidence.question}
+                  rulingOptions={metaevidence.rulingOptions}
+                  evidences={evidences}
                 />
               </div>
             </td>
@@ -81,6 +79,30 @@ class Dispute extends React.Component {
       </React.Fragment>
     )
   }
+}
+
+Dispute.propTypes = {
+  id: PropTypes.number.isRequired,
+  arbitrated: PropTypes.string.isRequired,
+  fee: PropTypes.string.isRequired,
+  status: PropTypes.number.isRequired,
+  metaevidence: PropTypes.shape({
+    fileURI: PropTypes.string,
+    fileHash: PropTypes.string,
+    fileTypeExtension: PropTypes.string,
+    category: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    aliases: PropTypes.shape({
+      [PropTypes.string]: PropTypes.string
+    }),
+    rulingOptions: PropTypes.shape({
+      titles: PropTypes.arrayOf(PropTypes.string).isRequired,
+      description: PropTypes.arrayOf(PropTypes.string).isRequired
+    }),
+    selfHash: PropTypes.string
+  }).isRequired,
+  evidences: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default Dispute
