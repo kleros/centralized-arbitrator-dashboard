@@ -11,29 +11,24 @@ class EvidenceList extends React.Component {
   }
 
   evidences = (name, evidences) => {
-    if (!evidences) return <Evidence name="loading" />
-    else {
-      const items = evidences.map(item => (
-        <Evidence
-          key={name}
-          name={name}
-          description={item.description}
-          fileURI={item.fileURI}
-        />
-      ))
+    const items = evidences.map(item => (
+      <Evidence
+        key={name}
+        name={name}
+        description={item.description}
+        fileURI={item.fileURI}
+      />
+    ))
 
-      return items
-    }
+    return items
   }
 
   render() {
     const { name, evidences } = this.props
-    if (!evidences) return <h1>No Evidence From {name}</h1>
+    if (!evidences) return <h4>No Evidence From {name}</h4>
 
     return (
       <div>
-        <h1>Evidences From {name}</h1>
-
         <table className="table table-hover evidence-table">
           <thead>
             <tr>

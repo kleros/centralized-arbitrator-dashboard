@@ -11,7 +11,6 @@ import {
 } from './ethereum/centralized-arbitrator'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import DisputeList from './dispute-list'
-import './dashboard.css'
 import Identicon from './identicon.js'
 
 class Dashboard extends React.Component {
@@ -203,7 +202,7 @@ class Dashboard extends React.Component {
           </div>
           <div className="col-md-6">
             <Identicon
-              title="Arbitrator"
+              title="Centralized Arbitrator"
               seed={arbitratorInstance.options.address}
               size={10}
               scale={3}
@@ -216,6 +215,7 @@ class Dashboard extends React.Component {
             </Identicon>
           </div>
         </div>
+        <hr className="secondary" />
         <form
           onSubmit={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
         >
@@ -229,7 +229,7 @@ class Dashboard extends React.Component {
             <input className="primary" type="submit" value="Change Price" />
           </label>
         </form>
-        <br />
+        <hr />
         <DisputeList items={disputes} />
       </div>
     )

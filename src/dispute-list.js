@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import Dispute from './dispute'
 
-import './dispute-list.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class DisputeList extends React.Component {

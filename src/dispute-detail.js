@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
-import './dispute-detail.css'
 import Identicon from './identicon.js'
 
 class DisputeDetail extends React.Component {
@@ -37,37 +36,37 @@ class DisputeDetail extends React.Component {
     } = this.props
 
     return (
-      <div>
-        <div className="modal-body row">
-          <div className="col-md-6">
+      <div className="container">
+        <div className="row">
+          <div className="col-md">
             <h3 className="float-left">
               <b>{'Title: ' + title}</b>
             </h3>
           </div>
-          <div className="col-md-6">
+          <div className="col-md">
             <h3 className="float-right">
               <b>{'Category: ' + category}</b>
             </h3>
           </div>
         </div>
+        <div className="row">
+          <h4 className="float-left" style={{marginLeft: 1 + 'em'}}>{description}</h4>
+        </div>
+        <div className="row">
+          <br />
+          <h4 className="col float-left">
+            <a href={fileURI} target="_blank" rel="noopener noreferrer">
+              Agreement File
+            </a>
+          </h4>
+          <h4 className="col float-right">{'File MultiHash: ' + fileHash}</h4>
+        </div>
 
-        <h4 className="float-left">{description}</h4>
-        <br />
-        <h4 className="float-left">
-          Agreement File:{' '}
-          <a href={fileURI} target="_blank" rel="noopener noreferrer">
-            {fileURI && fileURI.substring(0, 38) + '...'}
-          </a>
-        </h4>
-        <h4 className="float-right">{'File MultiHash: ' + fileHash}</h4>
-        <br />
-
-        <h4>{'Question: ' + question}</h4>
-        <div className="modal-body row">
+        <div className="row">
           {aliases &&
             Object.keys(aliases).map(address => (
               <div key={address}>
-                <div className="col-md-6">
+                <div className="col-6">
                   <Identicon
                     title="Arbitrator"
                     seed={aliases[address]}
@@ -88,44 +87,41 @@ class DisputeDetail extends React.Component {
               </div>
             ))}
         </div>
-
-        <div className="modal-body row">
-          {aliases &&
-            Object.keys(aliases).map(address => (
-              <div key={address} className="col-md-6">
-                <EvidenceList
-                  name={aliases[address]}
-                  evidences={evidences[address]}
-                />
-              </div>
-            ))}
+        <div className="row align-middle">
+          <h4 className="align-middle">{'Question: ' + question}</h4>
         </div>
-        <div className="dropdown">
-          <button
-            className="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Give Ruling
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div className="row">
+          <div className="dropdown">
             <button
-              className="dropdown-item"
-              onClick={this.handleGiveRulingButtonClick(id, 1)}
+              className="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
-              {rulingOptions &&
-                rulingOptions.titles[0] + ': ' + rulingOptions.descriptions[0]}
+              Give Ruling
             </button>
-            <button
-              className="dropdown-item"
-              onClick={this.handleGiveRulingButtonClick(id, 2)}
-            >
-              {rulingOptions &&
-                rulingOptions.titles[1] + ': ' + rulingOptions.descriptions[1]}
-            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button
+                className="dropdown-item"
+                onClick={this.handleGiveRulingButtonClick(id, 1)}
+              >
+                {rulingOptions &&
+                  rulingOptions.titles[0] +
+                    ': ' +
+                    rulingOptions.descriptions[0]}
+              </button>
+              <button
+                className="dropdown-item"
+                onClick={this.handleGiveRulingButtonClick(id, 2)}
+              >
+                {rulingOptions &&
+                  rulingOptions.titles[1] +
+                    ': ' +
+                    rulingOptions.descriptions[1]}
+              </button>
+            </div>
           </div>
         </div>
       </div>

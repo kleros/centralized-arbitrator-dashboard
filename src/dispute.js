@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import web3 from './ethereum/web3'
 import DisputeDetail from './dispute-detail'
-import './dispute.css'
 
 class Dispute extends React.Component {
   constructor(props) {
