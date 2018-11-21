@@ -73,8 +73,8 @@ class DisputeDetail extends React.Component {
             Object.keys(aliases).map(address => (
               <div key={address} className="col">
                   <Identicon
-                    title="Arbitrator"
-                    seed={aliases[address]}
+                    title={aliases[address]}
+                    seed={address}
                     size={10}
                     scale={3}
                     color="#009AFF"
@@ -92,9 +92,13 @@ class DisputeDetail extends React.Component {
             ))}
         </div>
         <div className="row">
-          <h4 className="">{'Question: ' + question}</h4>
+          <div className="col">
+            <h4 className="">{'Question: ' + question}</h4>
+          </div>
         </div>
         <div className="row">
+        <div className="col">
+
           <div className="dropdown">
             <button
               className="btn btn-secondary dropdown-toggle"
@@ -128,6 +132,7 @@ class DisputeDetail extends React.Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     )
   }
