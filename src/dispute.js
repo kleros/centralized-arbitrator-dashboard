@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import web3 from './ethereum/web3'
 import DisputeDetail from './dispute-detail'
+import './dispute.css'
 
 class Dispute extends React.Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class Dispute extends React.Component {
   render() {
     const { id, arbitrated, fee, status, metaevidence, evidences } = this.props
     return (
-      <React.Fragment>
+      <React.Fragment className="dispute">
         <tbody>
           <tr
             className="clickable"
@@ -50,14 +52,17 @@ class Dispute extends React.Component {
             <td>
               {parseFloat(web3.utils.fromWei(fee, 'ether')).toExponential()}
             </td>
-            <td>
+            <td className="primary-inverted">
               <b>{this.disputeStatusToString(status)}</b>
+            </td>
+            <td>
+              <FontAwesomeIcon icon="caret-down" />
             </td>
           </tr>
         </tbody>
         <tbody>
           <tr>
-            <td colSpan="4">
+            <td colSpan="5">
               <div id={'accordion' + id} className="collapse">
                 <DisputeDetail
                   key={id}

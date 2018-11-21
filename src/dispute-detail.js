@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
+import './dispute-detail.css'
+import Identicon from './identicon.js'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -36,32 +38,57 @@ class DisputeDetail extends React.Component {
 
     return (
       <div>
-        <h4>{'Title: ' + title}</h4>
-        <h4>{'Category: ' + category}</h4>
-        <h4>{'Description: ' + description}</h4>
+        <div className="modal-body row">
+          <div className="col-md-6">
+            <h3 className="float-left">
+              <b>{'Title: ' + title}</b>
+            </h3>
+          </div>
+          <div className="col-md-6">
+            <h3 className="float-right">
+              <b>{'Category: ' + category}</b>
+            </h3>
+          </div>
+        </div>
+
+        <h4 className="float-left">{description}</h4>
         <br />
-        <h4>
-          File URI:{' '}
+        <h4 className="float-left">
+          Agreement File:{' '}
           <a href={fileURI} target="_blank" rel="noopener noreferrer">
             {fileURI && fileURI.substring(0, 38) + '...'}
           </a>
         </h4>
-        <h4>{'File Hash: ' + fileHash}</h4>
+        <h4 className="float-right">{'File MultiHash: ' + fileHash}</h4>
         <br />
+
         <h4>{'Question: ' + question}</h4>
-        {aliases &&
-          Object.keys(aliases).map(address => (
-            <h4 key={address}>
-              {aliases[address] + ': '}{' '}
-              <a
-                href={'https://kovan.etherscan.io/address/' + address}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {address}
-              </a>
-            </h4>
-          ))}
+        <div className="modal-body row">
+          {aliases &&
+            Object.keys(aliases).map(address => (
+              <div key={address}>
+                <div className="col-md-6">
+                  <Identicon
+                    title="Arbitrator"
+                    seed={aliases[address]}
+                    size={10}
+                    scale={3}
+                    color="#009AFF"
+                    bgColor="#4004A3"
+                    spotColor="white"
+                    className="identicon"
+                  >
+                    {address}
+                  </Identicon>
+                  <EvidenceList
+                    name={aliases[address]}
+                    evidences={evidences[address]}
+                  />
+                </div>
+              </div>
+            ))}
+        </div>
+
         <div className="modal-body row">
           {aliases &&
             Object.keys(aliases).map(address => (

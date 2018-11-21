@@ -11,6 +11,8 @@ import {
 } from './ethereum/centralized-arbitrator'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import DisputeList from './dispute-list'
+import './dashboard.css'
+import Identicon from './identicon.js'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -183,21 +185,37 @@ class Dashboard extends React.Component {
   render() {
     const { owner, arbitrationCost, disputes } = this.state
     return (
-      <div>
-        <h4>Owner: {web3.eth.accounts[0] === owner ? 'You' : owner}</h4>
-        <h4>
-          Arbitrator:{' '}
-          <a
-            href={
-              'https://kovan.etherscan.io/address/' +
-              arbitratorInstance.options.address
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {arbitratorInstance.options.address}
-          </a>
-        </h4>
+      <div className="">
+        <div className="modal-body row">
+          <div className="col-md-6">
+            <Identicon
+              title="Owner"
+              seed={owner}
+              size={10}
+              scale={3}
+              color="#009AFF"
+              bgColor="#4004A3"
+              spotColor="white"
+              className="identicon"
+            >
+              {owner}
+            </Identicon>
+          </div>
+          <div className="col-md-6">
+            <Identicon
+              title="Arbitrator"
+              seed={arbitratorInstance.options.address}
+              size={10}
+              scale={3}
+              color="#009AFF"
+              bgColor="#4004A3"
+              spotColor="white"
+              className="identicon"
+            >
+              {arbitratorInstance.options.address}
+            </Identicon>
+          </div>
+        </div>
         <form
           onSubmit={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
         >
@@ -208,7 +226,7 @@ class Dashboard extends React.Component {
               value={arbitrationCost}
               onChange={this.handleArbitrationPriceChange()}
             />
-            <input type="submit" value="Change Price" />
+            <input className="primary" type="submit" value="Change Price" />
           </label>
         </form>
         <br />

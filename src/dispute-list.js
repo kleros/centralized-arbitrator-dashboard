@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 
 import Dispute from './dispute'
 
+import './dispute-list.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 class DisputeList extends React.Component {
   disputes = items =>
     items
@@ -32,15 +35,20 @@ class DisputeList extends React.Component {
 
     return (
       <div>
-        <h1>Disputes That Await Your Arbitration</h1>
+        <h1>
+          <b>Disputes That Await Your Arbitration</b>
+        </h1>
 
         <table className="table table-hover" id="disputes">
           <thead>
-            <tr>
+            <tr className="secondary">
               <th>ID</th>
               <th>Arbitrable</th>
               <th>Fee (Ether)</th>
               <th>Status</th>
+              <th>
+                <FontAwesomeIcon icon="gavel" />
+              </th>
             </tr>
           </thead>
 

@@ -8,14 +8,15 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+	font-family: Roboto;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #4a4a4a;
 }
 
 .App-link {
@@ -32,9 +33,23 @@
 }
 
 .evidence-table {
-  color: #282c34;
+  background-color: white;
 }
 
 .clickable {
     cursor: pointer;
+}
+
+.primary {
+	background-color: #009AFF;
+	color: white;
+}
+
+.primary-inverted {
+	color: #009AFF;
+}
+
+.secondary {
+	background-color: #4004A3;
+	color: white;
 }
