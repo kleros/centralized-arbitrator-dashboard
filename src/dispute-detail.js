@@ -51,9 +51,7 @@ class DisputeDetail extends React.Component {
         </div>
         <div className="row">
           <div className="col">
-            <h4 className="">
-              {description}
-            </h4>
+            <h4 className="">{description}</h4>
           </div>
         </div>
 
@@ -65,8 +63,8 @@ class DisputeDetail extends React.Component {
               </a>
             </h4>
           </div>
-          </div>
-          <div className="row">
+        </div>
+        <div className="row">
           <div className="col">
             <span className="">{'File MultiHash: ' + fileHash}</span>
           </div>
