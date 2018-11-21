@@ -7,6 +7,10 @@
   height: 40vmin;
 }
 
+.container {
+  justify-content: center;
+}
+
 .App-header {
   background-color: white;
 	font-family: Roboto;

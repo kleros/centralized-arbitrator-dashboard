@@ -38,35 +38,40 @@ class DisputeDetail extends React.Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-md">
+          <div className="col">
             <h3 className="float-left">
               <b>{'Title: ' + title}</b>
             </h3>
           </div>
-          <div className="col-md">
+          <div className="col">
             <h3 className="float-right">
               <b>{'Category: ' + category}</b>
             </h3>
           </div>
         </div>
         <div className="row">
-          <h4 className="float-left" style={{marginLeft: 1 + 'em'}}>{description}</h4>
-        </div>
-        <div className="row">
-          <br />
-          <h4 className="col float-left">
-            <a href={fileURI} target="_blank" rel="noopener noreferrer">
-              Agreement File
-            </a>
-          </h4>
-          <h4 className="col float-right">{'File MultiHash: ' + fileHash}</h4>
+          <div className="col">
+            <h4 className="float-left" style={{marginLeft: 1 + 'em'}}>{description}</h4>
+          </div>
         </div>
 
         <div className="row">
+          <div className="col">
+            <h4 className="float-left">
+              <a href={fileURI} target="_blank" rel="noopener noreferrer">
+                Agreement File
+              </a>
+            </h4>
+          </div>
+          <div className="col">
+            <h4 className="float-right">{'File MultiHash: ' + fileHash}</h4>
+          </div>
+        </div>
+        <hr />
+        <div className="row">
           {aliases &&
             Object.keys(aliases).map(address => (
-              <div key={address}>
-                <div className="col-6">
+              <div key={address} className="col">
                   <Identicon
                     title="Arbitrator"
                     seed={aliases[address]}
@@ -84,11 +89,10 @@ class DisputeDetail extends React.Component {
                     evidences={evidences[address]}
                   />
                 </div>
-              </div>
             ))}
         </div>
-        <div className="row align-middle">
-          <h4 className="align-middle">{'Question: ' + question}</h4>
+        <div className="row">
+          <h4 className="">{'Question: ' + question}</h4>
         </div>
         <div className="row">
           <div className="dropdown">
