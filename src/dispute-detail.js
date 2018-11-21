@@ -51,7 +51,7 @@ class DisputeDetail extends React.Component {
         </div>
         <div className="row">
           <div className="col">
-            <h4 className="float-left" style={{ marginLeft: 1 + 'em' }}>
+            <h4 className="">
               {description}
             </h4>
           </div>
@@ -59,14 +59,16 @@ class DisputeDetail extends React.Component {
 
         <div className="row">
           <div className="col">
-            <h4 className="float-left">
+            <h4 className="">
               <a href={fileURI} target="_blank" rel="noopener noreferrer">
                 Agreement File
               </a>
             </h4>
           </div>
+          </div>
+          <div className="row">
           <div className="col">
-            <h4 className="float-right">{'File MultiHash: ' + fileHash}</h4>
+            <span className="">{'File MultiHash: ' + fileHash}</span>
           </div>
         </div>
         <hr />
@@ -102,7 +104,7 @@ class DisputeDetail extends React.Component {
           <div className="col">
             <div className="dropdown">
               <button
-                className="btn btn-secondary dropdown-toggle"
+                className="btn btn-secondary dropdown-toggle primary"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
