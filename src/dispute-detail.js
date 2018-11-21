@@ -51,7 +51,9 @@ class DisputeDetail extends React.Component {
         </div>
         <div className="row">
           <div className="col">
-            <h4 className="float-left" style={{marginLeft: 1 + 'em'}}>{description}</h4>
+            <h4 className="float-left" style={{ marginLeft: 1 + 'em' }}>
+              {description}
+            </h4>
           </div>
         </div>
 
@@ -72,23 +74,23 @@ class DisputeDetail extends React.Component {
           {aliases &&
             Object.keys(aliases).map(address => (
               <div key={address} className="col">
-                  <Identicon
-                    title={aliases[address]}
-                    seed={address}
-                    size={10}
-                    scale={3}
-                    color="#009AFF"
-                    bgColor="#4004A3"
-                    spotColor="white"
-                    className="identicon"
-                  >
-                    {address}
-                  </Identicon>
-                  <EvidenceList
-                    name={aliases[address]}
-                    evidences={evidences[address]}
-                  />
-                </div>
+                <Identicon
+                  title={aliases[address]}
+                  seed={address}
+                  size={10}
+                  scale={3}
+                  color="#009AFF"
+                  bgColor="#4004A3"
+                  spotColor="white"
+                  className="identicon"
+                >
+                  {address}
+                </Identicon>
+                <EvidenceList
+                  name={aliases[address]}
+                  evidences={evidences[address]}
+                />
+              </div>
             ))}
         </div>
         <div className="row">
@@ -97,42 +99,44 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <div className="row">
-        <div className="col">
-
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Give Ruling
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div className="col">
+            <div className="dropdown">
               <button
-                className="dropdown-item"
-                onClick={this.handleGiveRulingButtonClick(id, 1)}
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
               >
-                {rulingOptions &&
-                  rulingOptions.titles[0] +
-                    ': ' +
-                    rulingOptions.descriptions[0]}
+                Give Ruling
               </button>
-              <button
-                className="dropdown-item"
-                onClick={this.handleGiveRulingButtonClick(id, 2)}
+              <div
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
               >
-                {rulingOptions &&
-                  rulingOptions.titles[1] +
-                    ': ' +
-                    rulingOptions.descriptions[1]}
-              </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.handleGiveRulingButtonClick(id, 1)}
+                >
+                  {rulingOptions &&
+                    rulingOptions.titles[0] +
+                      ': ' +
+                      rulingOptions.descriptions[0]}
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.handleGiveRulingButtonClick(id, 2)}
+                >
+                  {rulingOptions &&
+                    rulingOptions.titles[1] +
+                      ': ' +
+                      rulingOptions.descriptions[1]}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     )
   }
