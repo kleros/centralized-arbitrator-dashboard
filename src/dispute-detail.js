@@ -49,12 +49,13 @@ class DisputeDetail extends React.Component {
             </h3>
           </div>
         </div>
+        <br/>
         <div className="row">
           <div className="col">
             <h4 className="">{description}</h4>
           </div>
         </div>
-
+        <br />
         <div className="row">
           <div className="col">
             <h4 className="">
@@ -66,10 +67,11 @@ class DisputeDetail extends React.Component {
         </div>
         <div className="row">
           <div className="col">
-            <span className="">{'File MultiHash: ' + fileHash}</span>
+            <sub>{fileHash}</sub>
           </div>
         </div>
         <hr />
+        <br />
         <div className="row">
           {aliases &&
             Object.keys(aliases).map(address => (
@@ -93,9 +95,11 @@ class DisputeDetail extends React.Component {
               </div>
             ))}
         </div>
+        <hr />
+        <br />
         <div className="row">
           <div className="col">
-            <h4 className="">{'Question: ' + question}</h4>
+            <h4 className="">{question}</h4>
           </div>
         </div>
         <div className="row">
