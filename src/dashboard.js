@@ -51,6 +51,9 @@ class Dashboard extends React.Component {
     fetch(evidence).then(response =>
       response
         .json()
+        .catch(function() {
+          console.log("error")
+        })
         .then(data => sortedDisputes[disputeID].evidences[party].push(data))
     )
 
@@ -82,6 +85,9 @@ class Dashboard extends React.Component {
           .then(response =>
             response
               .json()
+              .catch(function() {
+                console.log("error")
+              })
               .then(data => (sortedDisputes[disputeID].metaevidence = data))
           )
           .then(() => this.setState({ disputes: sortedDisputes }))
