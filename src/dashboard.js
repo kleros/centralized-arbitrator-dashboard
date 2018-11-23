@@ -1,4 +1,5 @@
 import React from 'react'
+import {RateLimiter} from 'limiter'
 
 import web3 from './ethereum/web3'
 import {
@@ -11,6 +12,7 @@ import {
 } from './ethereum/centralized-arbitrator'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import DisputeList from './dispute-list'
+import ContractSelector from './contract-selector'
 import Identicon from './identicon.js'
 
 class Dashboard extends React.Component {
@@ -20,24 +22,35 @@ class Dashboard extends React.Component {
       owner: '',
       arbitrationCost: '',
       disputes: [],
-      contractAddresses: []
+      contractAddresses: [],
+      selectedAddress: '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913'
     }
+
   }
   async componentDidMount() {
     console.warn("FETCH")
-    fetch('http://api.etherscan.io/api?module=account&action=txlist&address=0x00B5ADe4ac1fE9cCc08Addc2C10070642335117F&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV').then(response =>
-      response
-        .json()
-        .then(data => {console.log((data.result).filter(({to}) => to === '').map(item => item.contractAddress))})
-        
-    )
+    let limiter = new RateLimiter(1, 300);
+
+    fetch('http://api.etherscan.io/api?module=account&action=txlist&address=0x00B5ADe4ac1fE9cCc08Addc2C10070642335117F&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV')
+    .then(response => response.json())
+    .then(data => (data.result).filter(({to}) => to === '').map(item => item.contractAddress))
+    .then(addresses =>
+      addresses.map(address => (limiter.removeTokens(1, async () => await(
+        fetch('https://api.etherscan.io/api?module=contract&action=getsourcecode&address=' + address + '&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV').then(response => response.json())
+        .then(data =>  { if(data.result[0].ContractName == "Kleros")
+              this.setState(state => ({
+              contractAddresses: [...state.contractAddresses, address]
+            }));}
+      ))
+    ))))
 
 
-    const owner = await getOwner()
-    const arbitrationCost = await getArbitrationCost('')
+
+    const owner = await getOwner(arbitratorInstance(this.state.selectedAddress))
+    const arbitrationCost = await getArbitrationCost(arbitratorInstance(this.state.selectedAddress) ,'')
     this.setState({ owner, arbitrationCost })
 
-    arbitratorInstance.events
+    arbitratorInstance(this.state.selectedAddress).events
       .DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
         this.addDispute(
@@ -47,6 +60,8 @@ class Dashboard extends React.Component {
       })
       .on('error', console.error)
   }
+
+
 
   updateEvidence = async (disputeID, party, evidence) => {
     const { disputes } = this.state
@@ -109,7 +124,7 @@ class Dashboard extends React.Component {
   }
 
   addDispute = async (disputeID, arbitrableAddress) => {
-    const dispute = await getDispute(disputeID)
+    const dispute = await getDispute(arbitratorInstance(this.state.selectedAddress), disputeID)
     // dispute.key = disputeID
     dispute.id = disputeID
     dispute.evidences = {}
@@ -121,7 +136,7 @@ class Dashboard extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
         filter: {
-          _arbitrator: arbitratorInstance.options.address,
+          _arbitrator: this.state.selectedAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -138,7 +153,7 @@ class Dashboard extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Evidence({
         filter: {
-          _arbitrator: arbitratorInstance.options.address,
+          _arbitrator: this.state.selectedAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -155,7 +170,7 @@ class Dashboard extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Ruling({
         filter: {
-          _arbitrator: arbitratorInstance.options.address,
+          _arbitrator: this.state.selectedAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -169,7 +184,7 @@ class Dashboard extends React.Component {
   setArbitrationCost = async newCost => {
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(newCost)
-    const arbitrationCost = await getArbitrationCost('')
+    const arbitrationCost = await getArbitrationCost(arbitratorInstance(this.state.selectedAddress), '')
     this.setState({ arbitrationCost })
   }
 
@@ -177,7 +192,7 @@ class Dashboard extends React.Component {
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(newCost)
-    const arbitrationCost = await getArbitrationCost('')
+    const arbitrationCost = await getArbitrationCost(arbitratorInstance(this.state.selectedAddress), '')
     this.setState({ arbitrationCost })
   }
 
@@ -190,36 +205,36 @@ class Dashboard extends React.Component {
     const { owner, arbitrationCost, disputes } = this.state
     return (
       <div className="">
-        <div className="modal-body row">
-          <div className="col-md-6">
-            <Identicon
-              title="Owner"
-              seed={owner}
-              size={10}
-              scale={3}
-              color="#009AFF"
-              bgColor="#4004A3"
-              spotColor="white"
-              className="identicon"
-            >
-              {owner}
-            </Identicon>
-          </div>
-          <div className="col-md-6">
-            <Identicon
-              title="Centralized Arbitrator"
-              seed={arbitratorInstance.options.address}
-              size={10}
-              scale={3}
-              color="#009AFF"
-              bgColor="#4004A3"
-              spotColor="white"
-              className="identicon"
-            >
-              {arbitratorInstance.options.address}
-            </Identicon>
-          </div>
+      <div className="row">
+        <div className="col">
+          <Identicon
+            title="Owner"
+            seed={owner}
+            size={10}
+            scale={3}
+            color="#009AFF"
+            bgColor="#4004A3"
+            spotColor="white"
+            className="identicon"
+          >
+            {owner}
+          </Identicon>
         </div>
+        <div className="col">
+          <Identicon
+            title="Centralized Arbitrator"
+            seed={this.state.selectedAddress}
+            size={10}
+            scale={3}
+            color="#009AFF"
+            bgColor="#4004A3"
+            spotColor="white"
+            className="identicon"
+          >
+            {arbitratorInstance(this.state.selectedAddress)}
+          </Identicon>
+        </div>
+      </div>
         <hr className="secondary" />
         <form
           onSubmit={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}

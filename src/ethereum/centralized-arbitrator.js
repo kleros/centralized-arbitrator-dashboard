@@ -2,27 +2,27 @@ import centralizedArbitrator from 'kleros-interaction/build/contracts/Centralize
 
 import web3 from './web3'
 
-export const arbitratorInstance = new web3.eth.Contract(
+export const arbitratorInstance = address => new web3.eth.Contract(
   centralizedArbitrator.abi,
-  '0x0390a40087Ce12d5603659cd1e9d78Cb715b7913',
+  address,
   { from: '0x93814d65E91850FE137A23317e2708baD04F0867', gasPrice: 20000000000 } // TODO Refactor hardcoded from address
 )
 
-export const getOwner = async () => arbitratorInstance.methods.owner().call()
+export const getOwner = async (arbitratorInstance) => arbitratorInstance.methods.owner().call()
 
-export const getArbitrationCost = async extraData =>
+export const getArbitrationCost = async (arbitratorInstance, extraData) =>
   arbitratorInstance.methods
     .arbitrationCost(web3.utils.utf8ToHex(extraData))
     .call()
 
-export const setArbitrationPrice = async arbitrationPrice =>
+export const setArbitrationPrice = async (arbitratorInstance, arbitrationPrice) =>
   arbitratorInstance.methods.setArbitrationPrice(arbitrationPrice).send()
 
-export const getDispute = async index =>
+export const getDispute = async (arbitratorInstance, index) =>
   arbitratorInstance.methods.disputes(index).call()
 
-export const getDisputeStatus = async index =>
+export const getDisputeStatus = async (arbitratorInstance, index) =>
   arbitratorInstance.methods.disputeStatus(index).call()
 
-export const giveRuling = async (disputeID, ruling) =>
+export const giveRuling = async (arbitratorInstance, disputeID, ruling) =>
   arbitratorInstance.methods.giveRuling(disputeID, ruling).send()
