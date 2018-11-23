@@ -1,5 +1,5 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
@@ -46,7 +46,7 @@ class DisputeDetail extends React.Component {
             </h3>
           </div>
         </div>
-        <br/>
+        <br />
         <div className="row">
           <div className="col">
             <h4 className="">{description}</h4>

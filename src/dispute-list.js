@@ -1,9 +1,8 @@
-import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 import Dispute from './dispute'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class DisputeList extends React.Component {
   disputes = items =>
@@ -12,20 +11,18 @@ class DisputeList extends React.Component {
       .sort(function(a, b) {
         return a.id - b.id
       })
-      .map(item => {
-        return (
-          <Dispute
-            key={item.id}
-            id={item.id}
-            arbitrated={item.arbitrated}
-            choices={item.choices}
-            fee={item.fee}
-            status={item.status || '0'}
-            metaevidence={item.metaevidence || 'NO META EVIDENCE'}
-            evidences={item.evidences}
-          />
-        )
-      })
+      .map(item => (
+        <Dispute
+          key={item.id}
+          id={item.id}
+          arbitrated={item.arbitrated}
+          choices={item.choices}
+          fee={item.fee}
+          status={item.status || '0'}
+          metaevidence={item.metaevidence || 'NO META EVIDENCE'}
+          evidences={item.evidences}
+        />
+      ))
 
   render() {
     const { items } = this.props

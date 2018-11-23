@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import Blockies from 'react-blockies'
-import PropTypes from 'prop-types'
 
 const Identicon = ({
   title,
@@ -29,7 +29,6 @@ const Identicon = ({
       />
     </a>
     <h4>{title}</h4>
-    <h6>{seed}</h6>
   </div>
 )
 
