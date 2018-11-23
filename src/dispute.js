@@ -8,8 +8,6 @@ import DisputeDetail from './dispute-detail'
 class Dispute extends React.Component {
   constructor(props) {
     super(props)
-    console.warn('Dispute constructor')
-    console.log(props)
   }
 
   disputeStatusToString = code => {

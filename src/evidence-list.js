@@ -6,8 +6,6 @@ import Evidence from './evidence'
 class EvidenceList extends React.Component {
   constructor(props) {
     super(props)
-    console.warn('EvidenceList constructor')
-    console.log(props)
   }
 
   evidences = (name, evidences) => {

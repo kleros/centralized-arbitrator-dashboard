@@ -19,10 +19,20 @@ class Dashboard extends React.Component {
     this.state = {
       owner: '',
       arbitrationCost: '',
-      disputes: []
+      disputes: [],
+      contractAddresses: []
     }
   }
   async componentDidMount() {
+    console.warn("FETCH")
+    fetch('http://api.etherscan.io/api?module=account&action=txlist&address=0x00B5ADe4ac1fE9cCc08Addc2C10070642335117F&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV').then(response =>
+      response
+        .json()
+        .then(data => {console.log((data.result).filter(({to}) => to === '').map(item => item.contractAddress))})
+        
+    )
+
+
     const owner = await getOwner()
     const arbitrationCost = await getArbitrationCost('')
     this.setState({ owner, arbitrationCost })
@@ -52,25 +62,20 @@ class Dashboard extends React.Component {
       response
         .json()
         .catch(function() {
-          console.log("error")
+          console.log('error')
         })
         .then(data => sortedDisputes[disputeID].evidences[party].push(data))
     )
 
-    console.warn('data structure')
-    console.log(sortedDisputes[disputeID])
   }
 
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
     const { disputes } = this.state
 
-    console.warn('Inside Update Dispute')
 
     const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
-    console.log(sortedDisputes.slice())
-    console.log(disputeID)
 
     arbitrableInstanceAt(arbitrableAddress)
       .events.MetaEvidence({
@@ -79,22 +84,18 @@ class Dashboard extends React.Component {
         toBlock: 'latest'
       })
       .on('data', event => {
-        console.warn('MetaEvidence')
-        console.log(event)
         fetch(event.returnValues._evidence)
           .then(response =>
             response
               .json()
               .catch(function() {
-                console.log("error")
+                console.log('error')
               })
               .then(data => (sortedDisputes[disputeID].metaevidence = data))
           )
           .then(() => this.setState({ disputes: sortedDisputes }))
       })
 
-    console.log(disputes)
-    console.warn('Exit Update Dispute')
   }
 
   updateRuling = async event => {
@@ -127,8 +128,6 @@ class Dashboard extends React.Component {
         toBlock: 'latest'
       })
       .on('data', event => {
-        console.warn('Calling updateDispute')
-        console.log(event)
         this.updateDispute(
           arbitrableAddress,
           event.returnValues._disputeID,

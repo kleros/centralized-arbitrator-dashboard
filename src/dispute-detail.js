@@ -8,12 +8,9 @@ import Identicon from './identicon.js'
 class DisputeDetail extends React.Component {
   constructor(props) {
     super(props)
-    console.warn('DisputeDetail constructor')
-    console.log(props)
   }
 
   cb(id, ruling) {
-    console.log('CB')
     giveRuling(id, ruling)
   }
 

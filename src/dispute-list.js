@@ -13,8 +13,6 @@ class DisputeList extends React.Component {
         return a.id - b.id
       })
       .map(item => {
-        console.warn('disputes')
-        console.log(item)
         return (
           <Dispute
             key={item.id}
