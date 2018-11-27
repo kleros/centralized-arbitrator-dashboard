@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
     const limiter = new RateLimiter(1, 300)
 
     fetch(
-      'http://api.etherscan.io/api?module=account&action=txlist&address=0x00B5ADe4ac1fE9cCc08Addc2C10070642335117F&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV'
+      'http://api-kovan.etherscan.io/api?module=account&action=txlist&address=0x93814d65E91850FE137A23317e2708baD04F0867&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV'
     )
       .then(response => response.json())
       .then(data =>
@@ -45,13 +45,13 @@ class Dashboard extends React.Component {
             1,
             async () =>
               await fetch(
-                'https://api.etherscan.io/api?module=contract&action=getsourcecode&address=' +
+                'https://api-kovan.etherscan.io/api?module=contract&action=getsourcecode&address=' +
                   address +
                   '&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV'
               )
                 .then(response => response.json())
                 .then(data => {
-                  if (data.result[0].ContractName == 'Kleros')
+                  if (data.result[0].ContractName == 'CentralizedArbitrator')
                     this.setState(state => ({
                       contractAddresses: [...state.contractAddresses, address]
                     }))
