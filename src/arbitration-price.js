@@ -18,23 +18,14 @@ class ArbitrationPrice extends React.Component {
     }
   }
 
-  async componentDidMount() {
+
+  async componentDidMount(){
     this.setState({
       arbitrationCost: await getArbitrationCost(
         arbitratorInstance(this.props.contractAddress),
         ''
       )
     })
-  }
-
-   static getDerivedStateFromProps (nextProps, prevState) {
-    console.log("prop change")
-    if(nextProps.selectedAddress != prevState.selectedAddress)
-    {
-      return {
-        selectedAddress: nextProps.selectedAddress
-      };
-    }
   }
 
   async componentDidUpdate(prevProps) {
