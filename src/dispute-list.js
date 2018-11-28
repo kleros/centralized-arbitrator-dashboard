@@ -19,10 +19,17 @@ class DisputeList extends React.Component {
     this.state = {
       disputes: []
     }
+    this.subscriptions = {
+      disputeCreation: undefined,
+      dispute: undefined,
+      metaevidence: undefined,
+      ruling: undefined
+    }
   }
 
+
   componentDidMount(){
-    arbitratorInstance(this.props.contractAddress)
+    this.subscriptions.disputeCreation = arbitratorInstance(this.props.contractAddress)
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
         this.addDispute(
@@ -31,10 +38,24 @@ class DisputeList extends React.Component {
         )
       })
       .on('error', console.error)
+
   }
 
-  componentDidUpdate(){
-
+  componentDidUpdate(prevProps){
+    if(this.props.contractAddress != prevProps.contractAddress)
+    {
+      this.subscriptions = {}
+      this.state.disputes = []
+      this.subscriptions.disputeCreation = arbitratorInstance(this.props.contractAddress)
+        .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
+        .on('data', event => {
+          this.addDispute(
+            event.returnValues._disputeID,
+            event.returnValues._arbitrable
+          )
+        })
+        .on('error', console.error)
+    }
   }
 
   updateEvidence = async (disputeID, party, evidence) => {
@@ -67,7 +88,8 @@ class DisputeList extends React.Component {
     console.log(sortedDisputes)
     console.log("disputeID")
     console.log(disputeID)
-    
+
+    this.subscriptions.metaevidence =
     arbitrableInstanceAt(arbitrableAddress)
       .events.MetaEvidence({
         filter: { _metaEvidenceID: metaEvidenceID },
@@ -86,6 +108,8 @@ class DisputeList extends React.Component {
           )
           .then(() => this.setState({ disputes: sortedDisputes }))
       })
+
+
   }
 
   updateRuling = async event => {
@@ -111,6 +135,7 @@ class DisputeList extends React.Component {
       disputes: [...state.disputes, dispute]
     }))
 
+    this.subscriptions.dispute =
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
         filter: {
@@ -128,7 +153,7 @@ class DisputeList extends React.Component {
         )
       })
 
-    await arbitrableInstanceAt(arbitrableAddress)
+    this.subscriptions.evidence = await arbitrableInstanceAt(arbitrableAddress)
       .events.Evidence({
         filter: {
           _arbitrator: this.props.contractAddress,
@@ -145,7 +170,7 @@ class DisputeList extends React.Component {
         )
       })
 
-    await arbitrableInstanceAt(arbitrableAddress)
+    this.subscriptions.ruling = await arbitrableInstanceAt(arbitrableAddress)
       .events.Ruling({
         filter: {
           _arbitrator: this.props.contractAddress,
