@@ -8,7 +8,7 @@ import {
   arbitratorInstance,
   getOwner,
   getDispute,
-  getDisputeStatus,
+  getDisputeStatus
 } from './ethereum/centralized-arbitrator'
 import web3 from './ethereum/web3'
 import Identicon from './identicon.js'
@@ -33,7 +33,7 @@ class Dashboard extends React.Component {
         const limiter = new RateLimiter(1, 250)
 
         fetch(
-          'http://api-kovan.etherscan.io/api?module=account&action=txlist&address=' +
+          'https://api-kovan.etherscan.io/api?module=account&action=txlist&address=' +
             accounts[0] +
             '&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV'
         )
@@ -79,7 +79,6 @@ class Dashboard extends React.Component {
   async componentDidUpdate() {
     console.log(this.state.contractAddresses)
   }
-
 
   owner = () => getOwner(arbitratorInstance(this.state.selectedAddress))
 
