@@ -1,15 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import Dispute from './dispute'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
   arbitratorInstance,
-  getOwner,
   getArbitrationCost,
   getDispute,
   getDisputeStatus,
+  getOwner,
   setArbitrationPrice
 } from './ethereum/centralized-arbitrator'
 
@@ -27,9 +26,10 @@ class DisputeList extends React.Component {
     }
   }
 
-
-  componentDidMount(){
-    this.subscriptions.disputeCreation = arbitratorInstance(this.props.contractAddress)
+  componentDidMount() {
+    this.subscriptions.disputeCreation = arbitratorInstance(
+      this.props.contractAddress
+    )
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
         this.addDispute(
@@ -38,15 +38,15 @@ class DisputeList extends React.Component {
         )
       })
       .on('error', console.error)
-
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.contractAddress != prevProps.contractAddress)
-    {
+  componentDidUpdate(prevProps) {
+    if (this.props.contractAddress != prevProps.contractAddress) {
       this.subscriptions = {}
       this.state.disputes = []
-      this.subscriptions.disputeCreation = arbitratorInstance(this.props.contractAddress)
+      this.subscriptions.disputeCreation = arbitratorInstance(
+        this.props.contractAddress
+      )
         .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
         .on('data', event => {
           this.addDispute(
@@ -84,13 +84,12 @@ class DisputeList extends React.Component {
     const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
-    console.log("sortedDisputes")
+    console.log('sortedDisputes')
     console.log(sortedDisputes)
-    console.log("disputeID")
+    console.log('disputeID')
     console.log(disputeID)
 
-    this.subscriptions.metaevidence =
-    arbitrableInstanceAt(arbitrableAddress)
+    this.subscriptions.metaevidence = arbitrableInstanceAt(arbitrableAddress)
       .events.MetaEvidence({
         filter: { _metaEvidenceID: metaEvidenceID },
         fromBlock: 0,
@@ -108,8 +107,6 @@ class DisputeList extends React.Component {
           )
           .then(() => this.setState({ disputes: sortedDisputes }))
       })
-
-
   }
 
   updateRuling = async event => {
@@ -135,8 +132,7 @@ class DisputeList extends React.Component {
       disputes: [...state.disputes, dispute]
     }))
 
-    this.subscriptions.dispute =
-    await arbitrableInstanceAt(arbitrableAddress)
+    this.subscriptions.dispute = await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
         filter: {
           _arbitrator: this.props.contractAddress,
@@ -192,19 +188,18 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
-          key={item.id}
-          id={item.id}
           arbitrated={item.arbitrated}
           choices={item.choices}
-          fee={item.fee}
-          status={item.status || '0'}
-          metaevidence={item.metaevidence || 'NO META EVIDENCE'}
           evidences={item.evidences}
+          fee={item.fee}
+          id={item.id}
+          key={item.id}
+          metaevidence={item.metaevidence || 'NO META EVIDENCE'}
+          status={item.status || '0'}
         />
       ))
 
   render() {
-
     return (
       <div>
         <h1>

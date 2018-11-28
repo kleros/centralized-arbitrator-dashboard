@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import Evidence from './evidence'
 
 class EvidenceList extends React.Component {
@@ -11,10 +10,10 @@ class EvidenceList extends React.Component {
   evidences = (name, evidences) => {
     const items = evidences.map(item => (
       <Evidence
-        key={name}
-        name={name}
         description={item && item.description}
         fileURI={item && item.fileURI}
+        key={name}
+        name={name}
       />
     ))
 

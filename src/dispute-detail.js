@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
 import Identicon from './identicon.js'
@@ -37,12 +36,12 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h3 className="float-left">
-              <b>{'Title: ' + title}</b>
+              <b>{`Title: ${title}`}</b>
             </h3>
           </div>
           <div className="col">
             <h3 className="float-right">
-              <b>{'Category: ' + category}</b>
+              <b>{`Category: ${category}`}</b>
             </h3>
           </div>
         </div>
@@ -56,7 +55,7 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h4 className="">
-              <a href={fileURI} target="_blank" rel="noopener noreferrer">
+              <a href={fileURI} rel="noopener noreferrer" target="_blank">
                 Agreement File
               </a>
             </h4>
@@ -72,22 +71,22 @@ class DisputeDetail extends React.Component {
         <div className="row">
           {aliases &&
             Object.keys(aliases).map(address => (
-              <div key={address} className="col">
+              <div className="col" key={address}>
                 <Identicon
-                  title={aliases[address]}
+                  bgColor="#4004A3"
+                  className="identicon"
+                  color="#009AFF"
+                  scale={3}
                   seed={address}
                   size={10}
-                  scale={3}
-                  color="#009AFF"
-                  bgColor="#4004A3"
                   spotColor="white"
-                  className="identicon"
+                  title={aliases[address]}
                 >
                   {address}
                 </Identicon>
                 <EvidenceList
-                  name={aliases[address]}
                   evidences={evidences[address]}
+                  name={aliases[address]}
                 />
               </div>
             ))}
@@ -103,36 +102,36 @@ class DisputeDetail extends React.Component {
           <div className="col">
             <div className="dropdown">
               <button
-                className="btn btn-secondary dropdown-toggle primary"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
                 aria-expanded="false"
+                aria-haspopup="true"
+                className="btn btn-secondary dropdown-toggle primary"
+                data-toggle="dropdown"
+                id="dropdownMenuButton"
+                type="button"
               >
                 Give Ruling
               </button>
               <div
-                className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton"
+                className="dropdown-menu"
               >
                 <button
                   className="dropdown-item"
                   onClick={this.handleGiveRulingButtonClick(id, 1)}
                 >
                   {rulingOptions &&
-                    rulingOptions.titles[0] +
-                      ': ' +
-                      rulingOptions.descriptions[0]}
+                    `${rulingOptions.titles[0]}: ${
+                      rulingOptions.descriptions[0]
+                    }`}
                 </button>
                 <button
                   className="dropdown-item"
                   onClick={this.handleGiveRulingButtonClick(id, 2)}
                 >
                   {rulingOptions &&
-                    rulingOptions.titles[1] +
-                      ': ' +
-                      rulingOptions.descriptions[1]}
+                    `${rulingOptions.titles[1]}: ${
+                      rulingOptions.descriptions[1]
+                    }`}
                 </button>
               </div>
             </div>

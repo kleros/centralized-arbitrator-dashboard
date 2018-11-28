@@ -1,10 +1,8 @@
 import './app.css'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faGavel, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faGavel } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-
 import Dashboard from './dashboard'
 
 library.add(faGavel)

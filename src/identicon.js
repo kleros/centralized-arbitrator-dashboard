@@ -15,17 +15,17 @@ const Identicon = ({
   <div>
     <a
       href={`https://kovan.etherscan.io/address/${seed}`}
-      target="_blank"
       rel="noopener noreferrer"
+      target="_blank"
     >
       <Blockies
+        bgColor={bgColor}
+        className={className}
+        color={color}
+        scale={scale}
         seed={seed}
         size={size}
-        scale={scale}
-        color={color}
-        bgColor={bgColor}
         spotColor={spotColor}
-        className={className}
       />
     </a>
     <h4>{title}</h4>

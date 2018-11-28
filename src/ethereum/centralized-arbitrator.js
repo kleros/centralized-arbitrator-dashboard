@@ -1,5 +1,4 @@
 import centralizedArbitrator from 'kleros-interaction/build/contracts/CentralizedArbitrator.json'
-
 import web3 from './web3'
 
 export const arbitratorInstance = address =>

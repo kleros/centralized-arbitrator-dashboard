@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import DisputeDetail from './dispute-detail'
 import web3 from './ethereum/web3'
 
@@ -20,7 +19,7 @@ class Dispute extends React.Component {
         return 'Solved'
 
       default:
-        return '' + code
+        return `${code}`
     }
   }
 
@@ -30,20 +29,20 @@ class Dispute extends React.Component {
       <React.Fragment className="dispute">
         <tbody>
           <tr
-            className="clickable"
-            data-toggle="collapse"
-            data-target={'#accordion' + id}
+            aria-controls={`accordion${id}`}
             aria-expanded="false"
-            aria-controls={'accordion' + id}
+            className="clickable"
+            data-target={`#accordion${id}`}
+            data-toggle="collapse"
           >
             <td>{id}</td>
             <td>
               <a
-                href={'https://kovan.etherscan.io/address/' + arbitrated}
-                target="_blank"
+                href={`https://kovan.etherscan.io/address/${arbitrated}`}
                 rel="noopener noreferrer"
+                target="_blank"
               >
-                {arbitrated.substring(0, 8) + '...'}
+                {`${arbitrated.substring(0, 8)}...`}
               </a>
             </td>
             <td>
@@ -60,19 +59,18 @@ class Dispute extends React.Component {
         <tbody>
           <tr>
             <td colSpan="5">
-              <div id={'accordion' + id} className="collapse">
+              <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
-                  key={id}
-                  id={id}
                   aliases={metaevidence.aliases}
-                  fileURI={metaevidence.fileURI}
-                  fileHash={metaevidence.fileHash}
                   category={metaevidence.category}
-                  title={metaevidence.title}
                   description={metaevidence.description}
+                  description={metaevidence.description}
+                  evidences={evidences}
+                  evidences={evidences}
+                  fileHash={metaevidence.fileHash}
                   question={metaevidence.question}
                   rulingOptions={metaevidence.rulingOptions}
-                  evidences={evidences}
+                  title={metaevidence.title}
                 />
               </div>
             </td>

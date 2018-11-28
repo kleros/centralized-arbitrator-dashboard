@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import {
   arbitratorInstance,
-  getOwner,
   getArbitrationCost,
   getDispute,
   getDisputeStatus,
+  getOwner,
   setArbitrationPrice
 } from './ethereum/centralized-arbitrator'
 
@@ -18,8 +17,7 @@ class ArbitrationPrice extends React.Component {
     }
   }
 
-
-  async componentDidMount(){
+  async componentDidMount() {
     this.setState({
       arbitrationCost: await getArbitrationCost(
         arbitratorInstance(this.props.contractAddress),
@@ -29,16 +27,14 @@ class ArbitrationPrice extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if(this.props.contractAddress != prevProps.contractAddress)
-    {
+    if (this.props.contractAddress != prevProps.contractAddress)
       this.setState({
         arbitrationCost: await getArbitrationCost(
           arbitratorInstance(this.props.contractAddress),
           ''
         )
       })
-    }
-}
+  }
 
   setArbitrationCost = async newCost => {
     this.setState({ arbitrationCost: 'awaiting...' })
@@ -74,9 +70,9 @@ class ArbitrationPrice extends React.Component {
         <label>
           Arbitration Price:{' '}
           <input
+            onChange={this.handleArbitrationPriceChange()}
             type="text"
             value={this.state.arbitrationCost}
-            onChange={this.handleArbitrationPriceChange()}
           />
           <input className="primary" type="submit" value="Change Price" />
         </label>

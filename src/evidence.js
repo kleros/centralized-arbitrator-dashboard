@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import EvidenceDetail from './evidence-detail'
 
 const Evidence = ({
@@ -14,15 +13,15 @@ const Evidence = ({
   <React.Fragment>
     <tbody>
       <tr
-        className="clickable"
-        data-toggle="collapse"
-        data-target={'#accordion' + id}
+        aria-controls={`accordion${id}`}
         aria-expanded="false"
-        aria-controls={'accordion' + id}
+        className="clickable"
+        data-target={`#accordion${id}`}
+        data-toggle="collapse"
       >
         <td>{name}</td>
         <td>
-          <a href={'//' + fileURI} target="_blank" rel="noopener noreferrer">
+          <a href={`//${fileURI}`} rel="noopener noreferrer" target="_blank">
             {fileURI}
           </a>
         </td>
@@ -31,7 +30,7 @@ const Evidence = ({
     <tbody>
       <tr>
         <td colSpan="5">
-          <div id={'accordion' + id} className="collapse">
+          <div className="collapse" id={`accordion${id}`}>
             <EvidenceDetail
               description={description}
               fileTypeExtension={fileTypeExtension}
