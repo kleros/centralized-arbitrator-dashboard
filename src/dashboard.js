@@ -27,11 +27,8 @@ class Dashboard extends React.Component {
   }
 
   async componentDidMount() {
-    // Check if Web3 has been injected by the browser (MetaMask).
-    // (since 'web3' is global, we need to use 'window')
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
-        // Do whatever you need to.
         this.setState({ wallet: accounts[0] })
 
         console.warn('FETCH')
@@ -203,12 +200,12 @@ class Dashboard extends React.Component {
       })
   }
 
-
   owner = () => getOwner(arbitratorInstance(this.state.selectedAddress))
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
-      <button key={address}
+      <button
+        key={address}
         className="dropdown-item"
         onClick={e => this.setState({ selectedAddress: e.target.innerHTML })}
       >
@@ -218,6 +215,7 @@ class Dashboard extends React.Component {
 
   render() {
     console.log('RENDERING' + new Date().getTime())
+    console.log(this.state.selectedAddress)
     const {
       contractAddresses,
       selectedAddress,
@@ -256,25 +254,34 @@ class Dashboard extends React.Component {
                 aria-labelledby="dropdownMenuButton"
               >
                 {this.centralizedArbitratorButtons(contractAddresses)}
+                <hr />
+                <input
+                  className="dropdown-item"
+                  placeholder="Enter a contract address manually"
+                  onKeyUp={e =>
+                    e.keyCode == 13 &&
+                    this.setState({ selectedAddress: e.target.value })
+                  }
+                />
               </div>
             </div>
           </div>
         </div>
         <hr className="secondary" />
-        {selectedAddress &&
+        {selectedAddress && (
           <div>
-          <div className="row">
-            <div className="col">
-              <ArbitrationPrice contractAddress={selectedAddress} />
+            <div className="row">
+              <div className="col">
+                <ArbitrationPrice contractAddress={selectedAddress} />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <DisputeList contractAddress={selectedAddress} />
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col">
-              <DisputeList contractAddress={selectedAddress} />
-            </div>
-          </div>
-          </div>
-        }
+        )}
       </div>
     )
   }
