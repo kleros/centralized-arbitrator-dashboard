@@ -19,7 +19,6 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      disputes: [],
       contractAddresses: [],
       selectedAddress: undefined,
       owner: '',
@@ -204,31 +203,6 @@ class Dashboard extends React.Component {
       })
   }
 
-  setArbitrationCost = async newCost => {
-    this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(newCost)
-    const arbitrationCost = await getArbitrationCost(
-      arbitratorInstance(this.state.selectedAddress),
-      ''
-    )
-    this.setState({ arbitrationCost })
-  }
-
-  handleSetArbitrationPriceButtonClick = newCost => async e => {
-    e.preventDefault()
-    this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(newCost)
-    const arbitrationCost = await getArbitrationCost(
-      arbitratorInstance(this.state.selectedAddress),
-      ''
-    )
-    this.setState({ arbitrationCost })
-  }
-
-  handleArbitrationPriceChange = () => e => {
-    console.log(e)
-    this.setState({ arbitrationCost: e.target.value })
-  }
 
   owner = () => getOwner(arbitratorInstance(this.state.selectedAddress))
 
@@ -245,7 +219,6 @@ class Dashboard extends React.Component {
   render() {
     console.log('RENDERING' + new Date().getTime())
     const {
-      disputes,
       contractAddresses,
       selectedAddress,
       owner,

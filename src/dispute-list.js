@@ -15,13 +15,15 @@ import {
 
 class DisputeList extends React.Component {
   constructor(props) {
-    console.log("DISPUTELIST")
-    console.log(props.selectedAddress)
     super(props)
     this.state = {
       disputes: []
     }
-    arbitratorInstance(props.contractAddress)
+
+  }
+
+  componentDidMount(){
+    arbitratorInstance(this.props.contractAddress)
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
         this.addDispute(
@@ -30,6 +32,10 @@ class DisputeList extends React.Component {
         )
       })
       .on('error', console.error)
+  }
+
+  componentDidUpdate(){
+    
   }
 
   updateEvidence = async (disputeID, party, evidence) => {
