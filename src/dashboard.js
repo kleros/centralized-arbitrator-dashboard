@@ -289,11 +289,18 @@ class Dashboard extends React.Component {
         </div>
         <hr className="secondary" />
         {selectedAddress &&
+          <div>
           <div className="row">
             <div className="col">
               <ArbitrationPrice contractAddress={selectedAddress} />
             </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <DisputeList contractAddress={selectedAddress} />
             </div>
+          </div>
+          </div>
         }
       </div>
     )

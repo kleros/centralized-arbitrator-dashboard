@@ -15,11 +15,13 @@ import {
 
 class DisputeList extends React.Component {
   constructor(props) {
+    console.log("DISPUTELIST")
+    console.log(props.selectedAddress)
     super(props)
     this.state = {
       disputes: []
     }
-    arbitratorInstance(props.selectedAddress)
+    arbitratorInstance(props.contractAddress)
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
         this.addDispute(
@@ -89,7 +91,7 @@ class DisputeList extends React.Component {
 
   addDispute = async (disputeID, arbitrableAddress) => {
     const dispute = await getDispute(
-      arbitratorInstance(this.state.selectedAddress),
+      arbitratorInstance(this.props.contractAddress),
       disputeID
     )
     // dispute.key = disputeID
@@ -103,7 +105,7 @@ class DisputeList extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
         filter: {
-          _arbitrator: this.state.selectedAddress,
+          _arbitrator: this.props.contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -120,7 +122,7 @@ class DisputeList extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Evidence({
         filter: {
-          _arbitrator: this.state.selectedAddress,
+          _arbitrator: this.props.contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -137,7 +139,7 @@ class DisputeList extends React.Component {
     await arbitrableInstanceAt(arbitrableAddress)
       .events.Ruling({
         filter: {
-          _arbitrator: this.state.selectedAddress,
+          _arbitrator: this.props.contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
