@@ -13,8 +13,8 @@ class EvidenceList extends React.Component {
       <Evidence
         key={name}
         name={name}
-        description={item.description}
-        fileURI={item.fileURI}
+        description={item && item.description}
+        fileURI={item && item.fileURI}
       />
     ))
 

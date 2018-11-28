@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
         this.setState({ wallet: accounts[0] })
 
         console.warn('FETCH')
-        const limiter = new RateLimiter(1, 300)
+        const limiter = new RateLimiter(1, 250)
 
         fetch(
           'http://api-kovan.etherscan.io/api?module=account&action=txlist&address=' +

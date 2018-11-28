@@ -19,7 +19,6 @@ class DisputeList extends React.Component {
     this.state = {
       disputes: []
     }
-
   }
 
   componentDidMount(){
@@ -35,7 +34,7 @@ class DisputeList extends React.Component {
   }
 
   componentDidUpdate(){
-    
+
   }
 
   updateEvidence = async (disputeID, party, evidence) => {
@@ -64,7 +63,11 @@ class DisputeList extends React.Component {
     const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
-
+    console.log("sortedDisputes")
+    console.log(sortedDisputes)
+    console.log("disputeID")
+    console.log(disputeID)
+    
     arbitrableInstanceAt(arbitrableAddress)
       .events.MetaEvidence({
         filter: { _metaEvidenceID: metaEvidenceID },
@@ -176,7 +179,6 @@ class DisputeList extends React.Component {
       ))
 
   render() {
-    const { items } = this.props
 
     return (
       <div>
