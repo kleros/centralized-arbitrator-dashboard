@@ -63,7 +63,8 @@ hr
 }
 
 .navbar{
-  margin-bottom: 30px
+  margin-bottom: 30px;
+  background-color: #1E075F;
 }
 
 .navbar-icon{
