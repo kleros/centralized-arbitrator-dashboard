@@ -25,6 +25,19 @@ class Dispute extends React.Component {
     }
   }
 
+  apiPrefix = networkType => {
+    switch (networkType) {
+      case 'main':
+      return ''
+      case 'kovan':
+      return 'kovan.'
+        break;
+      default:
+      return  ''
+
+    }
+  }
+
   render() {
     const { centralizedArbitratorInstance, id, arbitrated, fee, status, metaevidence, evidences } = this.props
     return (
@@ -40,7 +53,7 @@ class Dispute extends React.Component {
             <td>{id}</td>
             <td>
               <a
-                href={`https://kovan.etherscan.io/address/${arbitrated}`}
+                href={`https://${this.apiPrefix(this.props.networkType)}etherscan.io/address/${arbitrated}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >

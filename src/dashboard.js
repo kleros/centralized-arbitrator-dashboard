@@ -24,48 +24,65 @@ class Dashboard extends React.Component {
     }
   }
 
+  scanContracts(networkType, account){
+    const limiter = new RateLimiter(1, 250)
+    const api = {
+      mainnet: 'api.',
+      kovan: 'api-kovan.'
+    }
+    console.log(networkType)
+    const apiPrefix = (networkType === 'main') ? api.mainnet : api.kovan
+
+    fetch(
+      `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${
+        account
+      }&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+    )
+      .then(response => response.json())
+      .then(data =>
+        data.result
+          .filter(({ to }) => to === '')
+          .map(item => item.contractAddress)
+      )
+      .then(addresses =>
+        addresses.map(address =>
+          limiter.removeTokens(
+            1,
+            async () =>
+              await fetch(
+                `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+              )
+                .then(response => response.json())
+                .then(data => {
+                  if (
+                    data.result[0].ContractName == 'CentralizedArbitrator'
+                  )
+                    this.setState(state => ({
+                      contractAddresses: [
+                        ...state.contractAddresses,
+                        address
+                      ]
+                    }))
+                })
+          )
+        )
+      )
+  }
+
   async componentDidMount() {
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
         this.setState({ wallet: accounts[0] })
 
         console.warn('FETCH')
-        const limiter = new RateLimiter(1, 250)
 
-        fetch(
-          `https://api-kovan.etherscan.io/api?module=account&action=txlist&address=${
-            accounts[0]
-          }&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-        )
-          .then(response => response.json())
-          .then(data =>
-            data.result
-              .filter(({ to }) => to === '')
-              .map(item => item.contractAddress)
-          )
-          .then(addresses =>
-            addresses.map(address =>
-              limiter.removeTokens(
-                1,
-                async () =>
-                  await fetch(
-                    `https://api-kovan.etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-                  )
-                    .then(response => response.json())
-                    .then(data => {
-                      if (
-                        data.result[0].ContractName == 'CentralizedArbitrator'
-                      )
-                        this.setState(state => ({
-                          contractAddresses: [
-                            ...state.contractAddresses,
-                            address
-                          ]
-                        }))
-                    })
-              )
-            )
-          )
+
+
+        web3.eth.net.getNetworkType((error, networkType) => {
+          this.setState({ networkType: networkType})
+          this.scanContracts(networkType, accounts[0])
+        })
+
       })
     else console.log('MetaMask account not detected :(')
 
@@ -95,6 +112,7 @@ class Dashboard extends React.Component {
     console.log(`RENDERING${new Date().getTime()}`)
     console.log(this.state.selectedAddress)
     const {
+      networkType,
       contractAddresses,
       selectedAddress,
       owner,
@@ -112,6 +130,7 @@ class Dashboard extends React.Component {
         }
         <div className="row">
           <div className="col">
+          {selectedAddress &&
             <Identicon
               bgColor="#4004A3"
               className="identicon"
@@ -120,9 +139,9 @@ class Dashboard extends React.Component {
               seed={selectedAddress}
               size={10}
               spotColor="white"
-              title="Centralized Arbitrator"
             />
-
+          }
+            <h4>Select An Already Deployed Centralized Arbitrator</h4>
             <div className="dropdown">
               <button
                 aria-expanded="false"
@@ -146,10 +165,15 @@ class Dashboard extends React.Component {
                     e.keyCode == 13 &&
                     this.setState({ selectedAddress: e.target.value })
                   }
-                  placeholder="Enter a contract address manually"
+                  placeholder="Or enter the address manually and hit enter"
                 />
               </div>
             </div>
+          </div>
+
+          <div className="col">
+          <h4>Deploy A New Centralized Arbitrator</h4>
+            <button className="btn btn-secondary primary">Deploy</button>
           </div>
         </div>
         <hr className="secondary" />
@@ -162,7 +186,7 @@ class Dashboard extends React.Component {
             </div>
             <div className="row">
               <div className="col">
-                <DisputeList contractAddress={selectedAddress} />
+                <DisputeList networkType={networkType} contractAddress={selectedAddress} />
               </div>
             </div>
           </div>

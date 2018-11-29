@@ -15,22 +15,22 @@ class NavBar extends React.Component {
   render() {
     const { wallet } = this.props
     return (
-      <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand" href="#">
+      <div className="container">
+        <nav className="navbar navbar-expand-lg navbar-dark">
+          <a className="navbar-brand" href="#">
             <span>
               <img
                 src="kleros-logo.svg"
                 width="30"
                 height="30"
                 alt=""
-                class="d-inline-block align-top"
+                className="d-inline-block align-top"
               />
             </span>
             <span>KLEROS</span>
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarNav"
@@ -38,14 +38,14 @@ class NavBar extends React.Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon" />
+            <span className="navbar-toggler-icon" />
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li className="nav-item active">
+                <a className="nav-link" href="#">
                   Centralized Arbitrator Dashboard
-                  <span class="sr-only">(current)</span>
+                  <span className="sr-only">(current)</span>
                 </a>
               </li>
             </ul>
