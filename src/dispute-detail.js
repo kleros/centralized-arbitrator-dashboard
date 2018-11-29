@@ -7,18 +7,17 @@ import Identicon from './identicon.js'
 class DisputeDetail extends React.Component {
   constructor(props) {
     super(props)
+    console.log("DISPUTE DETAIL PROPS")
+    console.log(props)
   }
 
-  cb(id, ruling) {
-    giveRuling(id, ruling)
-  }
-
-  handleGiveRulingButtonClick = (id, ruling) => () => {
-    giveRuling(id, ruling)
+  handleGiveRulingButtonClick = (instance, id, ruling) => () => {
+    giveRuling(instance, id, ruling)
   }
 
   render() {
     const {
+      centralizedArbitratorInstance,
       id,
       title,
       category,
@@ -117,7 +116,7 @@ class DisputeDetail extends React.Component {
               >
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(id, 1)}
+                  onClick={this.handleGiveRulingButtonClick(centralizedArbitratorInstance, id, 1)}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[0]}: ${
@@ -126,7 +125,7 @@ class DisputeDetail extends React.Component {
                 </button>
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(id, 2)}
+                  onClick={this.handleGiveRulingButtonClick(centralizedArbitratorInstance, id, 2)}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[1]}: ${

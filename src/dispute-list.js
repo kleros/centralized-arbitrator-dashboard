@@ -188,6 +188,7 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
+          centralizedArbitratorInstance={arbitratorInstance(this.props.contractAddress)}
           arbitrated={item.arbitrated}
           choices={item.choices}
           evidences={item.evidences}

@@ -7,6 +7,8 @@ import web3 from './ethereum/web3'
 class Dispute extends React.Component {
   constructor(props) {
     super(props)
+    console.log("DISPUTE PROPS")
+    console.log(props )
   }
 
   disputeStatusToString = code => {
@@ -24,7 +26,7 @@ class Dispute extends React.Component {
   }
 
   render() {
-    const { id, arbitrated, fee, status, metaevidence, evidences } = this.props
+    const { centralizedArbitratorInstance, id, arbitrated, fee, status, metaevidence, evidences } = this.props
     return (
       <React.Fragment className="dispute">
         <tbody>
@@ -61,6 +63,8 @@ class Dispute extends React.Component {
             <td colSpan="5">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
+                  centralizedArbitratorInstance={centralizedArbitratorInstance}
+                  id={id}
                   aliases={metaevidence.aliases}
                   category={metaevidence.category}
                   description={metaevidence.description}
