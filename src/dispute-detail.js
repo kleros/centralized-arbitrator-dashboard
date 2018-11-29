@@ -11,8 +11,8 @@ class DisputeDetail extends React.Component {
     console.log(props)
   }
 
-  handleGiveRulingButtonClick = (instance, id, ruling) => () => {
-    giveRuling(instance, id, ruling)
+  handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
+    giveRuling(account, instance, id, ruling) /*Why don't we await?*/
   }
 
   render() {
@@ -116,7 +116,7 @@ class DisputeDetail extends React.Component {
               >
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(centralizedArbitratorInstance, id, 1)}
+                  onClick={this.handleGiveRulingButtonClick(this.props.activeWallet, centralizedArbitratorInstance, id, 1)}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[0]}: ${
@@ -125,7 +125,7 @@ class DisputeDetail extends React.Component {
                 </button>
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(centralizedArbitratorInstance, id, 2)}
+                  onClick={this.handleGiveRulingButtonClick(this.props.activeWallet, centralizedArbitratorInstance, id, 2)}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[1]}: ${

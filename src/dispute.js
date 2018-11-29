@@ -76,6 +76,7 @@ class Dispute extends React.Component {
             <td colSpan="5">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
+                  activeWallet={this.props.activeWallet}
                   centralizedArbitratorInstance={centralizedArbitratorInstance}
                   id={id}
                   aliases={metaevidence.aliases}

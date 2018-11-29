@@ -5,6 +5,7 @@ import DisputeList from './dispute-list'
 import NavBar from './navbar.js'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
+  deployCentralizedArbitrator,
   centralizedArbitratorInstance,
   getDispute,
   getDisputeStatus,
@@ -97,6 +98,10 @@ class Dashboard extends React.Component {
 
   owner = () => getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
 
+  deploy = (account, arbitrationPrice) => async e => {
+    await deployCentralizedArbitrator(account, arbitrationPrice)
+  }
+
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
       <button
@@ -173,7 +178,7 @@ class Dashboard extends React.Component {
 
           <div className="col">
           <h4>Deploy A New Centralized Arbitrator</h4>
-            <button className="btn btn-secondary primary">Deploy</button>
+            <button className="btn btn-secondary primary" onClick={this.deploy(this.state.wallet, 123)}>Deploy</button>
           </div>
         </div>
         <hr className="secondary" />
@@ -181,12 +186,12 @@ class Dashboard extends React.Component {
           <div>
             <div className="row">
               <div className="col">
-                <ArbitrationPrice contractAddress={selectedAddress} />
+                <ArbitrationPrice contractAddress={selectedAddress} activeWallet={this.state.wallet}/>
               </div>
             </div>
             <div className="row">
               <div className="col">
-                <DisputeList networkType={networkType} contractAddress={selectedAddress} />
+                <DisputeList networkType={networkType} contractAddress={selectedAddress} activeWallet={this.state.wallet}/>
               </div>
             </div>
           </div>
