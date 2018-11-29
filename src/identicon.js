@@ -28,7 +28,7 @@ const Identicon = ({
         spotColor={spotColor}
       />
     </a>
-    <h4>{title}</h4>
+    {title && <h4>{title}</h4>}
   </div>
 )
 

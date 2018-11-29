@@ -2,6 +2,7 @@ import { RateLimiter } from 'limiter'
 import React from 'react'
 import ArbitrationPrice from './arbitration-price'
 import DisputeList from './dispute-list'
+import NavBar from './navbar.js'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
   arbitratorInstance,
@@ -102,6 +103,13 @@ class Dashboard extends React.Component {
 
     return (
       <div className="">
+        {this.state.wallet &&
+          <div className="row">
+            <div className="col">
+              <NavBar wallet={this.state.wallet}/>
+            </div>
+          </div>
+        }
         <div className="row">
           <div className="col">
             <Identicon
