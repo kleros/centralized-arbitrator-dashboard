@@ -5,7 +5,7 @@ import DisputeList from './dispute-list'
 import NavBar from './navbar.js'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
-  arbitratorInstance,
+  centralizedArbitratorInstance,
   getDispute,
   getDisputeStatus,
   getOwner
@@ -78,7 +78,7 @@ class Dashboard extends React.Component {
     console.log(this.state.contractAddresses)
   }
 
-  owner = () => getOwner(arbitratorInstance(this.state.selectedAddress))
+  owner = () => getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (

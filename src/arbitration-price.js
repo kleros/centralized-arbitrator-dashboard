@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {
-  arbitratorInstance,
+  centralizedArbitratorInstance,
   getArbitrationCost,
   getDispute,
   getDisputeStatus,
@@ -20,7 +20,7 @@ class ArbitrationPrice extends React.Component {
   async componentDidMount() {
     this.setState({
       arbitrationCost: await getArbitrationCost(
-        arbitratorInstance(this.props.contractAddress),
+        centralizedArbitratorInstance(this.props.contractAddress),
         ''
       )
     })
@@ -30,7 +30,7 @@ class ArbitrationPrice extends React.Component {
     if (this.props.contractAddress != prevProps.contractAddress)
       this.setState({
         arbitrationCost: await getArbitrationCost(
-          arbitratorInstance(this.props.contractAddress),
+          centralizedArbitratorInstance(this.props.contractAddress),
           ''
         )
       })
@@ -40,14 +40,14 @@ class ArbitrationPrice extends React.Component {
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(newCost)
     const arbitrationCost = await getArbitrationCost(
-      arbitratorInstance(this.props.contractAddress),
+      centralizedArbitratorInstance(this.props.contractAddress),
       ''
     )
     this.setState({ arbitrationCost })
   }
 
   handleSetArbitrationPriceButtonClick = newCost => async e => {
-    const centralizedArbitrator = arbitratorInstance(this.props.contractAddress)
+    const centralizedArbitrator = centralizedArbitratorInstance(this.props.contractAddress)
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(centralizedArbitrator, newCost)

@@ -4,7 +4,7 @@ import React from 'react'
 import Dispute from './dispute'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
-  arbitratorInstance,
+  centralizedArbitratorInstance,
   getArbitrationCost,
   getDispute,
   getDisputeStatus,
@@ -27,7 +27,7 @@ class DisputeList extends React.Component {
   }
 
   componentDidMount() {
-    this.subscriptions.disputeCreation = arbitratorInstance(
+    this.subscriptions.disputeCreation = centralizedArbitratorInstance(
       this.props.contractAddress
     )
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
@@ -44,7 +44,7 @@ class DisputeList extends React.Component {
     if (this.props.contractAddress != prevProps.contractAddress) {
       this.subscriptions = {}
       this.state.disputes = []
-      this.subscriptions.disputeCreation = arbitratorInstance(
+      this.subscriptions.disputeCreation = centralizedArbitratorInstance(
         this.props.contractAddress
       )
         .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
@@ -121,7 +121,7 @@ class DisputeList extends React.Component {
 
   addDispute = async (disputeID, arbitrableAddress) => {
     const dispute = await getDispute(
-      arbitratorInstance(this.props.contractAddress),
+      centralizedArbitratorInstance(this.props.contractAddress),
       disputeID
     )
     // dispute.key = disputeID
@@ -188,7 +188,7 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
-          centralizedArbitratorInstance={arbitratorInstance(this.props.contractAddress)}
+          centralizedArbitratorInstance={centralizedArbitratorInstance(this.props.contractAddress)}
           arbitrated={item.arbitrated}
           choices={item.choices}
           evidences={item.evidences}
