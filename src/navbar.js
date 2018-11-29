@@ -49,7 +49,7 @@ class NavBar extends React.Component {
                 </a>
               </li>
             </ul>
-            <div className="mx-2 my-lg-0">
+            <div className="mx-2 my-lg-0 icon-grey badge">
               <FontAwesomeIcon icon="bell" className="navbar-icon" />
             </div>
             <div className="mx-2 my-lg-0">
@@ -63,8 +63,7 @@ class NavBar extends React.Component {
                 scale={3}
                 seed={wallet}
                 size={10}
-                spotColor="white"
-              />
+                spotColor="white"/>
             </div>
           </div>
         </nav>
