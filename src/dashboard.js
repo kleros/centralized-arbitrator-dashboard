@@ -3,10 +3,11 @@ import React from 'react'
 import ArbitrationPrice from './arbitration-price'
 import DisputeList from './dispute-list'
 import NavBar from './navbar.js'
+import Deploy from './deploy.js'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
-  deployCentralizedArbitrator,
   centralizedArbitratorInstance,
+  deployCentralizedArbitrator,
   getDispute,
   getDisputeStatus,
   getOwner
@@ -25,19 +26,17 @@ class Dashboard extends React.Component {
     }
   }
 
-  scanContracts(networkType, account){
+  scanContracts(networkType, account) {
     const limiter = new RateLimiter(1, 250)
     const api = {
       mainnet: 'api.',
       kovan: 'api-kovan.'
     }
     console.log(networkType)
-    const apiPrefix = (networkType === 'main') ? api.mainnet : api.kovan
+    const apiPrefix = networkType === 'main' ? api.mainnet : api.kovan
 
     fetch(
-      `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${
-        account
-      }&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+      `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${account}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
     )
       .then(response => response.json())
       .then(data =>
@@ -55,14 +54,9 @@ class Dashboard extends React.Component {
               )
                 .then(response => response.json())
                 .then(data => {
-                  if (
-                    data.result[0].ContractName == 'CentralizedArbitrator'
-                  )
+                  if (data.result[0].ContractName == 'CentralizedArbitrator')
                     this.setState(state => ({
-                      contractAddresses: [
-                        ...state.contractAddresses,
-                        address
-                      ]
+                      contractAddresses: [...state.contractAddresses, address]
                     }))
                 })
           )
@@ -77,13 +71,10 @@ class Dashboard extends React.Component {
 
         console.warn('FETCH')
 
-
-
         web3.eth.net.getNetworkType((error, networkType) => {
-          this.setState({ networkType: networkType})
+          this.setState({ networkType: networkType })
           this.scanContracts(networkType, accounts[0])
         })
-
       })
     else console.log('MetaMask account not detected :(')
 
@@ -96,10 +87,12 @@ class Dashboard extends React.Component {
     console.log(this.state.contractAddresses)
   }
 
-  owner = () => getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
+  owner = () =>
+    getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
 
   deploy = (account, arbitrationPrice) => async e => {
-    await deployCentralizedArbitrator(account, arbitrationPrice)
+    e.preventDefault()
+    await deployCentralizedArbitrator(account, 123)
   }
 
   centralizedArbitratorButtons = addresses =>
@@ -113,6 +106,11 @@ class Dashboard extends React.Component {
       </button>
     ))
 
+  handleArbitrationPriceChange = () => e => {
+    console.log(e)
+    this.setState({ arbitrationCost: e.target.value })
+  }
+
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
     console.log(this.state.selectedAddress)
@@ -125,27 +123,27 @@ class Dashboard extends React.Component {
     } = this.state
 
     return (
-      <div className="">
-        {this.state.wallet &&
+      <div className="container">
+        {this.state.wallet && (
           <div className="row">
             <div className="col">
-              <NavBar wallet={this.state.wallet}/>
+              <NavBar wallet={this.state.wallet} />
             </div>
           </div>
-        }
+        )}
         <div className="row">
           <div className="col">
-          {selectedAddress &&
-            <Identicon
-              bgColor="#4004A3"
-              className="identicon"
-              color="#009AFF"
-              scale={3}
-              seed={selectedAddress}
-              size={10}
-              spotColor="white"
-            />
-          }
+            {selectedAddress && (
+              <Identicon
+                bgColor="#4004A3"
+                className="identicon"
+                color="#009AFF"
+                scale={3}
+                seed={selectedAddress}
+                size={10}
+                spotColor="white"
+              />
+            )}
             <h4>Select An Already Deployed Centralized Arbitrator</h4>
             <div className="dropdown">
               <button
@@ -177,8 +175,27 @@ class Dashboard extends React.Component {
           </div>
 
           <div className="col">
-          <h4>Deploy A New Centralized Arbitrator</h4>
-            <button className="btn btn-secondary primary" onClick={this.deploy(this.state.wallet, 123)}>Deploy</button>
+            <h4>Deploy A New Centralized Arbitrator</h4>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button
+                  class="btn btn-primary"
+                  onClick={this.deploy(this.state.wallet)}
+                  type="button"
+                >
+                  Deploy
+                </button>
+              </div>
+              <input
+                aria-describedby="basic-addon1"
+                aria-label=""
+                class="form-control"
+                placeholder="Arbitration Price"
+                type="text"
+                onChange={this.handleArbitrationPriceChange()}
+                value={this.state.arbitrationCost}
+              />
+            </div>
           </div>
         </div>
         <hr className="secondary" />
@@ -186,12 +203,19 @@ class Dashboard extends React.Component {
           <div>
             <div className="row">
               <div className="col">
-                <ArbitrationPrice contractAddress={selectedAddress} activeWallet={this.state.wallet}/>
+                <ArbitrationPrice
+                  activeWallet={this.state.wallet}
+                  contractAddress={selectedAddress}
+                />
               </div>
             </div>
             <div className="row">
               <div className="col">
-                <DisputeList networkType={networkType} contractAddress={selectedAddress} activeWallet={this.state.wallet}/>
+                <DisputeList
+                  activeWallet={this.state.wallet}
+                  contractAddress={selectedAddress}
+                  networkType={networkType}
+                />
               </div>
             </div>
           </div>

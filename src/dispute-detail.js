@@ -7,12 +7,12 @@ import Identicon from './identicon.js'
 class DisputeDetail extends React.Component {
   constructor(props) {
     super(props)
-    console.log("DISPUTE DETAIL PROPS")
+    console.log('DISPUTE DETAIL PROPS')
     console.log(props)
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
-    giveRuling(account, instance, id, ruling) /*Why don't we await?*/
+    giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
   render() {
@@ -116,7 +116,12 @@ class DisputeDetail extends React.Component {
               >
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(this.props.activeWallet, centralizedArbitratorInstance, id, 1)}
+                  onClick={this.handleGiveRulingButtonClick(
+                    this.props.activeWallet,
+                    centralizedArbitratorInstance,
+                    id,
+                    1
+                  )}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[0]}: ${
@@ -125,7 +130,12 @@ class DisputeDetail extends React.Component {
                 </button>
                 <button
                   className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(this.props.activeWallet, centralizedArbitratorInstance, id, 2)}
+                  onClick={this.handleGiveRulingButtonClick(
+                    this.props.activeWallet,
+                    centralizedArbitratorInstance,
+                    id,
+                    2
+                  )}
                 >
                   {rulingOptions &&
                     `${rulingOptions.titles[1]}: ${

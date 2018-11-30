@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import Identicon from './identicon.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -20,23 +19,23 @@ class NavBar extends React.Component {
           <a className="navbar-brand" href="#">
             <span>
               <img
-                src="kleros-logo.svg"
-                width="30"
-                height="30"
                 alt=""
                 className="d-inline-block align-top"
+                height="30"
+                src="kleros-logo.svg"
+                width="30"
               />
             </span>
             <span>KLEROS</span>
           </a>
           <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
             aria-controls="navbarNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            className="navbar-toggler"
+            data-target="#navbarNav"
+            data-toggle="collapse"
+            type="button"
           >
             <span className="navbar-toggler-icon" />
           </button>
@@ -50,10 +49,10 @@ class NavBar extends React.Component {
               </li>
             </ul>
             <div className="mx-2 my-lg-0 icon-grey badge">
-              <FontAwesomeIcon icon="bell" className="navbar-icon" />
+              <FontAwesomeIcon className="navbar-icon" icon="bell" />
             </div>
             <div className="mx-2 my-lg-0">
-              <FontAwesomeIcon icon="envelope" className="navbar-icon" />
+              <FontAwesomeIcon className="navbar-icon" icon="envelope" />
             </div>
             <div className="mx-2 my-lg-0">
               <Identicon
@@ -63,7 +62,8 @@ class NavBar extends React.Component {
                 scale={3}
                 seed={wallet}
                 size={10}
-                spotColor="white"/>
+                spotColor="white"
+              />
             </div>
           </div>
         </nav>

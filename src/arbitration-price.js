@@ -27,8 +27,10 @@ class ArbitrationPrice extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.contractAddress != prevProps.contractAddress
-        || this.props.activeWallet != prevProps.activeWallet)
+    if (
+      this.props.contractAddress != prevProps.contractAddress ||
+      this.props.activeWallet != prevProps.activeWallet
+    )
       this.setState({
         arbitrationCost: await getArbitrationCost(
           centralizedArbitratorInstance(this.props.contractAddress),
@@ -48,10 +50,16 @@ class ArbitrationPrice extends React.Component {
   }
 
   handleSetArbitrationPriceButtonClick = newCost => async e => {
-    const centralizedArbitrator = centralizedArbitratorInstance(this.props.contractAddress)
+    const centralizedArbitrator = centralizedArbitratorInstance(
+      this.props.contractAddress
+    )
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(this.props.activeWallet, centralizedArbitrator, newCost)
+    await setArbitrationPrice(
+      this.props.activeWallet,
+      centralizedArbitrator,
+      newCost
+    )
     const arbitrationCost = await getArbitrationCost(centralizedArbitrator, '')
     this.setState({ arbitrationCost })
   }
@@ -75,7 +83,8 @@ class ArbitrationPrice extends React.Component {
             type="text"
             value={this.state.arbitrationCost}
           />
-          <input className="primary" type="submit" value="Change Price" /> {/*Why not a button but an input?*/}
+          <input className="primary" type="submit" value="Change Price" />{' '}
+          {/* Why not a button but an input? */}
         </label>
       </form>
     )
