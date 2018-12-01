@@ -65,7 +65,7 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h4 className="">
-              <a href={'fileURI'} rel="noopener noreferrer" target="_blank">
+              <a href={fileURI} rel="noopener noreferrer" target="_blank">
                 Agreement File
               </a>
             </h4>

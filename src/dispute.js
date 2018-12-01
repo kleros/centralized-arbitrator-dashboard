@@ -83,6 +83,7 @@ class Dispute extends React.Component {
                   category={metaevidence.category}
                   description={metaevidence.description}
                   evidences={evidences}
+                  fileURI={metaevidence.fileURI}
                   fileHash={metaevidence.fileHash}
                   question={metaevidence.question}
                   rulingOptions={metaevidence.rulingOptions}
