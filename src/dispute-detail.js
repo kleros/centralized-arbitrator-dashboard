@@ -3,6 +3,7 @@ import React from 'react'
 import { giveRuling } from './ethereum/centralized-arbitrator'
 import EvidenceList from './evidence-list'
 import Identicon from './identicon.js'
+import Archon from '@kleros/archon'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -13,6 +14,16 @@ class DisputeDetail extends React.Component {
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
+  }
+
+  validate(){
+    let evidenceHash
+    Archon.utils.validateFileFromURI(
+      'https://s3.us-east-2.amazonaws.com/kleros-examples/exampleEvidence.txt',
+      { hash: evidenceHash }
+    ).then(data => {
+      console.log(data.isValid); // true
+    })
   }
 
   render() {
@@ -54,7 +65,7 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h4 className="">
-              <a href={fileURI} rel="noopener noreferrer" target="_blank">
+              <a href={'fileURI'} rel="noopener noreferrer" target="_blank">
                 Agreement File
               </a>
             </h4>

@@ -82,8 +82,6 @@ class Dispute extends React.Component {
                   aliases={metaevidence.aliases}
                   category={metaevidence.category}
                   description={metaevidence.description}
-                  description={metaevidence.description}
-                  evidences={evidences}
                   evidences={evidences}
                   fileHash={metaevidence.fileHash}
                   question={metaevidence.question}

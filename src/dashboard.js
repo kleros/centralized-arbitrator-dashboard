@@ -72,6 +72,7 @@ class Dashboard extends React.Component {
 
         web3.eth.net.getNetworkType((error, networkType) => {
           this.setState({ networkType: networkType })
+          if(accounts[0])
           this.scanContracts(networkType, accounts[0])
         })
       })
@@ -120,6 +121,9 @@ class Dashboard extends React.Component {
       owner,
       arbitrationCost
     } = this.state
+
+    if(!this.state.wallet)
+    return(<div>Please unlock your MetaMask and refresh the page to continue.</div>)
 
     return (
       <div className="container">
