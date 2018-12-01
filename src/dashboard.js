@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
 
   deploy = (account, arbitrationPrice) => async e => {
     e.preventDefault()
-    await deployCentralizedArbitrator(account, 123)
+    await deployCentralizedArbitrator(account, arbitrationPrice)
   }
 
   centralizedArbitratorButtons = addresses =>
@@ -183,7 +183,7 @@ class Dashboard extends React.Component {
               <div class="input-group-prepend">
                 <button
                   class="btn btn-primary"
-                  onClick={this.deploy(this.state.wallet)}
+                  onClick={this.deploy(this.state.wallet, this.state.arbitrationCost)}
                   type="button"
                 >
                   Deploy
