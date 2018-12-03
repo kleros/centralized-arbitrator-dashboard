@@ -1,35 +1,32 @@
-import { RateLimiter } from 'limiter'
-import React from 'react'
-import ArbitrationPrice from './arbitration-price'
-import DisputeList from './dispute-list'
-import NavBar from './navbar.js'
-import { arbitrableInstanceAt } from './ethereum/arbitrable'
 import {
   centralizedArbitratorInstance,
   deployCentralizedArbitrator,
-  getDispute,
-  getDisputeStatus,
   getOwner
 } from './ethereum/centralized-arbitrator'
-import web3 from './ethereum/web3'
+import ArbitrationPrice from './arbitration-price'
+import DisputeList from './dispute-list'
 import Identicon from './identicon.js'
+import NavBar from './navbar.js'
+import { RateLimiter } from 'limiter'
+import React from 'react'
+import web3 from './ethereum/web3'
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      arbitrationCost: '1',
       contractAddresses: [],
-      selectedAddress: undefined,
       owner: '',
-      arbitrationCost: '1'
+      selectedAddress: undefined
     }
   }
 
   scanContracts(networkType, account) {
     const limiter = new RateLimiter(1, 250)
     const api = {
-      mainnet: 'api.',
-      kovan: 'api-kovan.'
+      kovan: 'api-kovan.',
+      mainnet: 'api.'
     }
     console.log(networkType)
     const apiPrefix = networkType === 'main' ? api.mainnet : api.kovan
@@ -45,25 +42,24 @@ class Dashboard extends React.Component {
       )
       .then(addresses =>
         addresses.map(address =>
-          limiter.removeTokens(
-            1,
-            async () =>
-              await fetch(
-                `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-              )
-                .then(response => response.json())
-                .then(data => {
-                  if (data.result[0].ContractName == 'CentralizedArbitrator')
-                    this.setState(state => ({
-                      contractAddresses: [...state.contractAddresses, address]
-                    }))
-                })
+          limiter.removeTokens(1, async () =>
+            fetch(
+              `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+            )
+              .then(response => response.json())
+              .then(data => {
+                if (data.result[0].ContractName === 'CentralizedArbitrator')
+                  this.setState(state => ({
+                    contractAddresses: [...state.contractAddresses, address]
+                  }))
+              })
           )
         )
       )
   }
 
   async componentDidMount() {
+    const { contractAddresses } = this.state
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
         this.setState({ wallet: accounts[0] })
@@ -72,20 +68,16 @@ class Dashboard extends React.Component {
 
         web3.eth.net.getNetworkType((error, networkType) => {
           this.setState({ networkType: networkType })
-          if(accounts[0])
-          this.scanContracts(networkType, accounts[0])
+          if (accounts[0]) this.scanContracts(networkType, accounts[0])
         })
       })
     else console.log('MetaMask account not detected :(')
 
     this.setState({
-      selectedAddress: this.state.contractAddresses[0]
+      selectedAddress: contractAddresses[0]
     })
   }
 
-  async componentDidUpdate() {
-    console.log(this.state.contractAddresses)
-  }
 
   owner = () =>
     getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
@@ -113,13 +105,13 @@ class Dashboard extends React.Component {
 
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
-    console.log(this.state.selectedAddress)
+    console.log(selectedAddress)
     const {
       networkType,
       contractAddresses,
       selectedAddress,
-      owner,
-      arbitrationCost
+      arbitrationCost,
+      wallet
     } = this.state
 
     if(!this.state.wallet)
@@ -183,7 +175,7 @@ class Dashboard extends React.Component {
               <div class="input-group-prepend">
                 <button
                   className="btn btn-primary"
-                  onClick={this.deploy(this.state.wallet, this.state.arbitrationCost)}
+                  onClick={this.deploy(wallet, arbitrationCost)}
                   type="button"
                 >
                   Deploy
@@ -196,7 +188,7 @@ class Dashboard extends React.Component {
                 placeholder="Arbitration Price"
                 type="text"
                 onChange={this.handleArbitrationPriceChange()}
-                value={this.state.arbitrationCost}
+                value={arbitrationCost}
               />
             </div>
           </div>
@@ -207,7 +199,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col">
                 <ArbitrationPrice
-                  activeWallet={this.state.wallet}
+                  activeWallet={wallet}
                   contractAddress={selectedAddress}
                 />
               </div>
@@ -215,7 +207,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col">
                 <DisputeList
-                  activeWallet={this.state.wallet}
+                  activeWallet={wallet}
                   contractAddress={selectedAddress}
                   networkType={networkType}
                 />

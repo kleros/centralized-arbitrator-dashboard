@@ -1,16 +1,13 @@
+import {
+  centralizedArbitratorInstance,
+  getDispute,
+  getDisputeStatus
+} from './ethereum/centralized-arbitrator'
+import Dispute from './dispute'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Dispute from './dispute'
 import { arbitrableInstanceAt } from './ethereum/arbitrable'
-import {
-  centralizedArbitratorInstance,
-  getArbitrationCost,
-  getDispute,
-  getDisputeStatus,
-  getOwner,
-  setArbitrationPrice
-} from './ethereum/centralized-arbitrator'
 
 class DisputeList extends React.Component {
   constructor(props) {
@@ -19,16 +16,18 @@ class DisputeList extends React.Component {
       disputes: []
     }
     this.subscriptions = {
-      disputeCreation: undefined,
       dispute: undefined,
+      disputeCreation: undefined,
       metaevidence: undefined,
       ruling: undefined
     }
   }
 
   componentDidMount() {
+    const { contractAddress } = this.props
+
     this.subscriptions.disputeCreation = centralizedArbitratorInstance(
-      this.props.contractAddress
+      contractAddress
     )
       .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
       .on('data', event => {
@@ -41,11 +40,13 @@ class DisputeList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.contractAddress != prevProps.contractAddress) {
+    const { contractAddress } = this.props
+
+    if (contractAddress !== prevProps.contractAddress) {
       this.subscriptions = {}
       this.state.disputes = []
       this.subscriptions.disputeCreation = centralizedArbitratorInstance(
-        this.props.contractAddress
+        contractAddress
       )
         .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
         .on('data', event => {
@@ -120,8 +121,10 @@ class DisputeList extends React.Component {
   }
 
   addDispute = async (disputeID, arbitrableAddress) => {
+    const { contractAddress } = this.props
+
     const dispute = await getDispute(
-      centralizedArbitratorInstance(this.props.contractAddress),
+      centralizedArbitratorInstance(contractAddress),
       disputeID
     )
     // dispute.key = disputeID
@@ -135,7 +138,7 @@ class DisputeList extends React.Component {
     this.subscriptions.dispute = await arbitrableInstanceAt(arbitrableAddress)
       .events.Dispute({
         filter: {
-          _arbitrator: this.props.contractAddress,
+          _arbitrator: contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -152,7 +155,7 @@ class DisputeList extends React.Component {
     this.subscriptions.evidence = await arbitrableInstanceAt(arbitrableAddress)
       .events.Evidence({
         filter: {
-          _arbitrator: this.props.contractAddress,
+          _arbitrator: contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -189,15 +192,15 @@ class DisputeList extends React.Component {
       .map(item => (
         <Dispute
           activeWallet={this.props.activeWallet}
-          networkType={this.props.networkType}
-          centralizedArbitratorInstance={centralizedArbitratorInstance(this.props.contractAddress)}
           arbitrated={item.arbitrated}
+          centralizedArbitratorInstance={centralizedArbitratorInstance(this.props.contractAddress)}
           choices={item.choices}
           evidences={item.evidences}
           fee={item.fee}
           id={item.id}
           key={item.id}
           metaevidence={item.metaevidence || 'NO META EVIDENCE'}
+          networkType={this.props.networkType}
           status={item.status || '0'}
         />
       ))
@@ -230,6 +233,7 @@ class DisputeList extends React.Component {
 }
 
 DisputeList.propTypes = {
+  contractAddress: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 

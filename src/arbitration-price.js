@@ -1,13 +1,10 @@
-import PropTypes from 'prop-types'
-import React from 'react'
 import {
   centralizedArbitratorInstance,
   getArbitrationCost,
-  getDispute,
-  getDisputeStatus,
-  getOwner,
   setArbitrationPrice
 } from './ethereum/centralized-arbitrator'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 class ArbitrationPrice extends React.Component {
   constructor(props) {
@@ -18,48 +15,50 @@ class ArbitrationPrice extends React.Component {
   }
 
   async componentDidMount() {
+    const { contractAddress } = this.props
+
     this.setState({
       arbitrationCost: await getArbitrationCost(
-        centralizedArbitratorInstance(this.props.contractAddress),
+        centralizedArbitratorInstance(contractAddress),
         ''
       )
     })
   }
 
   async componentDidUpdate(prevProps) {
+    const { activeWallet, contractAddress } = this.props
+
     if (
-      this.props.contractAddress != prevProps.contractAddress ||
-      this.props.activeWallet != prevProps.activeWallet
+      contractAddress !== prevProps.contractAddress ||
+      activeWallet !== prevProps.activeWallet
     )
       this.setState({
         arbitrationCost: await getArbitrationCost(
-          centralizedArbitratorInstance(this.props.contractAddress),
+          centralizedArbitratorInstance(contractAddress),
           ''
         )
       })
   }
 
   setArbitrationCost = async newCost => {
+    const { contractAddress } = this.props
+
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(newCost)
     const arbitrationCost = await getArbitrationCost(
-      centralizedArbitratorInstance(this.props.contractAddress),
+      centralizedArbitratorInstance(contractAddress),
       ''
     )
     this.setState({ arbitrationCost })
   }
 
   handleSetArbitrationPriceButtonClick = newCost => async e => {
-    const centralizedArbitrator = centralizedArbitratorInstance(
-      this.props.contractAddress
-    )
+    const { activeWallet, contractAddress } = this.props
+
+    const centralizedArbitrator = centralizedArbitratorInstance(contractAddress)
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(
-      this.props.activeWallet,
-      centralizedArbitrator,
-      newCost
-    )
+    await setArbitrationPrice(activeWallet, centralizedArbitrator, newCost)
     const arbitrationCost = await getArbitrationCost(centralizedArbitrator, '')
     this.setState({ arbitrationCost })
   }
@@ -70,18 +69,17 @@ class ArbitrationPrice extends React.Component {
   }
 
   render() {
+    const { arbitrationCost } = this.state
     return (
       <form
-        onSubmit={this.handleSetArbitrationPriceButtonClick(
-          this.state.arbitrationCost
-        )}
+        onSubmit={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
       >
         <label>
           Arbitration Price:{' '}
           <input
             onChange={this.handleArbitrationPriceChange()}
             type="text"
-            value={this.state.arbitrationCost}
+            value={arbitrationCost}
           />
           <input className="primary" type="submit" value="Change Price" />{' '}
           {/* Why not a button but an input? */}
@@ -89,6 +87,10 @@ class ArbitrationPrice extends React.Component {
       </form>
     )
   }
+}
+
+ArbitrationPrice.propTypes = {
+  contractAddress: PropTypes.string.isRequired
 }
 
 export default ArbitrationPrice
