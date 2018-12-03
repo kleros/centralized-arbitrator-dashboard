@@ -1,16 +1,15 @@
+import Blockies from 'react-blockies'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Blockies from 'react-blockies'
 
 const Identicon = ({
-  title,
+  bgColor,
+  className,
+  color,
+  scale,
   seed,
   size,
-  scale,
-  color,
-  bgColor,
-  spotColor,
-  className
+  spotColor
 }) => (
   <div>
     <a
@@ -28,19 +27,17 @@ const Identicon = ({
         spotColor={spotColor}
       />
     </a>
-    {title && <h4>{title}</h4>}
   </div>
 )
 
 Identicon.propTypes = {
-  title: PropTypes.string,
+  bgColor: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  scale: PropTypes.number.isRequired,
   seed: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
-  scale: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-  bgColor: PropTypes.string.isRequired,
-  spotColor: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired
+  spotColor: PropTypes.string.isRequired
 }
 
 export default Identicon

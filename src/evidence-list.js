@@ -1,12 +1,8 @@
+import Evidence from './evidence'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Evidence from './evidence'
 
 class EvidenceList extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   evidences = (name, evidences) => {
     const items = evidences.map(item => (
       <Evidence
@@ -21,7 +17,7 @@ class EvidenceList extends React.Component {
   }
 
   render() {
-    const { name, evidences } = this.props
+    const { evidences, name } = this.props
     if (!evidences) return <h4>No Evidence From {name}</h4>
 
     return (
@@ -41,8 +37,8 @@ class EvidenceList extends React.Component {
 }
 
 EvidenceList.propTypes = {
-  name: PropTypes.string.isRequired,
-  evidences: PropTypes.arrayOf(PropTypes.string).isRequired
+  evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired
 }
 
 export default EvidenceList

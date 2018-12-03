@@ -1,5 +1,5 @@
-import Web3 from 'web3'
 import { INFURA_ENDPOINT } from './infura-endpoint.js'
+import Web3 from 'web3'
 
 let web3
 

@@ -4,9 +4,10 @@ import web3 from './web3'
 export const deployCentralizedArbitrator = (account, arbitrationPrice) => {
   new web3.eth.Contract(centralizedArbitrator.abi)
     .deploy({
-      data: centralizedArbitrator.bytecode,
-      arguments: [arbitrationPrice]
-    }).send({ from: account })
+      arguments: [arbitrationPrice],
+      data: centralizedArbitrator.bytecode
+    })
+    .send({ from: account })
 }
 
 export const centralizedArbitratorInstance = address =>

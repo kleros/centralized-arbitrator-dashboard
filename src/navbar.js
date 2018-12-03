@@ -1,12 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Identicon from './identicon.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props)
-  }
   componentDidMount() {}
 
   componentDidUpdate() {}
@@ -16,7 +13,7 @@ class NavBar extends React.Component {
     return (
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-dark">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="./">
             <span>
               <img
                 alt=""
@@ -42,7 +39,7 @@ class NavBar extends React.Component {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
               <li className="nav-item active">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="./">
                   Centralized Arbitrator Dashboard
                   <span className="sr-only">(current)</span>
                 </a>
@@ -70,6 +67,10 @@ class NavBar extends React.Component {
       </div>
     )
   }
+}
+
+NavBar.propTypes = {
+  wallet: PropTypes.string.isRequired
 }
 
 export default NavBar

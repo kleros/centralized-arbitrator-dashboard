@@ -1,14 +1,14 @@
+import DisputeDetail from './dispute-detail'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-import DisputeDetail from './dispute-detail'
 import web3 from './ethereum/web3'
 
 class Dispute extends React.Component {
   constructor(props) {
     super(props)
-    console.log("DISPUTE PROPS")
-    console.log(props )
+    console.log('DISPUTE PROPS')
+    console.log(props)
   }
 
   disputeStatusToString = code => {
@@ -28,18 +28,26 @@ class Dispute extends React.Component {
   apiPrefix = networkType => {
     switch (networkType) {
       case 'main':
-      return ''
+        return ' '
       case 'kovan':
-      return 'kovan.'
-        break;
+        return 'kovan.'
       default:
-      return  ''
-
+        return ' '
     }
   }
 
   render() {
-    const { centralizedArbitratorInstance, id, arbitrated, fee, status, metaevidence, evidences } = this.props
+    const {
+      activeWallet,
+      arbitrated,
+      centralizedArbitratorInstance,
+      evidences,
+      fee,
+      id,
+      metaevidence,
+      networkType,
+      status
+    } = this.props
     return (
       <React.Fragment className="dispute">
         <tbody>
@@ -53,7 +61,9 @@ class Dispute extends React.Component {
             <td>{id}</td>
             <td>
               <a
-                href={`https://${this.apiPrefix(this.props.networkType)}etherscan.io/address/${arbitrated}`}
+                href={`https://${this.apiPrefix(
+                  networkType
+                )}etherscan.io/address/${arbitrated}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -76,15 +86,15 @@ class Dispute extends React.Component {
             <td colSpan="5">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
-                  activeWallet={this.props.activeWallet}
-                  centralizedArbitratorInstance={centralizedArbitratorInstance}
-                  id={id}
+                  activeWallet={activeWallet}
                   aliases={metaevidence.aliases}
                   category={metaevidence.category}
+                  centralizedArbitratorInstance={centralizedArbitratorInstance}
                   description={metaevidence.description}
                   evidences={evidences}
-                  fileURI={metaevidence.fileURI}
                   fileHash={metaevidence.fileHash}
+                  fileURI={metaevidence.fileURI}
+                  id={id}
                   question={metaevidence.question}
                   rulingOptions={metaevidence.rulingOptions}
                   title={metaevidence.title}
@@ -99,27 +109,30 @@ class Dispute extends React.Component {
 }
 
 Dispute.propTypes = {
-  id: PropTypes.number.isRequired,
+  activeWallet: PropTypes.string.isRequired,
   arbitrated: PropTypes.string.isRequired,
+  centralizedArbitratorInstance: PropTypes.web3.eth.Contract.isRequired,
+  evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
   fee: PropTypes.string.isRequired,
-  status: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   metaevidence: PropTypes.shape({
-    fileURI: PropTypes.string,
-    fileHash: PropTypes.string,
-    fileTypeExtension: PropTypes.string,
-    category: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
     aliases: PropTypes.shape({
       [PropTypes.string]: PropTypes.string
     }),
+    category: PropTypes.string,
+    description: PropTypes.string,
+    fileHash: PropTypes.string,
+    fileTypeExtension: PropTypes.string,
+    fileURI: PropTypes.string,
     rulingOptions: PropTypes.shape({
-      titles: PropTypes.arrayOf(PropTypes.string).isRequired,
-      description: PropTypes.arrayOf(PropTypes.string).isRequired
+      description: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titles: PropTypes.arrayOf(PropTypes.string).isRequired
     }),
-    selfHash: PropTypes.string
+    selfHash: PropTypes.string,
+    title: PropTypes.string
   }).isRequired,
-  evidences: PropTypes.arrayOf(PropTypes.object).isRequired
+  networkType: PropTypes.string.isRequired,
+  status: PropTypes.number.isRequired
 }
 
 export default Dispute

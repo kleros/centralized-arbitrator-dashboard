@@ -1,13 +1,13 @@
+import EvidenceDetail from './evidence-detail'
 import PropTypes from 'prop-types'
 import React from 'react'
-import EvidenceDetail from './evidence-detail'
 
 const Evidence = ({
-  name,
-  id,
   description,
-  fileURI,
   fileTypeExtension,
+  fileURI,
+  id,
+  name,
   selfHash
 }) => (
   <React.Fragment>
@@ -44,11 +44,11 @@ const Evidence = ({
 )
 
 Evidence.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
   description: PropTypes.string.isRequired,
-  fileURI: PropTypes.string.isRequired,
   fileTypeExtension: PropTypes.string.isRequired,
+  fileURI: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
   selfHash: PropTypes.string.isRequired
 }
 
