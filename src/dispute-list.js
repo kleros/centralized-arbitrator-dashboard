@@ -172,7 +172,7 @@ class DisputeList extends React.Component {
     this.subscriptions.ruling = await arbitrableInstanceAt(arbitrableAddress)
       .events.Ruling({
         filter: {
-          _arbitrator: this.props.contractAddress,
+          _arbitrator: contractAddress,
           _disputeID: disputeID
         },
         fromBlock: 0,
@@ -183,7 +183,8 @@ class DisputeList extends React.Component {
       })
   }
 
-  disputes = items =>
+  disputes = items => {
+    const { activeWallet, contractAddress, networkType } = this.props
     items
       .filter(dispute => dispute.status !== '2')
       .sort(function(a, b) {
@@ -191,21 +192,25 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
-          activeWallet={this.props.activeWallet}
+          activeWallet={activeWallet}
           arbitrated={item.arbitrated}
-          centralizedArbitratorInstance={centralizedArbitratorInstance(this.props.contractAddress)}
+          centralizedArbitratorInstance={centralizedArbitratorInstance(
+            contractAddress
+          )}
           choices={item.choices}
           evidences={item.evidences}
           fee={item.fee}
           id={item.id}
           key={item.id}
           metaevidence={item.metaevidence || 'NO META EVIDENCE'}
-          networkType={this.props.networkType}
+          networkType={networkType}
           status={item.status || '0'}
         />
       ))
+  }
 
   render() {
+    const { disputes } = this.state
     return (
       <div>
         <h1>
@@ -225,7 +230,7 @@ class DisputeList extends React.Component {
             </tr>
           </thead>
 
-          {this.disputes(this.state.disputes)}
+          {this.disputes(disputes)}
         </table>
       </div>
     )
@@ -233,8 +238,9 @@ class DisputeList extends React.Component {
 }
 
 DisputeList.propTypes = {
+  activeWallet: PropTypes.string.isRequired,
   contractAddress: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired
+  networkType: PropTypes.string.isRequired
 }
 
 export default DisputeList

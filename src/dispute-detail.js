@@ -1,9 +1,9 @@
+import Archon from '@kleros/archon'
+import EvidenceList from './evidence-list'
+import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { giveRuling } from './ethereum/centralized-arbitrator'
-import EvidenceList from './evidence-list'
-import Identicon from './identicon.js'
-import Archon from '@kleros/archon'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -49,6 +49,7 @@ class DisputeDetail extends React.Component {
 
   render() {
     const {
+      activeWallet,
       centralizedArbitratorInstance,
       id,
       title,
@@ -100,14 +101,13 @@ class DisputeDetail extends React.Component {
             <sub>{fileHash}</sub>
           </div>
         </div>
-        {fileURI && fileHash &&
+        ({fileURI && fileHash &&
         <div className="row">
           <div className="col">
             <sub>{validationResult}</sub>
-
           </div>
         </div>
-        }
+        })
         <hr />
         <br />
         <div className="row">
@@ -160,7 +160,7 @@ class DisputeDetail extends React.Component {
                 <button
                   className="dropdown-item"
                   onClick={this.handleGiveRulingButtonClick(
-                    this.props.activeWallet,
+                    activeWallet,
                     centralizedArbitratorInstance,
                     id,
                     1
@@ -174,7 +174,7 @@ class DisputeDetail extends React.Component {
                 <button
                   className="dropdown-item"
                   onClick={this.handleGiveRulingButtonClick(
-                    this.props.activeWallet,
+                    activeWallet,
                     centralizedArbitratorInstance,
                     id,
                     2
@@ -195,16 +195,16 @@ class DisputeDetail extends React.Component {
 }
 
 DisputeDetail.propTypes = {
-  id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
+  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   category: PropTypes.number.isRequired,
   description: PropTypes.string.isRequired,
-  fileURI: PropTypes.string.isRequired,
+  evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   fileHash: PropTypes.string.isRequired,
+  fileURI: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   question: PropTypes.string.isRequired,
-  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  evidences: PropTypes.arrayOf(PropTypes.string).isRequired
+  title: PropTypes.string.isRequired
 }
 
 export default DisputeDetail
