@@ -62,11 +62,15 @@ class Dashboard extends React.Component {
     const { contractAddresses } = this.state
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
+        if (error) console.error(error)
+
         this.setState({ wallet: accounts[0] })
 
         console.warn('FETCH')
 
         web3.eth.net.getNetworkType((error, networkType) => {
+          if (error) console.error(error)
+
           this.setState({ networkType: networkType })
           if (accounts[0]) this.scanContracts(networkType, accounts[0])
         })
@@ -78,13 +82,22 @@ class Dashboard extends React.Component {
     })
   }
 
-
-  owner = () =>
-    getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
+  owner = () => {
+    const { selectedAddress } = this.state
+    getOwner(centralizedArbitratorInstance(selectedAddress))
+  }
 
   deploy = (account, arbitrationPrice) => async e => {
     e.preventDefault()
     await deployCentralizedArbitrator(account, arbitrationPrice)
+  }
+
+  handleCentralizedArbitratorDropdownKeyEnter = () => e => {
+    if (e.keyCode === 13) this.setState({ selectedAddress: e.target.value })
+  }
+
+  handleCentralizedArbitratorDropdownButtonClick = () => e => {
+    this.setState({ selectedAddress: e.target.innerHTML })
   }
 
   centralizedArbitratorButtons = addresses =>
@@ -92,7 +105,7 @@ class Dashboard extends React.Component {
       <button
         className="dropdown-item"
         key={address}
-        onClick={e => this.setState({ selectedAddress: e.target.innerHTML })}
+        onClick={this.handleCentralizedArbitratorDropdownButtonClick()}
       >
         {address}
       </button>
@@ -105,24 +118,25 @@ class Dashboard extends React.Component {
 
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
-    console.log(selectedAddress)
     const {
-      networkType,
-      contractAddresses,
-      selectedAddress,
       arbitrationCost,
+      contractAddresses,
+      networkType,
+      selectedAddress,
       wallet
     } = this.state
 
-    if(!this.state.wallet)
-    return(<div>Please unlock your MetaMask and refresh the page to continue.</div>)
+    if (!wallet)
+      return (
+        <div>Please unlock your MetaMask and refresh the page to continue.</div>
+      )
 
     return (
       <div className="container">
-        {this.state.wallet && (
+        {wallet && (
           <div className="row">
             <div className="col">
-              <NavBar wallet={this.state.wallet} />
+              <NavBar wallet={wallet} />
             </div>
           </div>
         )}
@@ -159,10 +173,7 @@ class Dashboard extends React.Component {
                 <hr />
                 <input
                   className="dropdown-item"
-                  onKeyUp={e =>
-                    e.keyCode == 13 &&
-                    this.setState({ selectedAddress: e.target.value })
-                  }
+                  onKeyUp={this.handleCentralizedArbitratorDropdownKeyEnter()}
                   placeholder="Or enter the address manually and hit enter"
                 />
               </div>
@@ -185,9 +196,9 @@ class Dashboard extends React.Component {
                 aria-describedby="basic-addon1"
                 aria-label=""
                 className="form-control"
+                onChange={this.handleArbitrationPriceChange()}
                 placeholder="Arbitration Price"
                 type="text"
-                onChange={this.handleArbitrationPriceChange()}
                 value={arbitrationCost}
               />
             </div>

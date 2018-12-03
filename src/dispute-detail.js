@@ -17,50 +17,46 @@ class DisputeDetail extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(props, state){
-
-  }
-
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  validate(fileURI, evidenceHash){
-    this.setState({validationResult: "sdasdasdasd"})
-    console.log("validate")
+  validate(fileURI, evidenceHash) {
+    this.setState({ validationResult: 'sdasdasdasd' })
+    console.log('validate')
     console.log(this.archon)
     console.log(fileURI)
-    this.archon.utils.validateFileFromURI(
-      fileURI,
-      { hash: evidenceHash }
-    ).then(data => {
-      console.log(data.isValid); // true
-      return data.isValid
-    }).catch((err) => {
-      this.setState({validationResult: "something bad happened"})
-    })
+    this.archon.utils
+      .validateFileFromURI(fileURI, { hash: evidenceHash })
+      .then(data => {
+        console.log(data.isValid) // true
+        return data.isValid
+      })
+      .catch(err => {
+        this.setState({ validationResult: 'something bad happened' })
+        console.error(err)
+      })
   }
 
-  componentDidMount(){
-    const { fileURI, fileHash} = this.state
-    if(fileURI && fileHash)
-      this.validate(fileURI, fileHash).then()
+  componentDidMount() {
+    const { fileHash, fileURI } = this.state
+    if (fileURI && fileHash) this.validate(fileURI, fileHash).then()
   }
 
   render() {
     const {
       activeWallet,
-      centralizedArbitratorInstance,
-      id,
-      title,
-      category,
-      description,
-      fileURI,
-      fileHash,
-      question,
       aliases,
+      category,
+      centralizedArbitratorInstance,
+      description,
+      evidences,
+      fileHash,
+      fileURI,
+      id,
+      question,
       rulingOptions,
-      evidences
+      title
     } = this.props
 
     const { validationResult } = this.state
@@ -101,13 +97,15 @@ class DisputeDetail extends React.Component {
             <sub>{fileHash}</sub>
           </div>
         </div>
-        ({fileURI && fileHash &&
-        <div className="row">
-          <div className="col">
-            <sub>{validationResult}</sub>
+        (
+        {fileURI && fileHash && (
+          <div className="row">
+            <div className="col">
+              <sub>{validationResult}</sub>
+            </div>
           </div>
-        </div>
-        })
+        )}
+        )
         <hr />
         <br />
         <div className="row">
@@ -195,8 +193,10 @@ class DisputeDetail extends React.Component {
 }
 
 DisputeDetail.propTypes = {
+  activeWallet: PropTypes.string.isRequired,
   aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   category: PropTypes.number.isRequired,
+  centralizedArbitratorInstance: PropTypes.web3.eth.Contract.isRequired,
   description: PropTypes.string.isRequired,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   fileHash: PropTypes.string.isRequired,
