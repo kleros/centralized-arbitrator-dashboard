@@ -33,7 +33,7 @@ const Identicon = ({
 )
 
 Identicon.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   seed: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,

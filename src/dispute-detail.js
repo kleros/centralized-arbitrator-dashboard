@@ -10,20 +10,41 @@ class DisputeDetail extends React.Component {
     super(props)
     console.log('DISPUTE DETAIL PROPS')
     console.log(props)
+    this.archon = new Archon(window.web3.currentProvider)
+    console.log(this.archon)
+    this.state = {
+      validationResult: 'po'
+    }
+  }
+
+  static getDerivedStateFromProps(props, state){
+    
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  validate(){
-    let evidenceHash
-    Archon.utils.validateFileFromURI(
-      'https://s3.us-east-2.amazonaws.com/kleros-examples/exampleEvidence.txt',
+  validate(fileURI, evidenceHash){
+    this.setState({validationResult: "sdasdasdasd"})
+    console.log("validate")
+    console.log(this.archon)
+    console.log(fileURI)
+    this.archon.utils.validateFileFromURI(
+      fileURI,
       { hash: evidenceHash }
     ).then(data => {
       console.log(data.isValid); // true
+      return data.isValid
+    }).catch((err) => {
+      this.setState({validationResult: "something bad happened"})
     })
+  }
+
+  componentDidMount(){
+    const { fileURI, fileHash} = this.state
+    if(fileURI && fileHash)
+      this.validate(fileURI, fileHash).then()
   }
 
   render() {
@@ -41,6 +62,9 @@ class DisputeDetail extends React.Component {
       evidences
     } = this.props
 
+    const { validationResult } = this.state
+
+    console.log(this.state)
     return (
       <div className="container">
         <div className="row">
@@ -76,6 +100,15 @@ class DisputeDetail extends React.Component {
             <sub>{fileHash}</sub>
           </div>
         </div>
+        {fileURI && fileHash &&
+        <div className="row">
+          <div className="col">
+            <sub>{validationResult}</sub>
+            <sub>slm</sub>
+
+          </div>
+        </div>
+        }
         <hr />
         <br />
         <div className="row">

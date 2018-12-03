@@ -182,7 +182,7 @@ class Dashboard extends React.Component {
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <button
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   onClick={this.deploy(this.state.wallet, this.state.arbitrationCost)}
                   type="button"
                 >
@@ -192,7 +192,7 @@ class Dashboard extends React.Component {
               <input
                 aria-describedby="basic-addon1"
                 aria-label=""
-                class="form-control"
+                className="form-control"
                 placeholder="Arbitration Price"
                 type="text"
                 onChange={this.handleArbitrationPriceChange()}
