@@ -13,12 +13,12 @@ class DisputeDetail extends React.Component {
     this.archon = new Archon(window.web3.currentProvider)
     console.log(this.archon)
     this.state = {
-      validationResult: 'po'
+      validationResult: ''
     }
   }
 
   static getDerivedStateFromProps(props, state){
-    
+
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
@@ -104,7 +104,6 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <sub>{validationResult}</sub>
-            <sub>slm</sub>
 
           </div>
         </div>
