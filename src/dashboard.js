@@ -83,8 +83,7 @@ class Dashboard extends React.Component {
   }
 
   owner = () => {
-    const { selectedAddress } = this.state
-    getOwner(centralizedArbitratorInstance(selectedAddress))
+    getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
   }
 
   deploy = (account, arbitrationPrice) => async e => {
@@ -182,8 +181,8 @@ class Dashboard extends React.Component {
 
           <div className="col">
             <h4>Deploy A New Centralized Arbitrator</h4>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
+            <div className="input-group mb-3">
+              <div className="input-group-prepend">
                 <button
                   className="btn btn-primary"
                   onClick={this.deploy(wallet, arbitrationCost)}
@@ -218,7 +217,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col">
                 <DisputeList
-                  activeWallet={wallet}
+                  activeWallet={this.state.wallet}
                   contractAddress={selectedAddress}
                   networkType={networkType}
                 />

@@ -4,6 +4,7 @@ import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { giveRuling } from './ethereum/centralized-arbitrator'
+import web3 from './ethereum/web3'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class DisputeDetail extends React.Component {
     }
   }
 
-  handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
+  handleGiveRulingButtonClick = (account, instance, id, ruling) => e => {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
@@ -44,6 +45,8 @@ class DisputeDetail extends React.Component {
   }
 
   render() {
+    console.log('PRERENDER DISPUTEDETAIL')
+    console.log(this.props)
     const {
       activeWallet,
       aliases,
@@ -196,7 +199,8 @@ DisputeDetail.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   category: PropTypes.number.isRequired,
-  centralizedArbitratorInstance: PropTypes.web3.eth.Contract.isRequired,
+  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
+    .isRequired,
   description: PropTypes.string.isRequired,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   fileHash: PropTypes.string.isRequired,

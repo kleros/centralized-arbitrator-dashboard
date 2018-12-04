@@ -49,7 +49,7 @@ class Dispute extends React.Component {
       status
     } = this.props
     return (
-      <React.Fragment className="dispute">
+      <React.Fragment>
         <tbody>
           <tr
             aria-controls={`accordion${id}`}
@@ -111,7 +111,8 @@ class Dispute extends React.Component {
 Dispute.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   arbitrated: PropTypes.string.isRequired,
-  centralizedArbitratorInstance: PropTypes.web3.eth.Contract.isRequired,
+  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
+    .isRequired,
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
   fee: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,

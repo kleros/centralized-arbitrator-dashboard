@@ -183,8 +183,7 @@ class DisputeList extends React.Component {
       })
   }
 
-  disputes = items => {
-    const { activeWallet, contractAddress, networkType } = this.props
+  disputes = (contractAddress, networkType, activeWallet, items) =>
     items
       .filter(dispute => dispute.status !== '2')
       .sort(function(a, b) {
@@ -207,9 +206,11 @@ class DisputeList extends React.Component {
           status={item.status || '0'}
         />
       ))
-  }
 
   render() {
+    console.log('PRERENDER')
+    console.log(this.props.contractAddress)
+    const { contractAddress, networkType, activeWallet } = this.props
     const { disputes } = this.state
     return (
       <div>
@@ -230,7 +231,7 @@ class DisputeList extends React.Component {
             </tr>
           </thead>
 
-          {this.disputes(disputes)}
+          {this.disputes(contractAddress, networkType, activeWallet, disputes)}
         </table>
       </div>
     )

@@ -9,6 +9,8 @@ import React from 'react'
 class ArbitrationPrice extends React.Component {
   constructor(props) {
     super(props)
+    console.log('ARBITRATIONPRICE PROPS')
+    console.log(props)
     this.state = {
       arbitrationCost: 'Fetching...'
     }
