@@ -44,7 +44,7 @@ class DisputeList extends React.Component {
 
     if (contractAddress !== prevProps.contractAddress) {
       this.subscriptions = {}
-      this.state.disputes = []
+      this.setState({ disputes: [] })
       this.subscriptions.disputeCreation = centralizedArbitratorInstance(
         contractAddress
       )
