@@ -57,6 +57,7 @@ class DisputeDetail extends React.Component {
       fileHash,
       fileURI,
       id,
+      ipfsGateway,
       question,
       rulingOptions,
       title
@@ -89,7 +90,11 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h4 className="">
-              <a href={fileURI} rel="noopener noreferrer" target="_blank">
+              <a
+                href={ipfsGateway + fileURI}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 Agreement File
               </a>
             </h4>
@@ -129,6 +134,7 @@ class DisputeDetail extends React.Component {
                 </Identicon>
                 <EvidenceList
                   evidences={evidences[address]}
+                  ipfsGateway={ipfsGateway}
                   name={aliases[address]}
                 />
               </div>
@@ -206,6 +212,7 @@ DisputeDetail.propTypes = {
   fileHash: PropTypes.string.isRequired,
   fileURI: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  ipfsGateway: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
   rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired

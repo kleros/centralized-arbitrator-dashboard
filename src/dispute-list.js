@@ -21,6 +21,8 @@ class DisputeList extends React.Component {
       metaevidence: undefined,
       ruling: undefined
     }
+
+    this.gateway = 'https://ipfs.io'
   }
 
   componentDidMount() {
@@ -65,11 +67,13 @@ class DisputeList extends React.Component {
     const sortedDisputes = disputes.sort(function(a, b) {
       return a.id - b.id
     })
+    console.log('evidence')
+    console.log(evidence)
 
     sortedDisputes[disputeID].evidences[party] =
       sortedDisputes[disputeID].evidences[party] || []
 
-    fetch(evidence).then(response =>
+    fetch(this.gateway + evidence).then(response =>
       response
         .json()
         .catch(function() {
@@ -97,7 +101,7 @@ class DisputeList extends React.Component {
         toBlock: 'latest'
       })
       .on('data', event => {
-        fetch(event.returnValues._evidence)
+        fetch(this.gateway + event.returnValues._evidence)
           .then(response =>
             response
               .json()
@@ -200,6 +204,7 @@ class DisputeList extends React.Component {
           evidences={item.evidences}
           fee={item.fee}
           id={item.id}
+          ipfsGateway={this.gateway}
           key={item.id}
           metaevidence={item.metaevidence || 'NO META EVIDENCE'}
           networkType={networkType}

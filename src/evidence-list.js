@@ -3,11 +3,17 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 class EvidenceList extends React.Component {
-  evidences = (name, evidences) => {
+  constructor(props) {
+    super(props)
+    console.log('EVIDENCELISTPROPS')
+    console.log(props)
+  }
+  evidences = (name, evidences, ipfsGateway) => {
     const items = evidences.map(item => (
       <Evidence
         description={item && item.description}
         fileURI={item && item.fileURI}
+        ipfsGateway={ipfsGateway}
         key={name}
         name={name}
       />
@@ -17,7 +23,7 @@ class EvidenceList extends React.Component {
   }
 
   render() {
-    const { evidences, name } = this.props
+    const { evidences, ipfsGateway, name } = this.props
     if (!evidences) return <h4>No Evidence From {name}</h4>
 
     return (
@@ -29,7 +35,7 @@ class EvidenceList extends React.Component {
               <th>File URI</th>
             </tr>
           </thead>
-          {this.evidences(name, evidences)}
+          {this.evidences(name, evidences, ipfsGateway)}
         </table>
       </div>
     )
@@ -38,6 +44,7 @@ class EvidenceList extends React.Component {
 
 EvidenceList.propTypes = {
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ipfsGateway: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired
 }
 

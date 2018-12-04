@@ -7,6 +7,7 @@ const Evidence = ({
   fileTypeExtension,
   fileURI,
   id,
+  ipfsGateway,
   name,
   selfHash
 }) => (
@@ -21,8 +22,12 @@ const Evidence = ({
       >
         <td>{name}</td>
         <td>
-          <a href={`//${fileURI}`} rel="noopener noreferrer" target="_blank">
-            {fileURI}
+          <a
+            href={ipfsGateway + fileURI}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {`${(ipfsGateway + fileURI).substring(0, 30)}...`}
           </a>
         </td>
       </tr>
@@ -48,6 +53,7 @@ Evidence.propTypes = {
   fileTypeExtension: PropTypes.string.isRequired,
   fileURI: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  ipfsGateway: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   selfHash: PropTypes.string.isRequired
 }

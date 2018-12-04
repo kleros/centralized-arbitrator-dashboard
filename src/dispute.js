@@ -44,6 +44,7 @@ class Dispute extends React.Component {
       evidences,
       fee,
       id,
+      ipfsGateway,
       metaevidence,
       networkType,
       status
@@ -95,6 +96,7 @@ class Dispute extends React.Component {
                   fileHash={metaevidence.fileHash}
                   fileURI={metaevidence.fileURI}
                   id={id}
+                  ipfsGateway={ipfsGateway}
                   question={metaevidence.question}
                   rulingOptions={metaevidence.rulingOptions}
                   title={metaevidence.title}
@@ -116,6 +118,7 @@ Dispute.propTypes = {
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
   fee: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  ipfsGateway: PropTypes.string.isRequired,
   metaevidence: PropTypes.shape({
     aliases: PropTypes.shape({
       [PropTypes.string]: PropTypes.string
