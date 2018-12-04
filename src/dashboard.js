@@ -1,14 +1,10 @@
-import {
-  centralizedArbitratorInstance,
-  deployCentralizedArbitrator,
-  getOwner
-} from './ethereum/centralized-arbitrator'
 import ArbitrationPrice from './arbitration-price'
 import DisputeList from './dispute-list'
 import Identicon from './identicon.js'
 import NavBar from './navbar.js'
 import { RateLimiter } from 'limiter'
 import React from 'react'
+import { deployCentralizedArbitrator } from './ethereum/centralized-arbitrator'
 import web3 from './ethereum/web3'
 
 class Dashboard extends React.Component {
@@ -80,10 +76,6 @@ class Dashboard extends React.Component {
     this.setState({
       selectedAddress: contractAddresses[0]
     })
-  }
-
-  owner = () => {
-    getOwner(centralizedArbitratorInstance(this.state.selectedAddress))
   }
 
   deploy = (account, arbitrationPrice) => async e => {
@@ -217,7 +209,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col">
                 <DisputeList
-                  activeWallet={this.state.wallet}
+                  activeWallet={wallet}
                   contractAddress={selectedAddress}
                   networkType={networkType}
                 />

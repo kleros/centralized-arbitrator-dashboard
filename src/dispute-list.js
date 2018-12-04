@@ -208,9 +208,7 @@ class DisputeList extends React.Component {
       ))
 
   render() {
-    console.log('PRERENDER')
-    console.log(this.props.contractAddress)
-    const { contractAddress, networkType, activeWallet } = this.props
+    const { activeWallet, contractAddress, networkType } = this.props
     const { disputes } = this.state
     return (
       <div>

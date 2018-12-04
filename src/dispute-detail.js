@@ -18,7 +18,7 @@ class DisputeDetail extends React.Component {
     }
   }
 
-  handleGiveRulingButtonClick = (account, instance, id, ruling) => e => {
+  handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
