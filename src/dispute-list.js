@@ -118,11 +118,13 @@ class DisputeList extends React.Component {
 
   updateRuling = async event => {
     const { disputes } = this.state
-    disputes[parseInt(event.returnValues._disputeID)].ruling =
-      event.returnValues[3]
-    disputes[event.returnValues._disputeID].status = await getDisputeStatus(
-      event.returnValues._disputeID
+    const dispute = disputes.filter(
+      d => d.id === parseInt(event.returnValues._disputeID)
     )
+
+    dispute.ruling = event.returnValues[3]
+    dispute.status = await getDisputeStatus(event.returnValues._disputeID)
+
     this.setState({ disputes: disputes })
   }
 
