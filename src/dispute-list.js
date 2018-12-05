@@ -86,11 +86,8 @@ class DisputeList extends React.Component {
   updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
     const { disputes } = this.state
 
-    const sortedDisputes = disputes.sort(function(a, b) {
-      return a.id - b.id
-    })
-    console.log('sortedDisputes')
-    console.log(sortedDisputes)
+    console.log('disputes')
+    console.log(disputes)
     console.log('disputeID')
     console.log(disputeID)
 
@@ -108,9 +105,14 @@ class DisputeList extends React.Component {
               .catch(function() {
                 console.log('error')
               })
-              .then(data => (sortedDisputes[disputeID].metaevidence = data))
+              .then(
+                data =>
+                  (disputes.filter(
+                    d => d.id === disputeID
+                  )[0].metaevidence = data)
+              )
           )
-          .then(() => this.setState({ disputes: sortedDisputes }))
+          .then(() => this.setState({ disputes }))
       })
   }
 
