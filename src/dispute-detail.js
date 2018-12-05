@@ -22,13 +22,13 @@ class DisputeDetail extends React.Component {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  validate(fileURI) {
+  validate(fileURI, fileHash) {
     this.setState({ validationResult: 'Testing integrity...' })
     console.log('validate')
     console.log(this.archon)
     console.log(fileURI)
     this.archon.utils
-      .validateFileFromURI(fileURI)
+      .validateFileFromURI(fileURI, { hash: fileHash })
       .then(data => {
         console.log(data.isValid) // true
         if (data.isValid)
@@ -41,11 +41,6 @@ class DisputeDetail extends React.Component {
         console.log('here')
         console.error(err)
       })
-  }
-
-  componentDidMount() {
-    const { fileHash, fileURI } = this.state
-    if (fileURI && fileHash) this.validate(fileURI, fileHash).then()
   }
 
   render() {
@@ -70,7 +65,7 @@ class DisputeDetail extends React.Component {
     const { validationResult } = this.state
 
     if (fileURI && validationResult === 'Integrity not tested.')
-      this.validate(ipfsGateway + fileURI)
+      this.validate(ipfsGateway + fileURI, fileURI.split('/')[2])
 
     console.log(this.state)
     return (

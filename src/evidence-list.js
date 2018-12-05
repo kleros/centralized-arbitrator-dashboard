@@ -14,7 +14,7 @@ class EvidenceList extends React.Component {
         description={item && item.description}
         fileURI={item && item.fileURI}
         ipfsGateway={ipfsGateway}
-        key={name}
+        key={name + item.fileURI}
         name={name}
       />
     ))
@@ -33,6 +33,7 @@ class EvidenceList extends React.Component {
             <tr>
               <th>Name</th>
               <th>File URI</th>
+              <th>Integrity</th>
             </tr>
           </thead>
           {this.evidences(name, evidences, ipfsGateway)}
