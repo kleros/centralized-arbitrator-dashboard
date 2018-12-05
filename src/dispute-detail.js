@@ -14,7 +14,7 @@ class DisputeDetail extends React.Component {
     this.archon = new Archon(window.web3.currentProvider)
     console.log(this.archon)
     this.state = {
-      validationResult: ''
+      validationResult: 'Integrity not tested.'
     }
   }
 
@@ -22,19 +22,23 @@ class DisputeDetail extends React.Component {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  validate(fileURI, evidenceHash) {
-    this.setState({ validationResult: 'sdasdasdasd' })
+  validate(fileURI) {
+    this.setState({ validationResult: 'Testing integrity...' })
     console.log('validate')
     console.log(this.archon)
     console.log(fileURI)
     this.archon.utils
-      .validateFileFromURI(fileURI, { hash: evidenceHash })
+      .validateFileFromURI(fileURI)
       .then(data => {
         console.log(data.isValid) // true
+        if (data.isValid)
+          this.setState({ validationResult: 'Integrity is intact!' })
+        else this.setState({ validationResult: 'Integrity is broken!' })
         return data.isValid
       })
       .catch(err => {
-        this.setState({ validationResult: 'something bad happened' })
+        this.setState({ validationResult: 'Integrity test failed.' })
+        console.log('here')
         console.error(err)
       })
   }
@@ -64,6 +68,9 @@ class DisputeDetail extends React.Component {
     } = this.props
 
     const { validationResult } = this.state
+
+    if (fileURI && validationResult === 'Integrity not tested.')
+      this.validate(ipfsGateway + fileURI)
 
     console.log(this.state)
     return (
@@ -105,7 +112,7 @@ class DisputeDetail extends React.Component {
             <sub>{fileHash}</sub>
           </div>
         </div>
-        (
+        {validationResult}
         {fileURI && fileHash && (
           <div className="row">
             <div className="col">
@@ -113,7 +120,7 @@ class DisputeDetail extends React.Component {
             </div>
           </div>
         )}
-        )
+
         <hr />
         <br />
         <div className="row">
