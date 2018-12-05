@@ -20,7 +20,7 @@ class Evidence extends React.Component {
     console.log(fileURI)
     console.log(fileHash)
     this.archon.utils
-      .validateFileFromURI(fileURI, { hash: fileHash })
+      .validateFileFromURI(fileURI, { preValidated: true })
       .then(data => {
         console.log('data-evidence')
         console.log(data) // true

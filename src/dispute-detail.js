@@ -28,7 +28,7 @@ class DisputeDetail extends React.Component {
     console.log(this.archon)
     console.log(fileURI)
     this.archon.utils
-      .validateFileFromURI(fileURI, { hash: fileHash })
+      .validateFileFromURI(fileURI, { hash: fileHash, preValidated: true })
       .then(data => {
         console.log('data')
         console.log(data) // true
