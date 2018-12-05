@@ -1,5 +1,6 @@
 import Archon from '@kleros/archon'
 import EvidenceDetail from './evidence-detail'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -21,10 +22,10 @@ class Evidence extends React.Component {
     this.archon.utils
       .validateFileFromURI(fileURI, { hash: fileHash })
       .then(data => {
-        console.log(data.isValid) // true
+        console.log('data-evidence')
+        console.log(data) // true
         if (data.isValid) this.setState({ validationResult: 'OK' })
         else this.setState({ validationResult: 'Broken' })
-        return data.isValid
       })
       .catch(err => {
         this.setState({ validationResult: err })
@@ -59,17 +60,19 @@ class Evidence extends React.Component {
             data-target={`#accordion${id}`}
             data-toggle="collapse"
           >
-            <td>{name}</td>
             <td>
               <a
                 href={ipfsGateway + fileURI}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {`${(ipfsGateway + fileURI).substring(0, 30)}...`}
+                {name}
               </a>
             </td>
             <td>{validationResult}</td>
+            <td>
+              <FontAwesomeIcon icon="caret-down" />
+            </td>
           </tr>
         </tbody>
         <tbody>

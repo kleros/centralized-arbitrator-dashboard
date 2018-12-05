@@ -117,7 +117,7 @@ Dispute.propTypes = {
     .isRequired,
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
   fee: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   ipfsGateway: PropTypes.string.isRequired,
   metaevidence: PropTypes.shape({
     aliases: PropTypes.shape({

@@ -30,11 +30,11 @@ class DisputeDetail extends React.Component {
     this.archon.utils
       .validateFileFromURI(fileURI, { hash: fileHash })
       .then(data => {
-        console.log(data.isValid) // true
+        console.log('data')
+        console.log(data) // true
         if (data.isValid)
           this.setState({ validationResult: 'Integrity is intact!' })
         else this.setState({ validationResult: 'Integrity is broken!' })
-        return data.isValid
       })
       .catch(err => {
         this.setState({ validationResult: 'Integrity test failed.' })

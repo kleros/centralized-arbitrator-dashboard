@@ -1,4 +1,5 @@
 import Evidence from './evidence'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -31,9 +32,11 @@ class EvidenceList extends React.Component {
         <table className="table table-hover evidence-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>File URI</th>
+              <th>Evidence</th>
               <th>Integrity</th>
+              <th>
+                <FontAwesomeIcon icon="gavel" />
+              </th>
             </tr>
           </thead>
           {this.evidences(name, evidences, ipfsGateway)}
