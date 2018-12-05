@@ -17,13 +17,21 @@ class NavBar extends React.Component {
             <span>
               <img
                 alt=""
-                className="d-inline-block align-top"
+                className="d-inline-block align-mid"
                 height="30"
                 src="kleros-logo.svg"
                 width="30"
               />
+            </span>{' '}
+            <span>
+              <img
+                alt=""
+                className="d-inline-block align-mid"
+                height="auto"
+                src="Group.svg"
+                width="auto"
+              />
             </span>
-            <span>KLEROS</span>
           </a>
           <button
             aria-controls="navbarNav"
@@ -45,13 +53,13 @@ class NavBar extends React.Component {
                 </a>
               </li>
             </ul>
-            <div className="mx-2 my-lg-0 icon-grey badge">
+            <div className="mx-2 my-lg-0 icon-grey badge align-mid">
               <FontAwesomeIcon className="navbar-icon" icon="bell" />
             </div>
-            <div className="mx-2 my-lg-0">
+            <div className="mx-2 my-lg-0 align-mid">
               <FontAwesomeIcon className="navbar-icon" icon="envelope" />
             </div>
-            <div className="mx-2 my-lg-0">
+            <div className="mx-2 my-lg-0 align-mid">
               <Identicon
                 bgColor="#4004A3"
                 className="identicon"
