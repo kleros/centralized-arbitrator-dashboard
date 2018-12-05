@@ -63,15 +63,12 @@ class DisputeList extends React.Component {
 
   updateEvidence = async (disputeID, party, evidence) => {
     const { disputes } = this.state
+    const dispute = disputes.filter(d => d.id === disputeID)[0]
+    dispute.evidences = dispute.evidences || {}
+    dispute.evidences[party] = dispute.evidences[party] || []
 
-    const sortedDisputes = disputes.sort(function(a, b) {
-      return a.id - b.id
-    })
     console.log('evidence')
     console.log(evidence)
-
-    sortedDisputes[disputeID].evidences[party] =
-      sortedDisputes[disputeID].evidences[party] || []
 
     fetch(this.gateway + evidence).then(response =>
       response
@@ -79,7 +76,7 @@ class DisputeList extends React.Component {
         .catch(function() {
           console.log('error')
         })
-        .then(data => sortedDisputes[disputeID].evidences[party].push(data))
+        .then(data => dispute.evidences[party].push(data))
     )
   }
 
@@ -120,7 +117,7 @@ class DisputeList extends React.Component {
     const { disputes } = this.state
     const dispute = disputes.filter(
       d => d.id === parseInt(event.returnValues._disputeID)
-    )
+    )[0]
 
     dispute.ruling = event.returnValues[3]
     dispute.status = await getDisputeStatus(event.returnValues._disputeID)
