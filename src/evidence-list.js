@@ -9,14 +9,14 @@ class EvidenceList extends React.Component {
     console.log('EVIDENCELISTPROPS')
     console.log(props)
   }
-  evidences = (name, evidences, ipfsGateway) => {
+  evidences = (evidences, ipfsGateway) => {
     const items = evidences.map(item => (
       <Evidence
         description={item && item.description}
         fileURI={item && item.fileURI}
         ipfsGateway={ipfsGateway}
-        key={name + item.fileURI}
-        name={name}
+        key={item.name + item.fileURI}
+        name={item.name}
       />
     ))
 
@@ -39,7 +39,7 @@ class EvidenceList extends React.Component {
               </th>
             </tr>
           </thead>
-          {this.evidences(name, evidences, ipfsGateway)}
+          {this.evidences(evidences, ipfsGateway)}
         </table>
       </div>
     )
