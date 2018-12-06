@@ -18,6 +18,7 @@ class DisputeList extends React.Component {
     this.subscriptions = {
       dispute: undefined,
       disputeCreation: undefined,
+      evidence: undefined,
       metaevidence: undefined,
       ruling: undefined
     }
@@ -45,6 +46,11 @@ class DisputeList extends React.Component {
     const { contractAddress } = this.props
 
     if (contractAddress !== prevProps.contractAddress) {
+      this.subscriptions.disputeCreation.unsubscribe()
+      this.subscriptions.dispute.unsubscribe()
+      this.subscriptions.evidence.unsubscribe()
+      this.subscriptions.ruling.unsubscribe()
+      this.subscriptions.metaevidence.unsubscribe()
       this.subscriptions = {}
       this.setState({ disputes: [] })
       this.subscriptions.disputeCreation = centralizedArbitratorInstance(
@@ -115,14 +121,13 @@ class DisputeList extends React.Component {
 
   updateRuling = async event => {
     const { disputes } = this.state
-    const dispute = disputes.filter(
-      d => d.id === parseInt(event.returnValues._disputeID)
-    )[0]
+    const disputeID = parseInt(event.returnValues._disputeID)
+    const dispute = disputes.filter(d => d.id === disputeID)[0]
 
     dispute.ruling = event.returnValues[3]
     dispute.status = await getDisputeStatus(event.returnValues._disputeID)
 
-    this.setState({ disputes: disputes })
+    this.setState({ disputes })
   }
 
   addDispute = async (disputeID, arbitrableAddress) => {
