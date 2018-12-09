@@ -2,12 +2,12 @@ import {
   centralizedArbitratorInstance,
   getDispute,
   getDisputeStatus
-} from './ethereum/centralized-arbitrator'
+} from '../ethereum/centralized-arbitrator'
 import Dispute from './dispute'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { arbitrableInstanceAt } from './ethereum/arbitrable'
+import { arbitrableInstanceAt } from '../ethereum/arbitrable'
 
 class DisputeList extends React.Component {
   constructor(props) {

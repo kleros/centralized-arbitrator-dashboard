@@ -2,7 +2,7 @@ import DisputeDetail from './dispute-detail'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
-import web3 from './ethereum/web3'
+import web3 from '../ethereum/web3'
 
 class Dispute extends React.Component {
   constructor(props) {

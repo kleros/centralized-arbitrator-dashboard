@@ -4,8 +4,8 @@ import Identicon from './identicon.js'
 import NavBar from './navbar.js'
 import { RateLimiter } from 'limiter'
 import React from 'react'
-import { deployCentralizedArbitrator } from './ethereum/centralized-arbitrator'
-import web3 from './ethereum/web3'
+import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
+import web3 from '../ethereum/web3'
 
 class Dashboard extends React.Component {
   constructor(props) {

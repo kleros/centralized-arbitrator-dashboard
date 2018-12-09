@@ -2,7 +2,7 @@ import {
   centralizedArbitratorInstance,
   getArbitrationCost,
   setArbitrationPrice
-} from './ethereum/centralized-arbitrator'
+} from '../ethereum/centralized-arbitrator'
 import PropTypes from 'prop-types'
 import React from 'react'
 

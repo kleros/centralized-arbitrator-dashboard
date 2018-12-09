@@ -3,8 +3,8 @@ import EvidenceList from './evidence-list'
 import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { giveRuling } from './ethereum/centralized-arbitrator'
-import web3 from './ethereum/web3'
+import { giveRuling } from '../ethereum/centralized-arbitrator'
+import web3 from '../ethereum/web3'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
