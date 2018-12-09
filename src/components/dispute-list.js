@@ -46,11 +46,14 @@ class DisputeList extends React.Component {
     const { contractAddress } = this.props
 
     if (contractAddress !== prevProps.contractAddress) {
-      if(this.subscriptions.disputeCreation) this.subscriptions.disputeCreation.unsubscribe()
-      if(this.subscriptions.dispute) this.subscriptions.dispute.unsubscribe()
-      if(this.subscriptions.evidence)this.subscriptions.evidence.unsubscribe()
-      if(this.subscriptions.subscriptions)this.subscriptions.ruling.unsubscribe()
-      if(this.subscriptions.metaevidence)this.subscriptions.metaevidence.unsubscribe()
+      if (this.subscriptions.disputeCreation)
+        this.subscriptions.disputeCreation.unsubscribe()
+      if (this.subscriptions.dispute) this.subscriptions.dispute.unsubscribe()
+      if (this.subscriptions.evidence) this.subscriptions.evidence.unsubscribe()
+      if (this.subscriptions.subscriptions)
+        this.subscriptions.ruling.unsubscribe()
+      if (this.subscriptions.metaevidence)
+        this.subscriptions.metaevidence.unsubscribe()
       this.subscriptions = {}
       this.setState({ disputes: [] })
       this.subscriptions.disputeCreation = centralizedArbitratorInstance(
