@@ -53,13 +53,167 @@ class NavBar extends React.Component {
                 </a>
               </li>
             </ul>
-            <div className="mx-2 my-lg-0 icon-grey badge align-mid">
-              <FontAwesomeIcon className="navbar-icon" icon="bell" />
+            <div class="dropdown">
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-secondary"
+                data-toggle="dropdown"
+                id="dropdownMenu2"
+                type="button"
+              >
+                <FontAwesomeIcon
+                  className="navbar-icon"
+                  icon="bell"
+                  onClick={e => e.stopPropagation()}
+                />
+              </button>
+              <div aria-labelledby="dropdownMenu2" class="dropdown-menu">
+                <button class="dropdown-item" type="button">
+                  Action
+                </button>
+                <button class="dropdown-item" type="button">
+                  Another action
+                </button>
+                <button class="dropdown-item" type="button">
+                  Something else here
+                </button>
+              </div>
             </div>
-            <div className="mx-2 my-lg-0 align-mid">
-              <FontAwesomeIcon className="navbar-icon" icon="envelope" />
+            <div class="mx-2 dropdown" onClick={e => e.stopPropagation()}>
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-secondary"
+                data-toggle="dropdown"
+                id="dropdownMenu2"
+                type="button"
+              >
+                <FontAwesomeIcon className="navbar-icon" icon="envelope" />
+              </button>
+              <div
+                aria-labelledby="dropdownMenu2"
+                class="p-4 dropdown-menu dropdown-menu-right"
+                onClick={e => e.stopPropagation()}
+              >
+                <label>Register to receive notifications by email</label>
+                <hr />
+                <ul
+                  class="nav nav-tabs email-control"
+                  id="myTab"
+                  role="tablist"
+                >
+                  <li class="nav-item">
+                    <a
+                      aria-controls="profile"
+                      aria-selected="true"
+                      class="nav-link active"
+                      data-toggle="tab"
+                      href="#profile"
+                      id="all-contracts-tab"
+                      role="tab"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      All Contracts
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      aria-controls="contact"
+                      aria-selected="false"
+                      class="nav-link"
+                      data-toggle="tab"
+                      href="#contact"
+                      id="current-contract-tab"
+                      role="tab"
+                    >
+                      Current Contract
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div
+                    aria-labelledby="all-contracts-tab"
+                    class="tab-pane fade show active"
+                    id="profile"
+                    role="tabpanel"
+                  >
+                    <label>Send me an email:</label>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        id="defaultCheck1"
+                        type="checkbox"
+                        value=""
+                      />
+                      <label class="form-check-label" for="defaultCheck1">
+                        When there is a new dispute
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        id="defaultCheck2"
+                        type="checkbox"
+                        value=""
+                      />
+                      <label class="form-check-label" for="defaultCheck2">
+                        When there is a new evidence to an existing dispute
+                      </label>
+                    </div>
+                    <hr />
+                    <form>
+                      <div class="form-group row">
+                        <div class="col-sm-12">
+                          <input
+                            class="form-control"
+                            id="inputEmail3"
+                            placeholder="Name"
+                            type="email"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-12">
+                          <input
+                            class="form-control"
+                            id="inputPassword3"
+                            placeholder="Email"
+                            type="password"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-sm-6">
+                          <button class="btn" type="submit">
+                            Unsubscribe
+                          </button>
+                        </div>
+                        <div class="col-sm-6">
+                          <button
+                            class="btn btn-primary float-right"
+                            type="submit"
+                          >
+                            Subscribe
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div
+                    aria-labelledby="current-contract-tab"
+                    class="tab-pane fade"
+                    id="contact"
+                    role="tabpanel"
+                  >
+                    hi there
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="mx-2 my-lg-0 align-mid">
+
+            <div className="button">
               <Identicon
                 bgColor="#4004A3"
                 className="identicon"

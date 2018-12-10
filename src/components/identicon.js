@@ -11,7 +11,7 @@ const Identicon = ({
   size,
   spotColor
 }) => (
-  <div>
+  <div className="button">
     <a
       href={`https://kovan.etherscan.io/address/${seed}`}
       rel="noopener noreferrer"

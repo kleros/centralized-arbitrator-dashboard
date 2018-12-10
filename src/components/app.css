@@ -71,7 +71,9 @@ hr
   color: white;
 }
 
-
+.email-control{
+  min-width: 300px;
+}
 
 .fa-stack[data-count]:after{
   position:absolute;
