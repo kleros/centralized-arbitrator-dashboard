@@ -3,7 +3,8 @@ import {
   faBell,
   faCaretDown,
   faEnvelope,
-  faGavel
+  faGavel,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import Dashboard from './dashboard'
 import React from 'react'
@@ -13,6 +14,7 @@ library.add(faGavel)
 library.add(faCaretDown)
 library.add(faBell)
 library.add(faEnvelope)
+library.add(faCheck)
 
 const App = () => (
   <div className="App">

@@ -3,6 +3,8 @@ import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import NotificationItem from './notification-item'
+
 class NavBar extends React.Component {
   componentDidMount() {}
 
@@ -53,11 +55,11 @@ class NavBar extends React.Component {
                 </a>
               </li>
             </ul>
-            <div class="dropdown">
+            <div className="dropdown">
               <button
                 aria-expanded="false"
                 aria-haspopup="true"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-toggle="dropdown"
                 id="dropdownMenu2"
                 type="button"
@@ -68,23 +70,21 @@ class NavBar extends React.Component {
                   onClick={e => e.stopPropagation()}
                 />
               </button>
-              <div aria-labelledby="dropdownMenu2" class="dropdown-menu">
-                <button class="dropdown-item" type="button">
-                  Action
-                </button>
-                <button class="dropdown-item" type="button">
-                  Another action
-                </button>
-                <button class="dropdown-item" type="button">
-                  Something else here
-                </button>
+              <div aria-labelledby="dropdownMenu2" className="dropdown-menu notification-control">
+                <label className="text-center">Notifications</label>
+                <hr/>
+                <NotificationItem/>
+                <NotificationItem/>
+                <NotificationItem/>
+                <NotificationItem/>
+                <NotificationItem/>
               </div>
             </div>
-            <div class="mx-2 dropdown" onClick={e => e.stopPropagation()}>
+            <div className="mx-2 dropdown" onClick={e => e.stopPropagation()}>
               <button
                 aria-expanded="false"
                 aria-haspopup="true"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-toggle="dropdown"
                 id="dropdownMenu2"
                 type="button"
@@ -93,35 +93,35 @@ class NavBar extends React.Component {
               </button>
               <div
                 aria-labelledby="dropdownMenu2"
-                class="p-4 dropdown-menu dropdown-menu-right"
+                className="p-4 dropdown-menu dropdown-menu-right"
                 onClick={e => e.stopPropagation()}
               >
-                <label>Register to receive notifications by email</label>
+                <label className="col-md-12 text-center">Register to receive notifications by email</label>
                 <hr />
                 <ul
-                  class="nav nav-tabs email-control"
+                  className="nav nav-tabs email-control"
                   id="myTab"
                   role="tablist"
                 >
-                  <li class="nav-item">
+                  <li className="nav-item">
                     <a
                       aria-controls="profile"
                       aria-selected="true"
-                      class="nav-link active"
+                      className="nav-link active"
                       data-toggle="tab"
                       href="#profile"
                       id="all-contracts-tab"
-                      role="tab"
                       onClick={e => e.stopPropagation()}
+                      role="tab"
                     >
                       All Contracts
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li className="nav-item">
                     <a
                       aria-controls="contact"
                       aria-selected="false"
-                      class="nav-link"
+                      className="nav-link"
                       data-toggle="tab"
                       href="#contact"
                       id="current-contract-tab"
@@ -131,68 +131,70 @@ class NavBar extends React.Component {
                     </a>
                   </li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
+                <div className="tab-content" id="myTabContent">
                   <div
                     aria-labelledby="all-contracts-tab"
-                    class="tab-pane fade show active"
+                    className="tab-pane fade show active"
                     id="profile"
                     role="tabpanel"
                   >
-                    <label>Send me an email:</label>
-                    <div class="form-check">
+                  <br/>
+                  <label>Registering your email you will be informed:</label>
+                  <br/>
+                    <div className="form-check">
                       <input
-                        class="form-check-input"
+                        className="form-check-input"
                         id="defaultCheck1"
                         type="checkbox"
                         value=""
                       />
-                      <label class="form-check-label" for="defaultCheck1">
+                      <label className="form-check-label" htmlFor="defaultCheck1">
                         When there is a new dispute
                       </label>
                     </div>
-                    <div class="form-check">
+                    <div className="form-check">
                       <input
-                        class="form-check-input"
+                        className="form-check-input"
                         id="defaultCheck2"
                         type="checkbox"
                         value=""
                       />
-                      <label class="form-check-label" for="defaultCheck2">
+                      <label className="form-check-label" htmlFor="defaultCheck2">
                         When there is a new evidence to an existing dispute
                       </label>
                     </div>
                     <hr />
                     <form>
-                      <div class="form-group row">
-                        <div class="col-sm-12">
+                      <div className="form-group row">
+                        <div className="col-sm-12">
                           <input
-                            class="form-control"
-                            id="inputEmail3"
+                            className="form-control"
+                            id="inputNameAllContracts"
                             placeholder="Name"
+                            type="name"
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <div className="col-sm-12">
+                          <input
+                            className="form-control"
+                            id="inputEmailAllContracts"
+                            placeholder="Email"
                             type="email"
                           />
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <div class="col-sm-12">
-                          <input
-                            class="form-control"
-                            id="inputPassword3"
-                            placeholder="Email"
-                            type="password"
-                          />
-                        </div>
-                      </div>
 
-                      <div class="form-group row">
-                        <div class="col-sm-6">
-                          <button class="btn" type="submit">
+                      <div className="form-group row">
+                        <div className="col-sm-6">
+                          <button className="btn" type="submit">
                             Unsubscribe
                           </button>
                         </div>
-                        <div class="col-sm-6">
+                        <div className="col-sm-6">
                           <button
-                            class="btn btn-primary float-right"
+                            className="btn btn-primary float-right"
                             type="submit"
                           >
                             Subscribe
@@ -203,11 +205,81 @@ class NavBar extends React.Component {
                   </div>
                   <div
                     aria-labelledby="current-contract-tab"
-                    class="tab-pane fade"
+                    className="tab-pane fade"
                     id="contact"
                     role="tabpanel"
                   >
-                    hi there
+                  <div
+                    aria-labelledby="all-contracts-tab"
+                    className="tab-pane fade show active"
+                    id="profile"
+                    role="tabpanel"
+                  >
+                    <br/>
+                    <label>Registering your email you will be informed:</label>
+                    <br/>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        id="defaultCheck1"
+                        type="checkbox"
+                        value=""
+                      />
+                      <label className="form-check-label" htmlFor="defaultCheck1">
+                        When there is a new dispute
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        id="defaultCheck2"
+                        type="checkbox"
+                        value=""
+                      />
+                      <label className="form-check-label" htmlFor="defaultCheck2">
+                        When there is a new evidence to an existing dispute
+                      </label>
+                    </div>
+                    <hr />
+                    <form>
+                      <div className="form-group row">
+                        <div className="col-sm-12">
+                          <input
+                            className="form-control"
+                            id="inputEmailCurrentContract"
+                            placeholder="Name"
+                            type="name"
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <div className="col-sm-12">
+                          <input
+                            className="form-control"
+                            id="inputPasswordCurrentContract"
+                            placeholder="Email"
+                            type="email"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group row">
+                        <div className="col-sm-6">
+                          <button className="btn" type="submit">
+                            Unsubscribe
+                          </button>
+                        </div>
+                        <div className="col-sm-6">
+                          <button
+                            className="btn btn-primary float-right"
+                            type="submit"
+                          >
+                            Subscribe
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                   </div>
                 </div>
               </div>

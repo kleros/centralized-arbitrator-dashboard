@@ -75,6 +75,10 @@ hr
   min-width: 300px;
 }
 
+.notification-control{
+  min-width: 300px;
+}
+
 .fa-stack[data-count]:after{
   position:absolute;
   right:0%;
