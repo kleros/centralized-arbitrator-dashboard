@@ -73,9 +73,9 @@ class NavBar extends React.Component {
                 aria-labelledby="dropdownMenu2"
                 className="p-2 dropdown-menu dropdown-menu-right notification-control"
               >
-                <div className="row">
+                <div className="m-2 row">
                   <div className="col text-center">
-                    <label>Notifications</label>
+                    <label><b>Notifications</b></label>
                   </div>
                 </div>
                 <hr />
