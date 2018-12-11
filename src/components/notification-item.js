@@ -3,24 +3,30 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 class NotificationItem extends React.Component {
-  render(){
+  render() {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-xs-1">
+          <div className="col-1">
             <label>
-              <FontAwesomeIcon icon="check" />
+              <FontAwesomeIcon
+                className="primary-inverted"
+                icon="check-circle"
+              />
             </label>
           </div>
-          <div className="col-xs-9 offset-xs-2">
+          <div className="col-8">
             <label>This is a notification</label>
           </div>
         </div>
         <div className="row">
-        <div className="col-md-6 offset-md-5">
-          <sub>5 mins ago</sub>
+          <div className="col">
+            <sub className="float-right primary-inverted">
+              <b>5 mins ago</b>
+            </sub>
           </div>
         </div>
+        <hr />
       </div>
     )
   }

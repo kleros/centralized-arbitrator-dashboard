@@ -2,9 +2,9 @@ import './app.css'
 import {
   faBell,
   faCaretDown,
+  faCheckCircle,
   faEnvelope,
-  faGavel,
-  faCheck
+  faGavel
 } from '@fortawesome/free-solid-svg-icons'
 import Dashboard from './dashboard'
 import React from 'react'
@@ -14,7 +14,7 @@ library.add(faGavel)
 library.add(faCaretDown)
 library.add(faBell)
 library.add(faEnvelope)
-library.add(faCheck)
+library.add(faCheckCircle)
 
 const App = () => (
   <div className="App">

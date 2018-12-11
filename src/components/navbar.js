@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import NotificationItem from './notification-item'
 
 class NavBar extends React.Component {
@@ -70,14 +69,21 @@ class NavBar extends React.Component {
                   onClick={e => e.stopPropagation()}
                 />
               </button>
-              <div aria-labelledby="dropdownMenu2" className="dropdown-menu notification-control">
-                <label className="text-center">Notifications</label>
-                <hr/>
-                <NotificationItem/>
-                <NotificationItem/>
-                <NotificationItem/>
-                <NotificationItem/>
-                <NotificationItem/>
+              <div
+                aria-labelledby="dropdownMenu2"
+                className="p-2 dropdown-menu dropdown-menu-right notification-control"
+              >
+                <div className="row">
+                  <div className="col text-center">
+                    <label>Notifications</label>
+                  </div>
+                </div>
+                <hr />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
               </div>
             </div>
             <div className="mx-2 dropdown" onClick={e => e.stopPropagation()}>
@@ -96,7 +102,9 @@ class NavBar extends React.Component {
                 className="p-4 dropdown-menu dropdown-menu-right"
                 onClick={e => e.stopPropagation()}
               >
-                <label className="col-md-12 text-center">Register to receive notifications by email</label>
+                <label className="col-md-12 text-center">
+                  Register to receive notifications by email
+                </label>
                 <hr />
                 <ul
                   className="nav nav-tabs email-control"
@@ -138,9 +146,9 @@ class NavBar extends React.Component {
                     id="profile"
                     role="tabpanel"
                   >
-                  <br/>
-                  <label>Registering your email you will be informed:</label>
-                  <br/>
+                    <br />
+                    <label>Registering your email you will be informed:</label>
+                    <br />
                     <div className="form-check">
                       <input
                         className="form-check-input"
@@ -148,7 +156,10 @@ class NavBar extends React.Component {
                         type="checkbox"
                         value=""
                       />
-                      <label className="form-check-label" htmlFor="defaultCheck1">
+                      <label
+                        className="form-check-label"
+                        htmlFor="defaultCheck1"
+                      >
                         When there is a new dispute
                       </label>
                     </div>
@@ -159,7 +170,10 @@ class NavBar extends React.Component {
                         type="checkbox"
                         value=""
                       />
-                      <label className="form-check-label" htmlFor="defaultCheck2">
+                      <label
+                        className="form-check-label"
+                        htmlFor="defaultCheck2"
+                      >
                         When there is a new evidence to an existing dispute
                       </label>
                     </div>
@@ -209,77 +223,85 @@ class NavBar extends React.Component {
                     id="contact"
                     role="tabpanel"
                   >
-                  <div
-                    aria-labelledby="all-contracts-tab"
-                    className="tab-pane fade show active"
-                    id="profile"
-                    role="tabpanel"
-                  >
-                    <br/>
-                    <label>Registering your email you will be informed:</label>
-                    <br/>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        id="defaultCheck1"
-                        type="checkbox"
-                        value=""
-                      />
-                      <label className="form-check-label" htmlFor="defaultCheck1">
-                        When there is a new dispute
+                    <div
+                      aria-labelledby="all-contracts-tab"
+                      className="tab-pane fade show active"
+                      id="profile"
+                      role="tabpanel"
+                    >
+                      <br />
+                      <label>
+                        Registering your email you will be informed:
                       </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        id="defaultCheck2"
-                        type="checkbox"
-                        value=""
-                      />
-                      <label className="form-check-label" htmlFor="defaultCheck2">
-                        When there is a new evidence to an existing dispute
-                      </label>
-                    </div>
-                    <hr />
-                    <form>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            className="form-control"
-                            id="inputEmailCurrentContract"
-                            placeholder="Name"
-                            type="name"
-                          />
-                        </div>
+                      <br />
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          id="defaultCheck1"
+                          type="checkbox"
+                          value=""
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="defaultCheck1"
+                        >
+                          When there is a new dispute
+                        </label>
                       </div>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            className="form-control"
-                            id="inputPasswordCurrentContract"
-                            placeholder="Email"
-                            type="email"
-                          />
-                        </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          id="defaultCheck2"
+                          type="checkbox"
+                          value=""
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="defaultCheck2"
+                        >
+                          When there is a new evidence to an existing dispute
+                        </label>
                       </div>
+                      <hr />
+                      <form>
+                        <div className="form-group row">
+                          <div className="col-sm-12">
+                            <input
+                              className="form-control"
+                              id="inputEmailCurrentContract"
+                              placeholder="Name"
+                              type="name"
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <div className="col-sm-12">
+                            <input
+                              className="form-control"
+                              id="inputPasswordCurrentContract"
+                              placeholder="Email"
+                              type="email"
+                            />
+                          </div>
+                        </div>
 
-                      <div className="form-group row">
-                        <div className="col-sm-6">
-                          <button className="btn" type="submit">
-                            Unsubscribe
-                          </button>
+                        <div className="form-group row">
+                          <div className="col-sm-6">
+                            <button className="btn" type="submit">
+                              Unsubscribe
+                            </button>
+                          </div>
+                          <div className="col-sm-6">
+                            <button
+                              className="btn btn-primary float-right"
+                              type="submit"
+                            >
+                              Subscribe
+                            </button>
+                          </div>
                         </div>
-                        <div className="col-sm-6">
-                          <button
-                            className="btn btn-primary float-right"
-                            type="submit"
-                          >
-                            Subscribe
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
