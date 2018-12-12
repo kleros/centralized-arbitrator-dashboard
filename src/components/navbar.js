@@ -75,7 +75,9 @@ class NavBar extends React.Component {
               >
                 <div className="m-2 row">
                   <div className="col text-center">
-                    <label><b>Notifications</b></label>
+                    <label>
+                      <b>Notifications</b>
+                    </label>
                   </div>
                 </div>
                 <hr />

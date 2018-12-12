@@ -107,6 +107,10 @@ class Dashboard extends React.Component {
     this.setState({ arbitrationCost: e.target.value })
   }
 
+  callMeBack = () => {
+    console.log('hey baby')
+  }
+
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
     const {
@@ -212,6 +216,7 @@ class Dashboard extends React.Component {
                   activeWallet={wallet}
                   contractAddress={selectedAddress}
                   networkType={networkType}
+                  notificationCallback={this.callMeBack}
                 />
               </div>
             </div>

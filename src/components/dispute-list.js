@@ -29,17 +29,21 @@ class DisputeList extends React.Component {
   componentDidMount() {
     const { contractAddress } = this.props
 
-    this.subscriptions.disputeCreation = centralizedArbitratorInstance(
-      contractAddress
-    )
-      .events.DisputeCreation({}, { fromBlock: 0, toBlock: 'latest' })
-      .on('data', event => {
-        this.addDispute(
-          event.returnValues._disputeID,
-          event.returnValues._arbitrable
-        )
-      })
-      .on('error', console.error)
+    const centralizedArbitrator = centralizedArbitratorInstance(contractAddress)
+
+    centralizedArbitrator
+    .getPastEvents('DisputeCreation', {fromBlock: 0}, function(error, events){
+      console.log(events)
+    })
+    .then((events) => {
+      console.log("inside then")
+      console.log(events)
+      events.map(event => this.addDispute(event.returnValues._disputeID, event.returnValues._arbitrable))
+    })
+
+    this.subscriptions.disputeCreation = centralizedArbitrator.events.DisputeCreation()
+    .on('data', event => this.addDispute(event.returnValues._disputeID, event.returnValues._arbitrable))
+
   }
 
   componentDidUpdate(prevProps) {
@@ -134,6 +138,7 @@ class DisputeList extends React.Component {
   }
 
   addDispute = async (disputeID, arbitrableAddress) => {
+    this.props.notificationCallback()
     const { contractAddress } = this.props
 
     const dispute = await getDispute(
