@@ -51,10 +51,3 @@ export const giveRuling = async (
   arbitratorInstance.methods
     .giveRuling(disputeID, ruling)
     .send({ from: account })
-
-
-export const getPastEvents = async (arbitratorInstance, disputeCreationCallback, disputeCallback, evidenceCallback, rulingCallback, metaevidenceCallback) => {
-  arbitratorInstance.getPastEvents('DisputeCreation', function(error, events){
-    
-  })
-}

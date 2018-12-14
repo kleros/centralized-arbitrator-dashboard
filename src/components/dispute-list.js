@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import React from "react";
 import { arbitrableInstanceAt } from "../ethereum/arbitrable";
+import update from "immutability-helper";
 
 class DisputeList extends React.Component {
   constructor(props) {
@@ -36,12 +37,14 @@ class DisputeList extends React.Component {
     centralizedArbitrator
       .getPastEvents("DisputeCreation", { fromBlock: 0 })
       .then(events =>
-        events.map(event =>
-          this.addDispute(
+        events.map(event => {
+          console.log("CHECKTHISOUT");
+          console.log(event);
+          return this.addDispute(
             event.returnValues._disputeID,
             event.returnValues._arbitrable
-          )
-        )
+          );
+        })
       );
 
     this.subscriptions.disputeCreation = centralizedArbitrator.events
@@ -58,15 +61,6 @@ class DisputeList extends React.Component {
     const { contractAddress } = this.props;
 
     if (contractAddress !== prevProps.contractAddress) {
-      if (this.subscriptions.disputeCreation)
-        this.subscriptions.disputeCreation.unsubscribe();
-      if (this.subscriptions.dispute) this.subscriptions.dispute.unsubscribe();
-      if (this.subscriptions.evidence)
-        this.subscriptions.evidence.unsubscribe();
-      if (this.subscriptions.subscriptions)
-        this.subscriptions.ruling.unsubscribe();
-      if (this.subscriptions.metaevidence)
-        this.subscriptions.metaevidence.unsubscribe();
       this.subscriptions = {};
       this.setState({ disputes: [] });
       this.subscriptions.disputeCreation = centralizedArbitratorInstance(
@@ -85,9 +79,17 @@ class DisputeList extends React.Component {
 
   updateEvidence = async (disputeID, party, evidence) => {
     const { disputes } = this.state;
-    const dispute = disputes.filter(d => d.id === disputeID)[0];
-    dispute.evidences = dispute.evidences || {};
-    dispute.evidences[party] = dispute.evidences[party] || [];
+    const targetIndex = disputes.findIndex(d => d.id === disputeID);
+    console.log("do we have the dispute?");
+    console.log(disputes[targetIndex]);
+    console.log("disputeID");
+    console.log(disputeID);
+    console.log("disputes");
+    console.log(disputes);
+
+    disputes[targetIndex].evidences = disputes[targetIndex].evidences || {};
+    disputes[targetIndex].evidences[party] =
+      disputes[targetIndex].evidences[party] || [];
 
     console.log("evidence");
     console.log(evidence);
@@ -98,11 +100,11 @@ class DisputeList extends React.Component {
         .catch(function() {
           console.log("error");
         })
-        .then(data => dispute.evidences[party].push(data))
+        .then(data => disputes[targetIndex].evidences[party].push(data))
     );
   };
 
-  updateDispute = async (arbitrableAddress, disputeID, metaEvidenceID) => {
+  updateDispute = async (disputeID, evidence) => {
     const { disputes } = this.state;
 
     console.log("disputes");
@@ -110,38 +112,40 @@ class DisputeList extends React.Component {
     console.log("disputeID");
     console.log(disputeID);
 
-    this.subscriptions.metaevidence = arbitrableInstanceAt(arbitrableAddress)
-      .events.MetaEvidence({
-        filter: { _metaEvidenceID: metaEvidenceID },
-        fromBlock: 0,
-        toBlock: "latest"
-      })
-      .on("data", event => {
-        fetch(this.gateway + event.returnValues._evidence)
-          .then(response =>
-            response
-              .json()
-              .catch(function() {
-                console.log("error");
-              })
-              .then(
-                data =>
-                  (disputes.filter(
-                    d => d.id === disputeID
-                  )[0].metaevidence = data)
-              )
-          )
-          .then(() => this.setState({ disputes }));
-      });
+    const targetIndex = disputes.findIndex(d => d.id === disputeID);
+    disputes[targetIndex].metaevidence = evidence;
+
+    this.setState({ disputes });
+  };
+
+  assignMetaevidence = (disputeID, metaEvidenceEvent) => {
+    const { disputes } = this.state;
+
+    console.log("disputes");
+    console.log(disputes);
+    console.log("disputeID");
+    console.log(disputeID);
+
+    const targetIndex = disputes.findIndex(d => d.id === disputeID);
+    console.log("TARGETINDEX");
+    console.log(targetIndex);
+    disputes[targetIndex].metaevidence =
+      metaEvidenceEvent[0].returnValues._evidence;
+    console.log(disputes);
+    this.setState({ disputes });
   };
 
   updateRuling = async event => {
+    console.log("eventscheme");
+    console.log(event);
     const { disputes } = this.state;
     const disputeID = parseInt(event.returnValues._disputeID);
-    const dispute = disputes.filter(d => d.id === disputeID)[0];
+    const targetIndex = disputes.findIndex(d => d.id === disputeID);
 
-    dispute.ruling = event.returnValues[3];
-    dispute.status = await getDisputeStatus(event.returnValues._disputeID);
+    disputes[targetIndex].ruling = event.returnValues[2];
+    disputes[targetIndex].status = await getDisputeStatus(
+      event.returnValues._disputeID
+    );
 
     this.setState({ disputes });
   };
@@ -150,32 +154,65 @@ class DisputeList extends React.Component {
     this.props.notificationCallback();
     const { contractAddress } = this.props;
 
+    console.log("ARGS");
+    console.log(arbitrableAddress);
+
     const dispute = await getDispute(
       centralizedArbitratorInstance(contractAddress),
       disputeID
     );
     if (dispute.status === "2") return;
-    console.log("ANALYSIS");
-    console.log(dispute);
-    // dispute.key = disputeID
-    dispute.id = disputeID
+
+    dispute.id = disputeID;
     dispute.evidences = {};
 
-    this.setState(state => ({
+    await this.setState(state => ({
       disputes: [...state.disputes, dispute]
     }));
 
-    this.subscriptions.dispute = await arbitrableInstanceAt(arbitrableAddress)
-      .events.Dispute({
-        filter: {
-          _arbitrator: contractAddress,
-          _disputeID: disputeID
-        },
-        fromBlock: 0,
-        toBlock: "latest"
+    const arbitrable = arbitrableInstanceAt(arbitrableAddress);
+    const filter = { _disputeID: disputeID, _arbitrator: contractAddress };
+    const options = { filter, fromBlock: 0 };
+
+    arbitrable.getPastEvents("Dispute", options).then(events =>
+      events.map(event =>
+        arbitrable
+          .getPastEvents("MetaEvidence", {
+            filter: { _metaEvidenceID: event.returnValues._metaEvidenceID },
+            fromBlock: 0
+          })
+          .then(events =>
+            this.updateDispute(disputeID, events[0].returnValues._evidence)
+          )
+      )
+    );
+
+    arbitrable
+      .getPastEvents("Evidence", options)
+      .then(events =>
+        events.map(event =>
+          this.updateEvidence(
+            disputeID,
+            event.returnValues._party,
+            event.returnValues._evidence
+          )
+        )
+      );
+
+    arbitrable
+      .getPastEvents("Ruling", options)
+      .then(events => events.map(event => this.updateRuling(event)));
+
+    this.forceUpdate();
+
+    return;
+
+    this.subscriptions.dispute = await arbitrable.events
+      .Dispute({
+        filter
       })
       .on("data", event => {
-        this.updateDispute(
+        this.assignMetaevidence(
           arbitrableAddress,
           event.returnValues._disputeID,
           event.returnValues._metaEvidenceID
@@ -184,12 +221,7 @@ class DisputeList extends React.Component {
 
     this.subscriptions.evidence = await arbitrableInstanceAt(arbitrableAddress)
       .events.Evidence({
-        filter: {
-          _arbitrator: contractAddress,
-          _disputeID: disputeID
-        },
-        fromBlock: 0,
-        toBlock: "latest"
+        filter
       })
       .on("data", event => {
         this.updateEvidence(
@@ -201,21 +233,15 @@ class DisputeList extends React.Component {
 
     this.subscriptions.ruling = await arbitrableInstanceAt(arbitrableAddress)
       .events.Ruling({
-        filter: {
-          _arbitrator: contractAddress,
-          _disputeID: disputeID
-        },
-        fromBlock: 0,
-        toBlock: "latest"
+        filter
       })
       .on("data", event => {
         this.updateRuling(event);
       });
   };
 
-  disputes = (contractAddress, networkType, activeWallet, items) =>
+  disputeComponents = (contractAddress, networkType, activeWallet, items) =>
     items
-      .filter(dispute => dispute.status !== "2")
       .sort(function(a, b) {
         return a.id - b.id;
       })
@@ -232,7 +258,7 @@ class DisputeList extends React.Component {
           id={item.id}
           ipfsGateway={this.gateway}
           key={item.id}
-          metaevidence={item.metaevidence || "NO META EVIDENCE"}
+          metaevidence={item.metaevidence || "Not loaded yet."}
           networkType={networkType}
           status={item.status || "0"}
         />
@@ -241,6 +267,8 @@ class DisputeList extends React.Component {
   render() {
     const { activeWallet, contractAddress, networkType } = this.props;
     const { disputes } = this.state;
+    console.log("final disputes");
+    console.log(disputes);
     return (
       <div>
         <h1>
@@ -260,7 +288,12 @@ class DisputeList extends React.Component {
             </tr>
           </thead>
 
-          {this.disputes(contractAddress, networkType, activeWallet, disputes)}
+          {this.disputeComponents(
+            contractAddress,
+            networkType,
+            activeWallet,
+            disputes
+          )}
         </table>
       </div>
     );

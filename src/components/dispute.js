@@ -1,40 +1,52 @@
-import DisputeDetail from './dispute-detail'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PropTypes from 'prop-types'
-import React from 'react'
-import web3 from '../ethereum/web3'
+import DisputeDetail from "./dispute-detail";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
+import React from "react";
+import web3 from "../ethereum/web3";
 
 class Dispute extends React.Component {
   constructor(props) {
-    super(props)
-    console.log('DISPUTE PROPS')
-    console.log(props)
+    super(props);
+    console.log("DISPUTE PROPS");
+    console.log(props);
+    this.state = {
+      reload: false
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { metaevidence } = this.props;
+
+    if (prevProps.metaevidence != metaevidence) {
+      console.log("THINGS CHANGED");
+      this.render();
+    }
   }
 
   disputeStatusToString = code => {
     switch (code) {
-      case '0':
-        return 'Waiting'
-      case '1':
-        return 'Appealable'
-      case '2':
-        return 'Solved'
+      case "0":
+        return "Waiting";
+      case "1":
+        return "Appealable";
+      case "2":
+        return "Solved";
 
       default:
-        return `${code}`
+        return `${code}`;
     }
-  }
+  };
 
   apiPrefix = networkType => {
     switch (networkType) {
-      case 'main':
-        return ' '
-      case 'kovan':
-        return 'kovan.'
+      case "main":
+        return " ";
+      case "kovan":
+        return "kovan.";
       default:
-        return ' '
+        return " ";
     }
-  }
+  };
 
   render() {
     const {
@@ -48,7 +60,7 @@ class Dispute extends React.Component {
       metaevidence,
       networkType,
       status
-    } = this.props
+    } = this.props;
     return (
       <React.Fragment>
         <tbody>
@@ -72,7 +84,7 @@ class Dispute extends React.Component {
               </a>
             </td>
             <td>
-              {parseFloat(web3.utils.fromWei(fee, 'ether')).toExponential()}
+              {parseFloat(web3.utils.fromWei(fee, "ether")).toExponential()}
             </td>
             <td className="primary-inverted">
               <b>{this.disputeStatusToString(status)}</b>
@@ -106,7 +118,7 @@ class Dispute extends React.Component {
           </tr>
         </tbody>
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -137,6 +149,6 @@ Dispute.propTypes = {
   }).isRequired,
   networkType: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired
-}
+};
 
-export default Dispute
+export default Dispute;
