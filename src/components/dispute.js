@@ -100,18 +100,18 @@ class Dispute extends React.Component {
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
                   activeWallet={activeWallet}
-                  aliases={metaevidence.aliases}
-                  category={metaevidence.category}
+                  aliases={metaevidence && metaevidence.aliases}
+                  category={metaevidence && metaevidence.category}
                   centralizedArbitratorInstance={centralizedArbitratorInstance}
-                  description={metaevidence.description}
+                  description={metaevidence && metaevidence.description}
                   evidences={evidences}
-                  fileHash={metaevidence.fileHash}
-                  fileURI={metaevidence.fileURI}
+                  fileHash={metaevidence && metaevidence.fileHash}
+                  fileURI={metaevidence && metaevidence.fileURI}
                   id={id}
                   ipfsGateway={ipfsGateway}
-                  question={metaevidence.question}
-                  rulingOptions={metaevidence.rulingOptions}
-                  title={metaevidence.title}
+                  question={metaevidence && metaevidence.question}
+                  rulingOptions={metaevidence && metaevidence.rulingOptions}
+                  title={metaevidence && metaevidence.title}
                 />
               </div>
             </td>

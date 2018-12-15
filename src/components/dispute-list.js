@@ -113,7 +113,12 @@ class DisputeList extends React.Component {
     console.log(disputeID);
 
     const targetIndex = disputes.findIndex(d => d.id === disputeID);
-    disputes[targetIndex].metaevidence = evidence;
+
+    fetch(this.gateway + evidence)
+      .then(response => response.json())
+      .then(
+        metaevidence => (disputes[targetIndex].metaevidence = metaevidence)
+      );
 
     this.setState({ disputes });
   };
@@ -258,7 +263,7 @@ class DisputeList extends React.Component {
           id={item.id}
           ipfsGateway={this.gateway}
           key={item.id}
-          metaevidence={item.metaevidence || "Not loaded yet."}
+          metaevidence={item.metaevidence}
           networkType={networkType}
           status={item.status || "0"}
         />
