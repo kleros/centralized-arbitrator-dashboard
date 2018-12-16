@@ -1,5 +1,5 @@
-import centralizedArbitrator from 'kleros-interaction/build/contracts/CentralizedArbitrator.json'
-import web3 from './web3'
+import centralizedArbitrator from "@kleros/kleros-interaction/build/contracts/CentralizedArbitrator.json";
+import web3 from "./web3";
 
 export const deployCentralizedArbitrator = (account, arbitrationPrice) => {
   new web3.eth.Contract(centralizedArbitrator.abi)
@@ -7,8 +7,8 @@ export const deployCentralizedArbitrator = (account, arbitrationPrice) => {
       arguments: [arbitrationPrice],
       data: centralizedArbitrator.bytecode
     })
-    .send({ from: account })
-}
+    .send({ from: account });
+};
 
 export const centralizedArbitratorInstance = address =>
   new web3.eth.Contract(
@@ -17,15 +17,15 @@ export const centralizedArbitratorInstance = address =>
     {
       gasPrice: 20000000000
     } // TODO Refactor hardcoded from address
-  )
+  );
 
 export const getOwner = async arbitratorInstance =>
-  arbitratorInstance.methods.owner().call()
+  arbitratorInstance.methods.owner().call();
 
 export const getArbitrationCost = async (arbitratorInstance, extraData) =>
   arbitratorInstance.methods
     .arbitrationCost(web3.utils.utf8ToHex(extraData))
-    .call()
+    .call();
 
 export const setArbitrationPrice = async (
   account,
@@ -34,13 +34,13 @@ export const setArbitrationPrice = async (
 ) =>
   arbitratorInstance.methods
     .setArbitrationPrice(arbitrationPrice)
-    .send({ from: account })
+    .send({ from: account });
 
 export const getDispute = async (arbitratorInstance, index) =>
-  arbitratorInstance.methods.disputes(index).call()
+  arbitratorInstance.methods.disputes(index).call();
 
 export const getDisputeStatus = async (arbitratorInstance, index) =>
-  arbitratorInstance.methods.disputeStatus(index).call()
+  arbitratorInstance.methods.disputeStatus(index).call();
 
 export const giveRuling = async (
   account,
@@ -50,4 +50,4 @@ export const giveRuling = async (
 ) =>
   arbitratorInstance.methods
     .giveRuling(disputeID, ruling)
-    .send({ from: account })
+    .send({ from: account });

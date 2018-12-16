@@ -1052,6 +1052,15 @@
     stylelint-scss "^3.4.0"
     stylelint-selector-bem-pattern "^2.0.0"
 
+"@kleros/kleros-interaction@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@kleros/kleros-interaction/-/kleros-interaction-0.1.1.tgz#9835706a48e7bdaad8ba05c9546daa06d2cb8565"
+  integrity sha512-eJ2Co9z3u9NfIj4VvIv5zc6cSSc0R0X5UVvirgecWM+riUtx6CoBfFY0c4twldw5t+mWD+wfoAx2vYbaCpSK9w==
+  dependencies:
+    minimetoken "^0.2.0"
+    openzeppelin-solidity "^1.12.0"
+    solidity-bytes-utils "^0.0.5"
+
 "@marionebl/sander@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@marionebl/sander/-/sander-0.6.1.tgz#1958965874f24bc51be48875feb50d642fc41f7b"
@@ -3434,6 +3443,10 @@ big.js@^3.1.3:
 "bignumber.js@git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2":
   version "2.0.7"
   resolved "git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2"
+
+"bignumber.js@git+https://github.com/debris/bignumber.js.git#master":
+  version "2.0.7"
+  resolved "git+https://github.com/debris/bignumber.js.git#c7a38de919ed75e6fb6ba38051986e294b328df9"
 
 bin-links@^1.1.2:
   version "1.1.2"
@@ -7214,7 +7227,7 @@ ethereumjs-wallet@0.6.0:
     utf8 "^2.1.1"
     uuid "^2.0.1"
 
-ethereumjs-wallet@0.6.2:
+ethereumjs-wallet@0.6.2, ethereumjs-wallet@^0.6.0:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/ethereumjs-wallet/-/ethereumjs-wallet-0.6.2.tgz#67244b6af3e8113b53d709124b25477b64aeccda"
   integrity sha512-DHEKPV9lYORM7dL8602dkb+AgdfzCYz2lxpdYQoD3OwG355LLDuivW9rGuLpDMCry/ORyBYV6n+QCo/71SwACg==
@@ -10037,7 +10050,7 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-isomorphic-fetch@^2.1.1:
+isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   integrity sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
@@ -10867,14 +10880,6 @@ kleros-interaction@^0.0.24:
   dependencies:
     minimetoken "^0.2.0"
     zeppelin-solidity "^1.7.0"
-
-kleros-interaction@^0.0.26:
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/kleros-interaction/-/kleros-interaction-0.0.26.tgz#35a3029aeecb3057464cf8c7596d96fd261dbb6d"
-  integrity sha512-hrKFZ2343kNpFdHzPZommCgd1dV4kZPwodvFQq+cOZJ/ek4eTVJBFclCOSMIye6Ve7t8D/hc4U1LpTas//ej6Q==
-  dependencies:
-    minimetoken "^0.2.0"
-    openzeppelin-solidity "^1.12.0"
 
 kleur@^2.0.1:
   version "2.0.2"
@@ -17051,6 +17056,13 @@ solc@^0.4.2, solc@^0.4.25:
     semver "^5.3.0"
     yargs "^4.7.1"
 
+solidity-bytes-utils@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/solidity-bytes-utils/-/solidity-bytes-utils-0.0.5.tgz#cd4766e999d0a99768823ac169c01f849903f271"
+  integrity sha512-a0jqtVTBavA7WbIuDpR8DThcXYG+HrRaS0FK2vNhtfxGuxJbMKAG76Tc1DxyJzRgROpkQgcMpnxa7YVc0KJ6+Q==
+  dependencies:
+    truffle-hdwallet-provider "0.0.3"
+
 solium-plugin-security@0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/solium-plugin-security/-/solium-plugin-security-0.1.1.tgz#2a87bcf8f8c3abf7d198e292e4ac080284e3f3f6"
@@ -18231,6 +18243,16 @@ trough@^1.0.0:
   integrity sha512-m6s2OdQe5wgpFMC+pAJ+q9djG82O2jcHPOI6RNg1yy9rCYR+WD6Nbpl32fDpfC56nirdRy+opFa/Vk7HYhqaew==
   dependencies:
     glob "^7.1.2"
+
+truffle-hdwallet-provider@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/truffle-hdwallet-provider/-/truffle-hdwallet-provider-0.0.3.tgz#0e1de02104b73d3875e1cf7093305b4ea8a2d843"
+  integrity sha1-Dh3gIQS3PTh14c9wkzBbTqii2EM=
+  dependencies:
+    bip39 "^2.2.0"
+    ethereumjs-wallet "^0.6.0"
+    web3 "^0.18.2"
+    web3-provider-engine "^8.4.0"
 
 truffle-hdwallet-provider@^0.0.6:
   version "0.0.6"
@@ -19422,6 +19444,26 @@ web3-provider-engine@^13.3.2:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
+web3-provider-engine@^8.4.0:
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-8.6.1.tgz#4d86e19e30caaf97df351511ec0f60136e5b30eb"
+  integrity sha1-TYbhnjDKr5ffNRUR7A9gE25bMOs=
+  dependencies:
+    async "^2.1.2"
+    clone "^2.0.0"
+    ethereumjs-block "^1.2.2"
+    ethereumjs-tx "^1.2.0"
+    ethereumjs-util "^5.0.1"
+    ethereumjs-vm "^2.0.2"
+    isomorphic-fetch "^2.2.0"
+    request "^2.67.0"
+    semaphore "^1.0.3"
+    solc "^0.4.2"
+    tape "^4.4.0"
+    web3 "^0.16.0"
+    xhr "^2.2.0"
+    xtend "^4.0.1"
+
 web3-providers-http@1.0.0-beta.33:
   version "1.0.0-beta.33"
   resolved "https://registry.yarnpkg.com/web3-providers-http/-/web3-providers-http-1.0.0-beta.33.tgz#3b35ae00ee7df5b96b4934962ad4a86f2a5599c1"
@@ -19594,6 +19636,16 @@ web3@1.0.0-beta.35:
     web3-net "1.0.0-beta.35"
     web3-shh "1.0.0-beta.35"
     web3-utils "1.0.0-beta.35"
+
+web3@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/web3/-/web3-0.16.0.tgz#a4554175cd462943035b1f1d39432f741c6b6019"
+  integrity sha1-pFVBdc1GKUMDWx8dOUMvdBxrYBk=
+  dependencies:
+    bignumber.js "git+https://github.com/debris/bignumber.js#master"
+    crypto-js "^3.1.4"
+    utf8 "^2.1.1"
+    xmlhttprequest "*"
 
 web3@^0.18.2:
   version "0.18.4"
