@@ -16,13 +16,7 @@ class DisputeList extends React.Component {
     this.state = {
       disputes: []
     };
-    this.subscriptions = {
-      dispute: undefined,
-      disputeCreation: undefined,
-      evidence: undefined,
-      metaevidence: undefined,
-      ruling: undefined
-    };
+    this.subscriptions = [];
 
     this.gateway = "https://ipfs.io";
   }
@@ -34,6 +28,10 @@ class DisputeList extends React.Component {
       contractAddress
     );
 
+    this.getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator);
+  }
+
+  getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator) {
     centralizedArbitrator
       .getPastEvents("DisputeCreation", { fromBlock: 0 })
       .then(events =>
@@ -42,42 +40,39 @@ class DisputeList extends React.Component {
           console.log(event);
           return this.addDispute(
             event.returnValues._disputeID,
-            event.returnValues._arbitrable
+            event.returnValues._arbitrable,
+            false
           );
         })
       );
 
-    this.subscriptions.disputeCreation = centralizedArbitrator.events
-      .DisputeCreation()
-      .on("data", event =>
-        this.addDispute(
-          event.returnValues._disputeID,
-          event.returnValues._arbitrable
+    this.subscriptions.push(
+      centralizedArbitrator.events
+        .DisputeCreation()
+        .on("data", event =>
+          this.addDispute(
+            event.returnValues._disputeID,
+            event.returnValues._arbitrable,
+            true
+          )
         )
-      );
+    );
   }
 
   componentDidUpdate(prevProps) {
     const { contractAddress } = this.props;
 
     if (contractAddress !== prevProps.contractAddress) {
-      this.subscriptions = {};
+      this.subscriptions.map(subscription => subscription.unsubscribe());
       this.setState({ disputes: [] });
-      this.subscriptions.disputeCreation = centralizedArbitratorInstance(
+      const centralizedArbitrator = centralizedArbitratorInstance(
         contractAddress
-      )
-        .events.DisputeCreation({}, { fromBlock: 0, toBlock: "latest" })
-        .on("data", event => {
-          this.addDispute(
-            event.returnValues._disputeID,
-            event.returnValues._arbitrable
-          );
-        })
-        .on("error", console.error);
+      );
+      this.getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator);
     }
   }
 
-  updateEvidence = async (disputeID, party, evidence) => {
+  fetchAndAssignEvidence = async (disputeID, party, evidence) => {
     const { disputes } = this.state;
     const targetIndex = disputes.findIndex(d => d.id === disputeID);
     console.log("do we have the dispute?");
@@ -102,9 +97,11 @@ class DisputeList extends React.Component {
         })
         .then(data => disputes[targetIndex].evidences[party].push(data))
     );
+
+    this.setState({ disputes });
   };
 
-  updateDispute = async (disputeID, evidence) => {
+  fetchAndAssignMetaevidence = async (disputeID, evidence) => {
     const { disputes } = this.state;
 
     console.log("disputes");
@@ -123,23 +120,6 @@ class DisputeList extends React.Component {
     this.setState({ disputes });
   };
 
-  assignMetaevidence = (disputeID, metaEvidenceEvent) => {
-    const { disputes } = this.state;
-
-    console.log("disputes");
-    console.log(disputes);
-    console.log("disputeID");
-    console.log(disputeID);
-
-    const targetIndex = disputes.findIndex(d => d.id === disputeID);
-    console.log("TARGETINDEX");
-    console.log(targetIndex);
-    disputes[targetIndex].metaevidence =
-      metaEvidenceEvent[0].returnValues._evidence;
-    console.log(disputes);
-    this.setState({ disputes });
-  };
-
   updateRuling = async event => {
     console.log("eventscheme");
     console.log(event);
@@ -155,8 +135,7 @@ class DisputeList extends React.Component {
     this.setState({ disputes });
   };
 
-  addDispute = async (disputeID, arbitrableAddress) => {
-    this.props.notificationCallback();
+  addDispute = async (disputeID, arbitrableAddress, isNew) => {
     const { contractAddress } = this.props;
 
     console.log("ARGS");
@@ -167,6 +146,8 @@ class DisputeList extends React.Component {
       disputeID
     );
     if (dispute.status === "2") return;
+
+    if (isNew) this.callMeBack(dispute);
 
     dispute.id = disputeID;
     dispute.evidences = {};
@@ -187,7 +168,10 @@ class DisputeList extends React.Component {
             fromBlock: 0
           })
           .then(events =>
-            this.updateDispute(disputeID, events[0].returnValues._evidence)
+            this.fetchAndAssignMetaevidence(
+              disputeID,
+              events[0].returnValues._evidence
+            )
           )
       )
     );
@@ -196,7 +180,7 @@ class DisputeList extends React.Component {
       .getPastEvents("Evidence", options)
       .then(events =>
         events.map(event =>
-          this.updateEvidence(
+          this.fetchAndAssignEvidence(
             disputeID,
             event.returnValues._party,
             event.returnValues._evidence
@@ -208,41 +192,40 @@ class DisputeList extends React.Component {
       .getPastEvents("Ruling", options)
       .then(events => events.map(event => this.updateRuling(event)));
 
-    this.forceUpdate();
-
-    return;
-
-    this.subscriptions.dispute = await arbitrable.events
+    arbitrable.events
       .Dispute({
         filter
       })
       .on("data", event => {
-        this.assignMetaevidence(
-          arbitrableAddress,
+        this.fetchAndAssignMetaevidence(
           event.returnValues._disputeID,
           event.returnValues._metaEvidenceID
         );
       });
 
-    this.subscriptions.evidence = await arbitrableInstanceAt(arbitrableAddress)
-      .events.Evidence({
-        filter
-      })
-      .on("data", event => {
-        this.updateEvidence(
-          disputeID,
-          event.returnValues._party,
-          event.returnValues._evidence
-        );
-      });
+    this.subscriptions.push(
+      arbitrableInstanceAt(arbitrableAddress)
+        .events.Evidence({
+          filter
+        })
+        .on("data", event => {
+          this.fetchAndAssignEvidence(
+            disputeID,
+            event.returnValues._party,
+            event.returnValues._evidence
+          );
+        })
+    );
 
-    this.subscriptions.ruling = await arbitrableInstanceAt(arbitrableAddress)
-      .events.Ruling({
-        filter
-      })
-      .on("data", event => {
-        this.updateRuling(event);
-      });
+    this.subscriptions.push(
+      arbitrableInstanceAt(arbitrableAddress)
+        .events.Ruling({
+          filter
+        })
+        .on("data", event => {
+          this.updateRuling(event);
+        })
+    );
   };
 
   disputeComponents = (contractAddress, networkType, activeWallet, items) =>

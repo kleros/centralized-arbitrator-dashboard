@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PropTypes from 'prop-types'
-import React from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
+import React from "react";
 
 class NotificationItem extends React.Component {
   render() {
@@ -16,7 +16,7 @@ class NotificationItem extends React.Component {
             </label>
           </div>
           <div className="col-8">
-            <label>This is a notification</label>
+            <label>{`New Dispute: ID ${this.props.id}`}</label>
           </div>
         </div>
         <div className="row">
@@ -28,8 +28,8 @@ class NotificationItem extends React.Component {
         </div>
         <hr />
       </div>
-    )
+    );
   }
 }
 
-export default NotificationItem
+export default NotificationItem;

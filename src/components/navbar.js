@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Identicon from './identicon.js'
-import PropTypes from 'prop-types'
-import React from 'react'
-import NotificationItem from './notification-item'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Identicon from "./identicon.js";
+import PropTypes from "prop-types";
+import React from "react";
+import NotificationItem from "./notification-item";
 
 class NavBar extends React.Component {
   componentDidMount() {}
@@ -10,7 +10,7 @@ class NavBar extends React.Component {
   componentDidUpdate() {}
 
   render() {
-    const { wallet } = this.props
+    const { wallet } = this.props;
     return (
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-dark">
@@ -23,7 +23,7 @@ class NavBar extends React.Component {
                 src="kleros-logo.svg"
                 width="30"
               />
-            </span>{' '}
+            </span>{" "}
             <span>
               <img
                 alt=""
@@ -81,11 +81,10 @@ class NavBar extends React.Component {
                   </div>
                 </div>
                 <hr />
-                <NotificationItem />
-                <NotificationItem />
-                <NotificationItem />
-                <NotificationItem />
-                <NotificationItem />
+                {this.props.notifications &&
+                  this.props.notifications.map(notification => (
+                    <NotificationItem id={notification.id} />
+                  ))}
               </div>
             </div>
             <div className="mx-2 dropdown" onClick={e => e.stopPropagation()}>
@@ -323,12 +322,12 @@ class NavBar extends React.Component {
           </div>
         </nav>
       </div>
-    )
+    );
   }
 }
 
 NavBar.propTypes = {
   wallet: PropTypes.string.isRequired
-}
+};
 
-export default NavBar
+export default NavBar;
