@@ -14,7 +14,7 @@
 
 .App-header {
   background-color: white;
-	font-family: Roboto;
+  font-family: Roboto;
   font-size: calc(10px + 2vmin);
   color: #4a4a4a;
 }
@@ -37,58 +37,62 @@
 }
 
 .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .primary {
-	background-color: #009AFF;
-	color: white;
+  background-color: #009aff;
+  color: white;
 }
 
 .primary-inverted {
-	color: #009AFF;
+  color: #009aff;
 }
 
 .secondary {
-	background-color: #4004A3;
-	color: white;
+  background-color: #4004a3;
+  color: white;
 }
 
-hr
-{
-    background-color: #eee;
-    border: 0 none;
-    color: #eee;
-    height: 2px;
+hr {
+  background-color: #eee;
+  border: 0 none;
+  color: #eee;
+  height: 2px;
 }
 
-.navbar{
+.navbar {
   margin-bottom: 30px;
-  background-color: #1E075F;
+  background-color: #1e075f;
 }
 
-.navbar-icon{
+.navbar-icon {
   color: white;
 }
 
-.email-control{
+.email-control {
   min-width: 300px;
 }
 
-.notification-control{
+.notification-control {
   min-width: 300px;
 }
 
-.fa-stack[data-count]:after{
-  position:absolute;
-  right:0%;
-  top:1%;
+#dropdownMenu2 {
+  background-color: #1e075f;
+  border-color: #1e075f;
+}
+
+.fa-stack[data-count]:after {
+  position: absolute;
+  right: 0%;
+  top: 1%;
   content: attr(data-count);
-  font-size:30%;
-  padding:.2em;
-  border-radius:9px;
+  font-size: 30%;
+  padding: 0.2em;
+  border-radius: 9px;
   color: white;
-  background:rgba(255,0,0,.85);
-  text-align:center;
-  font-weight:bold;
+  background: rgba(255, 0, 0, 0.85);
+  text-align: center;
+  font-weight: bold;
 }

@@ -112,7 +112,7 @@ class NavBar extends React.Component {
                     />
                   ))}
                 {this.props.notifications.length == 0 && (
-                  <div className="text-center">No Notifications</div>
+                  <div className="text-center">No New Notifications</div>
                 )}
               </div>
             </div>
