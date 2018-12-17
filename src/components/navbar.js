@@ -17,13 +17,6 @@ class NavBar extends React.Component {
       console.log(this.props);
       this.props.clearNotifications();
     });
-
-    $(".email-notification-control").on("click", e => {
-      e.preventDefault();
-      console.log(this.props);
-      this.props.clearNotifications();
-      console.log("email notifications");
-    });
   }
 
   clearNotifications() {
@@ -86,11 +79,7 @@ class NavBar extends React.Component {
                 id="dropdownMenu2"
                 type="button"
               >
-                <FontAwesomeIcon
-                  className="navbar-icon"
-                  icon="bell"
-                  onClick={e => console.log("bell ")}
-                />
+                <FontAwesomeIcon className="navbar-icon" icon="bell" />
               </button>
               <div
                 aria-labelledby="dropdownMenu2"
@@ -116,10 +105,7 @@ class NavBar extends React.Component {
                 )}
               </div>
             </div>
-            <div
-              className="mx-2 dropdown"
-              onClick={e => console.log("dropdown clicked")}
-            >
+            <div className="mx-2 dropdown">
               <button
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -133,7 +119,6 @@ class NavBar extends React.Component {
               <div
                 aria-labelledby="dropdownMenu2"
                 className="p-4 dropdown-menu dropdown-menu-right email-notification-control"
-                onClick={e => console.log("envelope")}
               >
                 <label className="col-md-12 text-center">
                   Register to receive notifications by email
@@ -152,7 +137,6 @@ class NavBar extends React.Component {
                       data-toggle="tab"
                       href="#profile"
                       id="all-contracts-tab"
-                      onClick={e => console.log("sdasdasda")}
                       role="tab"
                     >
                       All Contracts
