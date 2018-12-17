@@ -1,10 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PropTypes from "prop-types";
-import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types'
+import React from 'react'
+import TimeAgo from 'react-timeago'
 
 class NotificationItem extends React.Component {
   render() {
-    const { text, time } = this.props;
+    const { text, time } = this.props
 
     return (
       <div className="container">
@@ -24,14 +25,16 @@ class NotificationItem extends React.Component {
         <div className="row">
           <div className="col">
             <sub className="float-right primary-inverted">
-              <b>{this.props.time}</b>
+              <b>
+                <TimeAgo date={this.props.time} />
+              </b>
             </sub>
           </div>
         </div>
         <hr />
       </div>
-    );
+    )
   }
 }
 
-export default NotificationItem;
+export default NotificationItem
