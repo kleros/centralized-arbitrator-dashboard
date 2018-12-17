@@ -13,10 +13,16 @@ class NavBar extends React.Component {
   componentDidMount(props) {
     console.log(props);
 
-    // this is a bad hack for react-bootstrap not closing the menu on click
     $(".notification-control").on("click", () => {
       console.log(this.props);
       this.props.clearNotifications();
+    });
+
+    $(".email-notification-control").on("click", e => {
+      e.preventDefault();
+      console.log(this.props);
+      this.props.clearNotifications();
+      console.log("email notifications");
     });
   }
 
@@ -126,7 +132,7 @@ class NavBar extends React.Component {
               </button>
               <div
                 aria-labelledby="dropdownMenu2"
-                className="p-4 dropdown-menu dropdown-menu-right"
+                className="p-4 dropdown-menu dropdown-menu-right email-notification-control"
                 onClick={e => console.log("envelope")}
               >
                 <label className="col-md-12 text-center">

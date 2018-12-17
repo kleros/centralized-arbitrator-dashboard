@@ -150,7 +150,10 @@ class DisputeList extends React.Component {
     const date = new Date();
 
     this.props.notificationCallback(
-      `New Dispute: #${disputeID}`,
+      `New dispute #${disputeID} in contract ${contractAddress.substring(
+        0,
+        8
+      )}...`,
       date.getTime()
     );
 
@@ -194,7 +197,10 @@ class DisputeList extends React.Component {
       )
       .then(
         this.props.notificationCallback(
-          `New evidence submitted to Dispute #${disputeID}`,
+          `New evidence submitted to dispute #${disputeID} in contact ${contractAddress.substring(
+            0,
+            8
+          )}...`,
           date.getTime()
         )
       );
