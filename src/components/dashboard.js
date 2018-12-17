@@ -108,9 +108,16 @@ class Dashboard extends React.Component {
     this.setState({ arbitrationCost: e.target.value });
   };
 
-  callMeBack = notification => {
+  notificationCallback = (notification, time) => {
     this.setState(state => ({
-      notifications: [...state.notifications, notification]
+      notifications: [...state.notifications, { notification, time }]
+    }));
+  };
+
+  clearNotificationsCallback = () => {
+    console.log("clearNotifications called");
+    this.setState(state => ({
+      notifications: []
     }));
   };
 
@@ -135,7 +142,11 @@ class Dashboard extends React.Component {
         {wallet && (
           <div className="row">
             <div className="col">
-              <NavBar wallet={wallet} notifications={notifications} />
+              <NavBar
+                wallet={wallet}
+                notifications={notifications}
+                clearNotifications={this.clearNotificationsCallback}
+              />
             </div>
           </div>
         )}
@@ -220,7 +231,7 @@ class Dashboard extends React.Component {
                   activeWallet={wallet}
                   contractAddress={selectedAddress}
                   networkType={networkType}
-                  notificationCallback={this.callMeBack}
+                  notificationCallback={this.notificationCallback}
                 />
               </div>
             </div>

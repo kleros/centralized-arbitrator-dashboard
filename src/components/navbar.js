@@ -3,9 +3,26 @@ import Identicon from "./identicon.js";
 import PropTypes from "prop-types";
 import React from "react";
 import NotificationItem from "./notification-item";
+import $ from "jquery";
 
 class NavBar extends React.Component {
-  componentDidMount() {}
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount(props) {
+    console.log(props);
+
+    // this is a bad hack for react-bootstrap not closing the menu on click
+    $(".notification-control").on("click", () => {
+      console.log(this.props);
+      this.props.clearNotifications();
+    });
+  }
+
+  clearNotifications() {
+    this.props.clearNotifications();
+  }
 
   componentDidUpdate() {}
 
@@ -66,7 +83,7 @@ class NavBar extends React.Component {
                 <FontAwesomeIcon
                   className="navbar-icon"
                   icon="bell"
-                  onClick={e => e.stopPropagation()}
+                  onClick={e => console.log("bell ")}
                 />
               </button>
               <div
@@ -83,11 +100,20 @@ class NavBar extends React.Component {
                 <hr />
                 {this.props.notifications &&
                   this.props.notifications.map(notification => (
-                    <NotificationItem id={notification.id} />
+                    <NotificationItem
+                      text={notification.notification}
+                      time={notification.time}
+                    />
                   ))}
+                {this.props.notifications.length == 0 && (
+                  <div className="text-center">No Notifications</div>
+                )}
               </div>
             </div>
-            <div className="mx-2 dropdown" onClick={e => e.stopPropagation()}>
+            <div
+              className="mx-2 dropdown"
+              onClick={e => console.log("dropdown clicked")}
+            >
               <button
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -101,7 +127,7 @@ class NavBar extends React.Component {
               <div
                 aria-labelledby="dropdownMenu2"
                 className="p-4 dropdown-menu dropdown-menu-right"
-                onClick={e => e.stopPropagation()}
+                onClick={e => console.log("envelope")}
               >
                 <label className="col-md-12 text-center">
                   Register to receive notifications by email
@@ -120,7 +146,7 @@ class NavBar extends React.Component {
                       data-toggle="tab"
                       href="#profile"
                       id="all-contracts-tab"
-                      onClick={e => e.stopPropagation()}
+                      onClick={e => console.log("sdasdasda")}
                       role="tab"
                     >
                       All Contracts

@@ -147,7 +147,12 @@ class DisputeList extends React.Component {
     );
     if (dispute.status === "2") return;
 
-    if (isNew) this.callMeBack(dispute);
+    const date = new Date();
+
+    this.props.notificationCallback(
+      `New Dispute: #${disputeID}`,
+      date.getTime()
+    );
 
     dispute.id = disputeID;
     dispute.evidences = {};
@@ -185,6 +190,12 @@ class DisputeList extends React.Component {
             event.returnValues._party,
             event.returnValues._evidence
           )
+        )
+      )
+      .then(
+        this.props.notificationCallback(
+          `New evidence submitted to Dispute #${disputeID}`,
+          date.getTime()
         )
       );
 

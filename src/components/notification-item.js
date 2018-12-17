@@ -4,6 +4,8 @@ import React from "react";
 
 class NotificationItem extends React.Component {
   render() {
+    const { text, time } = this.props;
+
     return (
       <div className="container">
         <div className="row">
@@ -16,13 +18,13 @@ class NotificationItem extends React.Component {
             </label>
           </div>
           <div className="col-8">
-            <label>{`New Dispute: ID ${this.props.id}`}</label>
+            <label>{this.props.text}</label>
           </div>
         </div>
         <div className="row">
           <div className="col">
             <sub className="float-right primary-inverted">
-              <b>5 mins ago</b>
+              <b>{this.props.time}</b>
             </sub>
           </div>
         </div>
