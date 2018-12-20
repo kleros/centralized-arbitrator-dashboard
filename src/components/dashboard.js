@@ -160,7 +160,14 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col">
                 <div className="input-group mb-3">
-                  <div className="input-group-prepend">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Please select a centralized arbitrator contract"
+                    value={selectedAddress}
+                    disabled
+                  />
+                  <div className="input-group-append">
                     <button
                       aria-expanded="false"
                       aria-haspopup="true"
@@ -184,14 +191,6 @@ class Dashboard extends React.Component {
                       />
                     </div>
                   </div>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Please select a centralized arbitrator contract"
-                    value={selectedAddress}
-                    disabled
-                  />
                 </div>
               </div>
             </div>
@@ -200,15 +199,6 @@ class Dashboard extends React.Component {
           <div className="col">
             <h4>Deploy A New Centralized Arbitrator</h4>
             <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <button
-                  className="btn btn-primary primary"
-                  onClick={this.deploy(wallet, arbitrationCost)}
-                  type="button"
-                >
-                  Deploy
-                </button>
-              </div>
               <input
                 aria-describedby="basic-addon1"
                 aria-label=""
@@ -218,6 +208,15 @@ class Dashboard extends React.Component {
                 type="text"
                 value={arbitrationCost}
               />
+              <div className="input-group-append">
+                <button
+                  className="btn btn-primary primary"
+                  onClick={this.deploy(wallet, arbitrationCost)}
+                  type="button"
+                >
+                  Deploy
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -225,7 +224,7 @@ class Dashboard extends React.Component {
         {selectedAddress && (
           <div>
             <div className="row">
-              <div className="col">
+              <div className="col-md-6 offset-md-3">
                 <ArbitrationPrice
                   activeWallet={wallet}
                   contractAddress={selectedAddress}
