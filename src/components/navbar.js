@@ -403,7 +403,7 @@ class NavBar extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="align-bottom pt-2">
+            <div className="align-bottom mx-2 pt-2">
               <Identicon
                 bgColor="#4004A3"
                 className="identicon"
