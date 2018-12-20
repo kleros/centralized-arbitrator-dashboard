@@ -11,7 +11,7 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      arbitrationCost: "1",
+      arbitrationCost: "",
       contractAddresses: [],
       owner: "",
       selectedAddress: undefined,
@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
       );
 
     return (
-      <div className="container">
+      <div className="container-fluid">
         {wallet && (
           <div className="row">
             <div className="col">
@@ -153,10 +153,10 @@ class Dashboard extends React.Component {
           </div>
         )}
         <div className="row">
-          <div className="col">
-            <div className="row">
-              <h4>Select An Already Deployed Centralized Arbitrator</h4>
-            </div>
+          <div className="col text-center">
+            <h4 className="text-center">
+              Select A Deployed Centralized Arbitrator
+            </h4>
             <div className="row">
               <div className="col">
                 <div className="input-group mb-3">
@@ -204,7 +204,7 @@ class Dashboard extends React.Component {
                 aria-label=""
                 className="form-control"
                 onChange={this.handleArbitrationPriceChange()}
-                placeholder="Arbitration Price"
+                placeholder="Please enter desired arbitration price (Wei)"
                 type="text"
                 value={arbitrationCost}
               />

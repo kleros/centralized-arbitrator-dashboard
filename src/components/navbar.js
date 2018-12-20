@@ -89,7 +89,7 @@ class NavBar extends React.Component {
     const { allName, allEmail, currentName, currentEmail } = this.state;
 
     return (
-      <div className="container">
+      <div className="">
         <nav className="navbar navbar-expand-lg navbar-dark">
           <a className="navbar-brand" href="./">
             <span>
