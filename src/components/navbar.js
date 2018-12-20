@@ -4,10 +4,17 @@ import PropTypes from "prop-types";
 import React from "react";
 import NotificationItem from "./notification-item";
 import $ from "jquery";
+import web3 from "../ethereum/web3";
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      allName: "",
+      allEmail: "",
+      currentName: "",
+      currentEmail: ""
+    };
   }
 
   componentDidMount(props) {
@@ -25,8 +32,62 @@ class NavBar extends React.Component {
 
   componentDidUpdate() {}
 
+  onSubscribe = (name, email) => async e => {
+    console.log(e);
+    const { wallet } = this.props;
+    const address = web3.utils.toChecksumAddress(wallet);
+    const settings = { email: { S: email }, fullName: { S: name } };
+    const signature = await web3.eth.personal.sign(
+      JSON.stringify(settings),
+      address
+    );
+
+    fetch(
+      "https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          payload: { address, settings, signature }
+        })
+      }
+    );
+  };
+
+  // TODO: Remove e-mail address
+  onUnsubscribe = () => async e => {
+    const { wallet } = this.props;
+    const address = web3.utils.toChecksumAddress(wallet);
+    const settings = { email: { S: "" } };
+    const signature = await web3.eth.personal.sign(
+      JSON.stringify(settings),
+      address
+    );
+
+    fetch(
+      "https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payload: { address, settings, signature } })
+      }
+    );
+  };
+
+  onAllNameChange = e => {
+    console.log(e);
+    this.setState({ allName: e.target.value });
+  };
+
+  onAllEmailChange = e => {
+    console.log(e);
+    this.setState({ allEmail: e.target.value });
+  };
+
   render() {
     const { wallet } = this.props;
+    const { allName, allEmail, currentName, currentEmail } = this.state;
+
     return (
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-dark">
@@ -203,6 +264,8 @@ class NavBar extends React.Component {
                             id="inputNameAllContracts"
                             placeholder="Name"
                             type="name"
+                            value={allName}
+                            onChange={this.onAllNameChange}
                           />
                         </div>
                       </div>
@@ -213,20 +276,27 @@ class NavBar extends React.Component {
                             id="inputEmailAllContracts"
                             placeholder="Email"
                             type="email"
+                            value={allEmail}
+                            onChange={this.onAllEmailChange}
                           />
                         </div>
                       </div>
 
                       <div className="form-group row">
                         <div className="col-sm-6">
-                          <button className="btn" type="submit">
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={this.onUnsubscribe()}
+                          >
                             Unsubscribe
                           </button>
                         </div>
                         <div className="col-sm-6">
                           <button
                             className="btn btn-primary float-right"
-                            type="submit"
+                            type="button"
+                            onClick={this.onSubscribe(allName, allEmail)}
                           >
                             Subscribe
                           </button>
@@ -288,6 +358,7 @@ class NavBar extends React.Component {
                               id="inputEmailCurrentContract"
                               placeholder="Name"
                               type="name"
+                              value={currentName}
                             />
                           </div>
                         </div>
@@ -295,23 +366,24 @@ class NavBar extends React.Component {
                           <div className="col-sm-12">
                             <input
                               className="form-control"
-                              id="inputPasswordCurrentContract"
+                              id="inputEmailCurrentContract"
                               placeholder="Email"
                               type="email"
+                              value={currentEmail}
                             />
                           </div>
                         </div>
 
                         <div className="form-group row">
                           <div className="col-sm-6">
-                            <button className="btn" type="submit">
+                            <button className="btn" type="button">
                               Unsubscribe
                             </button>
                           </div>
                           <div className="col-sm-6">
                             <button
                               className="btn btn-primary float-right"
-                              type="submit"
+                              type="button"
                             >
                               Subscribe
                             </button>
