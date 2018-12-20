@@ -195,27 +195,32 @@ class Dashboard extends React.Component {
               </div>
             </div>
           </div>
-
           <div className="col">
-            <h4>Deploy A New Centralized Arbitrator</h4>
-            <div className="input-group mb-3">
-              <input
-                aria-describedby="basic-addon1"
-                aria-label=""
-                className="form-control"
-                onChange={this.handleArbitrationPriceChange()}
-                placeholder="Please enter desired arbitration price (Wei)"
-                type="text"
-                value={arbitrationCost}
-              />
-              <div className="input-group-append">
-                <button
-                  className="btn btn-primary primary"
-                  onClick={this.deploy(wallet, arbitrationCost)}
-                  type="button"
-                >
-                  Deploy
-                </button>
+            <div className="col">
+              <h4>Deploy A New Centralized Arbitrator</h4>
+              <div className="row">
+                <div className="col">
+                  <div className="input-group mb-3">
+                    <input
+                      aria-describedby="basic-addon1"
+                      aria-label=""
+                      className="form-control"
+                      onChange={this.handleArbitrationPriceChange()}
+                      placeholder="Please enter desired arbitration price (Wei)"
+                      type="text"
+                      value={arbitrationCost}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-primary primary"
+                        onClick={this.deploy(wallet, arbitrationCost)}
+                        type="button"
+                      >
+                        Deploy
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
