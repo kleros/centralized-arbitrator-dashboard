@@ -140,7 +140,11 @@ class NavBar extends React.Component {
                 id="dropdownMenu2"
                 type="button"
               >
-                <FontAwesomeIcon className="navbar-icon" icon="bell" />
+                <FontAwesomeIcon
+                  size="2x"
+                  className="navbar-icon"
+                  icon="bell"
+                />
               </button>
               <div
                 aria-labelledby="dropdownMenu2"
@@ -175,7 +179,11 @@ class NavBar extends React.Component {
                 id="dropdownMenu2"
                 type="button"
               >
-                <FontAwesomeIcon className="navbar-icon" icon="envelope" />
+                <FontAwesomeIcon
+                  size="2x"
+                  className="navbar-icon"
+                  icon="envelope"
+                />
               </button>
               <div
                 aria-labelledby="dropdownMenu2"
@@ -395,8 +403,7 @@ class NavBar extends React.Component {
                 </div>
               </div>
             </div>
-
-            <div className="button">
+            <div className="align-bottom pt-2">
               <Identicon
                 bgColor="#4004A3"
                 className="identicon"

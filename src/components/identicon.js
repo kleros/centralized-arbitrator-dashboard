@@ -1,6 +1,6 @@
-import Blockies from 'react-blockies'
-import PropTypes from 'prop-types'
-import React from 'react'
+import Blockies from "react-blockies";
+import PropTypes from "prop-types";
+import React from "react";
 
 const Identicon = ({
   bgColor,
@@ -11,24 +11,21 @@ const Identicon = ({
   size,
   spotColor
 }) => (
-  <div className="button">
-    <a
-      href={`https://kovan.etherscan.io/address/${seed}`}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <Blockies
-        bgColor={bgColor}
-        className={className}
-        color={color}
-        scale={scale}
-        seed={seed}
-        size={size}
-        spotColor={spotColor}
-      />
-    </a>
-  </div>
-)
+  <a
+    className="align-bottom"
+    href={`https://kovan.etherscan.io/address/${seed}`}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <Blockies
+      bgColor={bgColor}
+      className={className}
+      color={color}
+      seed={seed}
+      spotColor={spotColor}
+    />
+  </a>
+);
 
 Identicon.propTypes = {
   bgColor: PropTypes.string.isRequired,
@@ -38,6 +35,6 @@ Identicon.propTypes = {
   seed: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   spotColor: PropTypes.string.isRequired
-}
+};
 
-export default Identicon
+export default Identicon;
