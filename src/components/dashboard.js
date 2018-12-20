@@ -81,6 +81,7 @@ class Dashboard extends React.Component {
 
   deploy = (account, arbitrationPrice) => async e => {
     e.preventDefault();
+
     await deployCentralizedArbitrator(account, arbitrationPrice);
   };
 
@@ -126,6 +127,7 @@ class Dashboard extends React.Component {
     const {
       arbitrationCost,
       contractAddresses,
+      deployInputEnabled,
       networkType,
       notifications,
       selectedAddress,
@@ -152,40 +154,45 @@ class Dashboard extends React.Component {
         )}
         <div className="row">
           <div className="col">
-            {selectedAddress && (
-              <Identicon
-                bgColor="#4004A3"
-                className="identicon"
-                color="#009AFF"
-                scale={3}
-                seed={selectedAddress}
-                size={10}
-                spotColor="white"
-              />
-            )}
-            <h4>Select An Already Deployed Centralized Arbitrator</h4>
-            <div className="dropdown">
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                className="btn btn-secondary dropdown-toggle primary"
-                data-toggle="dropdown"
-                id="dropdownMenuButton"
-                type="button"
-              >
-                {selectedAddress}
-              </button>
-              <div
-                aria-labelledby="dropdownMenuButton"
-                className="dropdown-menu"
-              >
-                {this.centralizedArbitratorButtons(contractAddresses)}
-                <hr />
-                <input
-                  className="dropdown-item"
-                  onKeyUp={this.handleCentralizedArbitratorDropdownKeyEnter()}
-                  placeholder="Or enter the address manually and hit enter"
-                />
+            <div className="row">
+              <h4>Select An Already Deployed Centralized Arbitrator</h4>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      className="btn btn-secondary dropdown-toggle primary"
+                      data-toggle="dropdown"
+                      id="dropdownMenuButton"
+                      type="button"
+                    >
+                      Select
+                    </button>
+                    <div
+                      aria-labelledby="dropdownMenuButton"
+                      className="dropdown-menu"
+                    >
+                      {this.centralizedArbitratorButtons(contractAddresses)}
+                      <hr />
+                      <input
+                        className="dropdown-item"
+                        onKeyUp={this.handleCentralizedArbitratorDropdownKeyEnter()}
+                        placeholder="Or enter the address manually and hit enter"
+                      />
+                    </div>
+                  </div>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Please select a centralized arbitrator contract"
+                    value={selectedAddress}
+                    disabled
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -195,7 +202,7 @@ class Dashboard extends React.Component {
             <div className="input-group mb-3">
               <div className="input-group-prepend">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary primary"
                   onClick={this.deploy(wallet, arbitrationCost)}
                   type="button"
                 >
