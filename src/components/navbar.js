@@ -12,8 +12,12 @@ class NavBar extends React.Component {
     this.state = {
       allName: "",
       allEmail: "",
+      allDisputes: false,
+      allEvidences: false,
       currentName: "",
-      currentEmail: ""
+      currentEmail: "",
+      currentDisputes: false,
+      currentEvidences: false
     };
   }
 
@@ -32,11 +36,25 @@ class NavBar extends React.Component {
 
   componentDidUpdate() {}
 
-  onSubscribe = (name, email) => async e => {
+  onSubscribe = (
+    name,
+    email,
+    sendWhenNewDispute,
+    sendWhenNewEvidence
+  ) => async e => {
     console.log(e);
     const { wallet } = this.props;
     const address = web3.utils.toChecksumAddress(wallet);
-    const settings = { email: { S: email }, fullName: { S: name } };
+    const settings = {
+      email: { S: email },
+      fullName: { S: name },
+      centralizedArbitratorDashboardNotificationSettingDisputes: {
+        S: sendWhenNewDispute
+      },
+      centralizedArbitratorDashboardNotificationSettingEvidences: {
+        S: sendWhenNewEvidence
+      }
+    };
     const signature = await web3.eth.personal.sign(
       JSON.stringify(settings),
       address
@@ -86,7 +104,14 @@ class NavBar extends React.Component {
 
   render() {
     const { wallet } = this.props;
-    const { allName, allEmail, currentName, currentEmail } = this.state;
+    const {
+      allName,
+      allEmail,
+      allDisputes,
+      allEvidences,
+      currentName,
+      currentEmail
+    } = this.state;
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -226,6 +251,9 @@ class NavBar extends React.Component {
                       id="defaultCheck1"
                       type="checkbox"
                       value=""
+                      onChange={e =>
+                        this.setState({ allDisputes: e.target.checked })
+                      }
                     />
                     <label className="form-check-label" htmlFor="defaultCheck1">
                       When there is a new dispute
@@ -237,6 +265,9 @@ class NavBar extends React.Component {
                       id="defaultCheck2"
                       type="checkbox"
                       value=""
+                      onChange={e =>
+                        this.setState({ allEvidences: e.target.checked })
+                      }
                     />
                     <label className="form-check-label" htmlFor="defaultCheck2">
                       When there is a new evidence to an existing dispute
@@ -283,7 +314,12 @@ class NavBar extends React.Component {
                         <button
                           className="btn btn-primary float-right"
                           type="button"
-                          onClick={this.onSubscribe(allName, allEmail)}
+                          onClick={this.onSubscribe(
+                            allName,
+                            allEmail,
+                            allDisputes,
+                            allEvidences
+                          )}
                         >
                           Subscribe
                         </button>
