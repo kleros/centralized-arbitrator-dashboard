@@ -108,7 +108,7 @@ class DisputeDetail extends React.Component {
         </div>
         <br />
         <div className="row">
-          <div className="col">
+          <div className="col text-left">
             <h4 className="">{description}</h4>
           </div>
         </div>

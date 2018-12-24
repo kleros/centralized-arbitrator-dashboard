@@ -209,38 +209,7 @@ class NavBar extends React.Component {
                 Register to receive notifications by email
               </label>
               <hr />
-              <ul
-                className="nav nav-tabs email-control"
-                id="myTab"
-                role="tablist"
-              >
-                <li className="nav-item">
-                  <a
-                    aria-controls="profile"
-                    aria-selected="true"
-                    className="nav-link active"
-                    data-toggle="tab"
-                    href="#profile"
-                    id="all-contracts-tab"
-                    role="tab"
-                  >
-                    All Contracts
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    aria-controls="contact"
-                    aria-selected="false"
-                    className="nav-link"
-                    data-toggle="tab"
-                    href="#contact"
-                    id="current-contract-tab"
-                    role="tab"
-                  >
-                    Current Contract
-                  </a>
-                </li>
-              </ul>
+
               <div className="tab-content" id="myTabContent">
                 <div
                   aria-labelledby="all-contracts-tab"
@@ -248,7 +217,6 @@ class NavBar extends React.Component {
                   id="profile"
                   role="tabpanel"
                 >
-                  <br />
                   <label>Registering your email you will be informed:</label>
                   <br />
                   <div className="form-check">
@@ -332,92 +300,6 @@ class NavBar extends React.Component {
                       </div>
                     </div>
                   </form>
-                </div>
-                <div
-                  aria-labelledby="current-contract-tab"
-                  className="tab-pane fade"
-                  id="contact"
-                  role="tabpanel"
-                >
-                  <div
-                    aria-labelledby="all-contracts-tab"
-                    className="tab-pane fade show active"
-                    id="profile"
-                    role="tabpanel"
-                  >
-                    <br />
-                    <label>Registering your email you will be informed:</label>
-                    <br />
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        id="defaultCheck1"
-                        type="checkbox"
-                        value=""
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="defaultCheck1"
-                      >
-                        When there is a new dispute
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        id="defaultCheck2"
-                        type="checkbox"
-                        value=""
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="defaultCheck2"
-                      >
-                        When there is a new evidence to an existing dispute
-                      </label>
-                    </div>
-                    <hr />
-                    <form>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            className="form-control"
-                            id="inputEmailCurrentContract"
-                            placeholder="Name"
-                            type="name"
-                            value={currentName}
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            className="form-control"
-                            id="inputEmailCurrentContract"
-                            placeholder="Email"
-                            type="email"
-                            value={currentEmail}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="form-group row">
-                        <div className="col-sm-6">
-                          <button className="btn" type="button">
-                            Unsubscribe
-                          </button>
-                        </div>
-                        <div className="col-sm-6">
-                          <button
-                            className="btn btn-primary float-right"
-                            type="button"
-                          >
-                            Subscribe
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
                 </div>
               </div>
             </div>

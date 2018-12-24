@@ -69,7 +69,7 @@ hr {
   color: white;
 }
 
-.email-control {
+#navbarNav > div.mx-2.dropdown.show > div {
   min-width: 300px;
 }
 
