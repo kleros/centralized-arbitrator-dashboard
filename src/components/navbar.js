@@ -1,37 +1,37 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Identicon from './identicon.js'
-import PropTypes from 'prop-types'
-import React from 'react'
-import NotificationItem from './notification-item'
-import $ from 'jquery'
-import web3 from '../ethereum/web3'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Identicon from "./identicon.js";
+import PropTypes from "prop-types";
+import React from "react";
+import NotificationItem from "./notification-item";
+import $ from "jquery";
+import web3 from "../ethereum/web3";
 
 class NavBar extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      allName: '',
-      allEmail: '',
+      allName: "",
+      allEmail: "",
       allDisputes: false,
       allEvidences: false,
-      currentName: '',
-      currentEmail: '',
+      currentName: "",
+      currentEmail: "",
       currentDisputes: false,
       currentEvidences: false
-    }
+    };
   }
 
   componentDidMount(props) {
-    console.log(props)
+    console.log(props);
 
-    $('.notification-control').on('click', () => {
-      console.log(this.props)
-      this.props.clearNotifications()
-    })
+    $(".notification-control").on("click", () => {
+      console.log(this.props);
+      this.props.clearNotifications();
+    });
   }
 
   clearNotifications() {
-    this.props.clearNotifications()
+    this.props.clearNotifications();
   }
 
   componentDidUpdate() {}
@@ -42,9 +42,9 @@ class NavBar extends React.Component {
     sendWhenNewDispute,
     sendWhenNewEvidence
   ) => async e => {
-    console.log(e)
-    const { wallet } = this.props
-    const address = web3.utils.toChecksumAddress(wallet)
+    console.log(e);
+    const { wallet } = this.props;
+    const address = web3.utils.toChecksumAddress(wallet);
     const settings = {
       email: { S: email },
       fullName: { S: name },
@@ -54,27 +54,27 @@ class NavBar extends React.Component {
       centralizedArbitratorDashboardNotificationSettingEvidences: {
         S: sendWhenNewEvidence
       }
-    }
+    };
     const signature = await web3.eth.personal.sign(
       JSON.stringify(settings),
       address
-    )
+    );
 
     fetch(
-      'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
+      "https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings",
       {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           payload: { address, settings, signature }
         })
       }
-    )
-  }
+    );
+  };
 
   onUnsubscribe = () => async e => {
-    const { wallet } = this.props
-    const address = web3.utils.toChecksumAddress(wallet)
+    const { wallet } = this.props;
+    const address = web3.utils.toChecksumAddress(wallet);
     const settings = {
       centralizedArbitratorDashboardNotificationSettingDisputes: {
         S: false
@@ -82,34 +82,34 @@ class NavBar extends React.Component {
       centralizedArbitratorDashboardNotificationSettingEvidences: {
         S: false
       }
-    }
+    };
     const signature = await web3.eth.personal.sign(
       JSON.stringify(settings),
       address
-    )
+    );
 
     fetch(
-      'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
+      "https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings",
       {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ payload: { address, settings, signature } })
       }
-    )
-  }
+    );
+  };
 
   onAllNameChange = e => {
-    console.log(e)
-    this.setState({ allName: e.target.value })
-  }
+    console.log(e);
+    this.setState({ allName: e.target.value });
+  };
 
   onAllEmailChange = e => {
-    console.log(e)
-    this.setState({ allEmail: e.target.value })
-  }
+    console.log(e);
+    this.setState({ allEmail: e.target.value });
+  };
 
   render() {
-    const { wallet } = this.props
+    const { wallet } = this.props;
     const {
       allName,
       allEmail,
@@ -117,7 +117,7 @@ class NavBar extends React.Component {
       allEvidences,
       currentName,
       currentEmail
-    } = this.state
+    } = this.state;
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -143,10 +143,10 @@ class NavBar extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+          <ul className="navbar-nav mr-auto mb-1">
             <li className="nav-item active">
-              <a className="nav-link" href="./">
-                Centralized Arbitrator Dashboard
+              <a className="nav-link " href="./">
+                <small>Centralized Arbitrator Dashboard</small>
                 <span className="sr-only">(current)</span>
               </a>
             </li>
@@ -435,12 +435,12 @@ class NavBar extends React.Component {
           </div>
         </div>
       </nav>
-    )
+    );
   }
 }
 
 NavBar.propTypes = {
   wallet: PropTypes.string.isRequired
-}
+};
 
-export default NavBar
+export default NavBar;

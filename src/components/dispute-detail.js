@@ -97,12 +97,12 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">
             <h3 className="float-left">
-              <b>{`Title: ${title}`}</b>
+              <b>{`${title}`}</b>
             </h3>
           </div>
           <div className="col">
             <h3 className="float-right">
-              <b>{`Category: ${category}`}</b>
+              <b>{`${category}`}</b>
             </h3>
           </div>
         </div>
