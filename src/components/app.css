@@ -12,13 +12,8 @@
   justify-content: center;
 }
 
-body {
-  font-family: Roboto !important;
-}
-
 .App-header {
   background-color: white;
-  font-family: Roboto !important;
   font-size: calc(10px + 2vmin);
   color: #4a4a4a;
 }
