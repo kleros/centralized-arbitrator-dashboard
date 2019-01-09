@@ -95,7 +95,10 @@ class Dashboard extends React.Component {
                 .getItem(accounts[0])
                 .split(' ')
             })
-          else this.scanContracts(networkType, accounts[0])
+          else {
+            this.setState({ contractAddresses: [] })
+            this.scanContracts(networkType, accounts[0])
+          }
         }
       })
     })
@@ -106,7 +109,16 @@ class Dashboard extends React.Component {
 
     console.log('deploying')
     const result = await deployCentralizedArbitrator(account, arbitrationPrice)
-    console.log(result)
+    window.localStorage.setItem(
+      account,
+      window.localStorage
+        .getItem(account)
+        .concat(' ')
+        .concat(result._address)
+    )
+    this.setState({
+      contractAddresses: window.localStorage.getItem(account).split(' ')
+    })
   }
 
   handleCentralizedArbitratorDropdownKeyEnter = () => e => {
