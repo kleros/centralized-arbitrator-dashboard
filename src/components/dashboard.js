@@ -1,32 +1,32 @@
-import ArbitrationPrice from "./arbitration-price";
-import DisputeList from "./dispute-list";
-import Identicon from "./identicon.js";
-import NavBar from "./navbar.js";
-import { RateLimiter } from "limiter";
-import React from "react";
-import { deployCentralizedArbitrator } from "../ethereum/centralized-arbitrator";
-import web3 from "../ethereum/web3";
+import ArbitrationPrice from './arbitration-price'
+import DisputeList from './dispute-list'
+import Identicon from './identicon.js'
+import NavBar from './navbar.js'
+import { RateLimiter } from 'limiter'
+import React from 'react'
+import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
+import web3 from '../ethereum/web3'
 
 class Dashboard extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      arbitrationCost: "",
+      arbitrationCost: '',
       contractAddresses: [],
-      owner: "",
+      owner: '',
       selectedAddress: undefined,
       notifications: []
-    };
+    }
   }
 
   scanContracts(networkType, account) {
-    const limiter = new RateLimiter(1, 250);
+    const limiter = new RateLimiter(1, 250)
     const api = {
-      kovan: "api-kovan.",
-      mainnet: "api."
-    };
-    console.log(networkType);
-    const apiPrefix = networkType === "main" ? api.mainnet : api.kovan;
+      kovan: 'api-kovan.',
+      mainnet: 'api.'
+    }
+    console.log(networkType)
+    const apiPrefix = networkType === 'main' ? api.mainnet : api.kovan
 
     fetch(
       `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${account}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
       .then(response => response.json())
       .then(data =>
         data.result
-          .filter(({ to }) => to === "")
+          .filter(({ to }) => to === '')
           .map(item => item.contractAddress)
       )
       .then(addresses =>
@@ -45,53 +45,77 @@ class Dashboard extends React.Component {
             )
               .then(response => response.json())
               .then(data => {
-                if (data.result[0].ContractName === "CentralizedArbitrator")
+                if (data.result[0].ContractName === 'CentralizedArbitrator') {
                   this.setState(state => ({
                     contractAddresses: [...state.contractAddresses, address]
-                  }));
+                  }))
+                  if (!window.localStorage.getItem(account))
+                    window.localStorage.setItem(account, address)
+                  else {
+                    window.localStorage.setItem(
+                      account,
+                      window.localStorage
+                        .getItem(account)
+                        .concat(' ')
+                        .concat(address)
+                    )
+                  }
+                }
               })
           )
         )
-      );
+      )
   }
 
   async componentDidMount() {
-    const { contractAddresses } = this.state;
+    const { contractAddresses } = this.state
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
-        if (error) console.error(error);
+        if (error) console.error(error)
 
-        this.setState({ wallet: accounts[0] });
+        this.setState({ wallet: accounts[0] })
 
-        console.warn("FETCH");
-
-        web3.eth.net.getNetworkType((error, networkType) => {
-          if (error) console.error(error);
-
-          this.setState({ networkType: networkType });
-          if (accounts[0]) this.scanContracts(networkType, accounts[0]);
-        });
-      });
-    else console.log("MetaMask account not detected :(");
+        console.warn('FETCH')
+      })
+    else console.log('MetaMask account not detected :(')
 
     this.setState({
       selectedAddress: contractAddresses[0]
-    });
+    })
+
+    window.ethereum.on('accountsChanged', accounts => {
+      web3.eth.net.getNetworkType((error, networkType) => {
+        if (error) console.error(error)
+        console.log(accounts[0])
+        this.setState({ networkType: networkType })
+        if (accounts[0]) {
+          if (window.localStorage.getItem(accounts[0]))
+            this.setState({
+              contractAddresses: window.localStorage
+                .getItem(accounts[0])
+                .split(' ')
+            })
+          else this.scanContracts(networkType, accounts[0])
+        }
+      })
+    })
   }
 
   deploy = (account, arbitrationPrice) => async e => {
-    e.preventDefault();
+    e.preventDefault()
 
-    await deployCentralizedArbitrator(account, arbitrationPrice);
-  };
+    console.log('deploying')
+    const result = await deployCentralizedArbitrator(account, arbitrationPrice)
+    console.log(result)
+  }
 
   handleCentralizedArbitratorDropdownKeyEnter = () => e => {
-    if (e.keyCode === 13) this.setState({ selectedAddress: e.target.value });
-  };
+    if (e.keyCode === 13) this.setState({ selectedAddress: e.target.value })
+  }
 
   handleCentralizedArbitratorDropdownButtonClick = () => e => {
-    this.setState({ selectedAddress: e.target.innerHTML });
-  };
+    this.setState({ selectedAddress: e.target.innerHTML })
+  }
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
@@ -102,28 +126,28 @@ class Dashboard extends React.Component {
       >
         {address}
       </button>
-    ));
+    ))
 
   handleArbitrationPriceChange = () => e => {
-    console.log(e);
-    this.setState({ arbitrationCost: e.target.value });
-  };
+    console.log(e)
+    this.setState({ arbitrationCost: e.target.value })
+  }
 
   notificationCallback = (notification, time) => {
     this.setState(state => ({
       notifications: [...state.notifications, { notification, time }]
-    }));
-  };
+    }))
+  }
 
   clearNotificationsCallback = () => {
-    console.log("clearNotifications called");
+    console.log('clearNotifications called')
     this.setState(state => ({
       notifications: []
-    }));
-  };
+    }))
+  }
 
   render() {
-    console.log(`RENDERING${new Date().getTime()}`);
+    console.log(`RENDERING${new Date().getTime()}`)
     const {
       arbitrationCost,
       contractAddresses,
@@ -132,12 +156,12 @@ class Dashboard extends React.Component {
       notifications,
       selectedAddress,
       wallet
-    } = this.state;
+    } = this.state
 
     if (!wallet)
       return (
         <div>Please unlock your MetaMask and refresh the page to continue.</div>
-      );
+      )
 
     return (
       <div className="container-fluid">
@@ -249,8 +273,8 @@ class Dashboard extends React.Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default Dashboard;
+export default Dashboard
