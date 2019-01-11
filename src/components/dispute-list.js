@@ -18,7 +18,7 @@ class DisputeList extends React.Component {
     }
     this.subscriptions = []
 
-    this.gateway = 'https://ipfs.io'
+    this.gateway = 'https://ipfs.kleros.io'
   }
 
   componentDidMount() {
