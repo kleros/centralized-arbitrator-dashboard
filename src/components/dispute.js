@@ -14,15 +14,6 @@ class Dispute extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { metaevidence } = this.props
-
-    if (prevProps.metaevidence != metaevidence) {
-      console.log('THINGS CHANGED')
-      this.render()
-    }
-  }
-
   disputeStatusToString = code => {
     switch (code) {
       case '0':

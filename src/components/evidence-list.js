@@ -47,7 +47,6 @@ class EvidenceList extends React.Component {
 }
 
 EvidenceList.propTypes = {
-  evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   ipfsGateway: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired
 }

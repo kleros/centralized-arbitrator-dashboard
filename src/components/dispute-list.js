@@ -87,16 +87,16 @@ class DisputeList extends React.Component {
     console.log('evidence')
     console.log(evidence)
 
-    fetch(this.gateway + evidence).then(response =>
-      response
-        .json()
-        .catch(function() {
-          console.log('error')
-        })
-        .then(data => disputes[targetIndex].evidences[party].push(data))
-    )
-
-    this.setState({ disputes })
+    fetch(this.gateway + evidence)
+      .then(response =>
+        response
+          .json()
+          .catch(function() {
+            console.log('error')
+          })
+          .then(data => disputes[targetIndex].evidences[party].push(data))
+      )
+      .then(this.setState({ disputes }))
   }
 
   fetchAndAssignMetaevidence = async (disputeID, evidence) => {
@@ -115,8 +115,7 @@ class DisputeList extends React.Component {
     fetch(this.gateway + evidence)
       .then(response => response.json())
       .then(metaevidence => (disputes[targetIndex].metaevidence = metaevidence))
-
-    this.setState({ disputes })
+      .then(this.setState({ disputes }))
   }
 
   updateRuling = async event => {

@@ -55,6 +55,7 @@ class DisputeDetail extends React.Component {
       return (
         <button
           className="dropdown-item"
+          key={key + 1}
           onClick={this.handleGiveRulingButtonClick(
             activeWallet,
             centralizedArbitratorInstance,

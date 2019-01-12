@@ -6,6 +6,7 @@ import { RateLimiter } from 'limiter'
 import React from 'react'
 import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
+import $ from 'jquery'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Dashboard extends React.Component {
       contractAddresses: [],
       owner: '',
       selectedAddress: undefined,
-      notifications: []
+      notifications: [],
+      uglyFixtoBug13: '' // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
     }
   }
 
@@ -68,6 +70,9 @@ class Dashboard extends React.Component {
   }
 
   async componentDidMount() {
+    $('*').on('click', () => {
+      this.setState({ uglyFixtoBug13: '' })
+    })
     const { contractAddresses } = this.state
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
@@ -274,12 +279,16 @@ class Dashboard extends React.Component {
             </div>
             <div className="row">
               <div className="col">
-                <DisputeList
-                  activeWallet={wallet}
-                  contractAddress={selectedAddress}
-                  networkType={networkType}
-                  notificationCallback={this.notificationCallback}
-                />
+                <div className="disputes">
+                  {selectedAddress && wallet && (
+                    <DisputeList
+                      activeWallet={wallet}
+                      contractAddress={selectedAddress}
+                      networkType={networkType}
+                      notificationCallback={this.notificationCallback}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
