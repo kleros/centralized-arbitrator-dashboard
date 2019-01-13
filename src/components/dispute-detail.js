@@ -35,8 +35,8 @@ class DisputeDetail extends React.Component {
         console.log('data')
         console.log(data) // true
         if (data.isValid)
-          this.setState({ validationResult: 'Integrity is intact!' })
-        else this.setState({ validationResult: 'Integrity is broken!' })
+          this.setState({ validationResult: 'Integrity is intact.' })
+        else this.setState({ validationResult: 'Integrity is broken.' })
       })
       .catch(err => {
         this.setState({ validationResult: 'Integrity test failed.' })

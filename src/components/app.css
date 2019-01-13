@@ -95,3 +95,10 @@ hr {
   text-align: center;
   font-weight: bold;
 }
+
+.badge-notify {
+  position: relative;
+  top: -20px;
+  left: -35px;
+  border-radius: 50%;
+}
