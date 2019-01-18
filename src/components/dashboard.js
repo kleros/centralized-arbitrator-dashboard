@@ -21,6 +21,31 @@ class Dashboard extends React.Component {
     }
   }
 
+  eventNotificationServiceRoute(address, eventName, networkName) {
+    if (networkName == 'main')
+      return `https://events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
+    else
+      return `https://kovan-events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
+  }
+
+  postContractAddressToEventNotificationService(
+    route,
+    callbackURI,
+    contractABI
+  ) {
+    fetch(route, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: ENV_VAR_HERE
+      },
+      body: JSON.stringify({
+        callbackURI: callbackURI,
+        contractABI: contractABI
+      })
+    })
+  }
+
   scanContracts(networkType, account) {
     const limiter = new RateLimiter(1, 250)
     const api = {
@@ -51,6 +76,9 @@ class Dashboard extends React.Component {
                   this.setState(state => ({
                     contractAddresses: [...state.contractAddresses, address]
                   }))
+
+                  // Call eventNotificationService here
+
                   if (!window.localStorage.getItem(account))
                     window.localStorage.setItem(account, address)
                   else {
