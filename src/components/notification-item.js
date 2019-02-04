@@ -1,11 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PropTypes from "prop-types";
-import React from "react";
-import TimeAgo from "react-timeago";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types'
+import React from 'react'
+import TimeAgo from 'react-timeago'
 
 class NotificationItem extends React.Component {
   render() {
-    const { text, time } = this.props;
+    const { text, time } = this.props
 
     return (
       <div className="container">
@@ -28,8 +28,8 @@ class NotificationItem extends React.Component {
               <b>
                 <TimeAgo
                   date={this.props.time}
-                  minPeriod={5}
                   maxPeriod={3600}
+                  minPeriod={5}
                 />
               </b>
             </sub>
@@ -37,8 +37,8 @@ class NotificationItem extends React.Component {
         </div>
         <hr />
       </div>
-    );
+    )
   }
 }
 
-export default NotificationItem;
+export default NotificationItem

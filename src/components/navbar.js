@@ -126,8 +126,8 @@ class NavBar extends React.Component {
             <img
               alt=""
               className="d-inline-block align-mid"
-              src="kleros-logo-white.svg"
               height="50px"
+              src="kleros-logo-white.svg"
             />
           </span>
         </a>
@@ -160,7 +160,7 @@ class NavBar extends React.Component {
               id="dropdownMenu2"
               type="button"
             >
-              <FontAwesomeIcon size="2x" className="navbar-icon" icon="bell" />
+              <FontAwesomeIcon className="navbar-icon" icon="bell" size="2x" />
             </button>
             <span class="badge badge-notify primary">
               {this.props.notifications.length}
@@ -199,9 +199,9 @@ class NavBar extends React.Component {
               type="button"
             >
               <FontAwesomeIcon
-                size="2x"
                 className="navbar-icon"
                 icon="envelope"
+                size="2x"
               />
             </button>
             <div

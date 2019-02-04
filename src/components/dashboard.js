@@ -63,7 +63,7 @@ class Dashboard extends React.Component {
 
                   if (!window.localStorage.getItem(account))
                     window.localStorage.setItem(account, address)
-                  else {
+                  else
                     window.localStorage.setItem(
                       account,
                       window.localStorage
@@ -71,7 +71,6 @@ class Dashboard extends React.Component {
                         .concat(' ')
                         .concat(address)
                     )
-                  }
                 }
               })
           )
@@ -103,7 +102,7 @@ class Dashboard extends React.Component {
         if (error) console.error(error)
         console.log(accounts[0])
         this.setState({ networkType: networkType })
-        if (accounts[0]) {
+        if (accounts[0])
           if (window.localStorage.getItem(accounts[0]))
             this.setState({
               contractAddresses: window.localStorage
@@ -114,7 +113,6 @@ class Dashboard extends React.Component {
             this.setState({ contractAddresses: [] })
             this.scanContracts(networkType, accounts[0])
           }
-        }
       })
     })
   }
@@ -196,9 +194,9 @@ class Dashboard extends React.Component {
           <div className="row">
             <div className="col">
               <NavBar
-                wallet={wallet}
-                notifications={notifications}
                 clearNotifications={this.clearNotificationsCallback}
+                notifications={notifications}
+                wallet={wallet}
               />
             </div>
           </div>
@@ -212,11 +210,11 @@ class Dashboard extends React.Component {
               <div className="col">
                 <div className="input-group mb-3">
                   <input
-                    type="text"
                     className="form-control"
-                    placeholder="Please select a centralized arbitrator contract"
-                    value={selectedAddress}
                     disabled
+                    placeholder="Please select a centralized arbitrator contract"
+                    type="text"
+                    value={selectedAddress}
                   />
                   <div className="input-group-append">
                     <button

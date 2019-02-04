@@ -1,14 +1,13 @@
 import centralizedArbitrator from '@kleros/kleros-interaction/build/contracts/CentralizedArbitrator.json'
 import web3 from './web3'
 
-export const deployCentralizedArbitrator = (account, arbitrationPrice) => {
-  return new web3.eth.Contract(centralizedArbitrator.abi)
+export const deployCentralizedArbitrator = (account, arbitrationPrice) =>
+  new web3.eth.Contract(centralizedArbitrator.abi)
     .deploy({
       arguments: [arbitrationPrice],
       data: centralizedArbitrator.bytecode
     })
     .send({ from: account })
-}
 
 export const centralizedArbitratorInstance = address =>
   new web3.eth.Contract(centralizedArbitrator.abi, address, {

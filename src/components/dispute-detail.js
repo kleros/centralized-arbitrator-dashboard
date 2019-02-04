@@ -51,22 +51,20 @@ class DisputeDetail extends React.Component {
     centralizedArbitratorInstance,
     id
   ) =>
-    _.zip(options.titles, options.descriptions).map((option, key) => {
-      return (
-        <button
-          className="dropdown-item"
-          key={key + 1}
-          onClick={this.handleGiveRulingButtonClick(
-            activeWallet,
-            centralizedArbitratorInstance,
-            id,
-            key + 1
-          )}
-        >
-          {option[0]}: {option[1]}
-        </button>
-      )
-    })
+    _.zip(options.titles, options.descriptions).map((option, key) => (
+      <button
+        className="dropdown-item"
+        key={key + 1}
+        onClick={this.handleGiveRulingButtonClick(
+          activeWallet,
+          centralizedArbitratorInstance,
+          id,
+          key + 1
+        )}
+      >
+        {option[0]}: {option[1]}
+      </button>
+    ))
 
   render() {
     console.log('PRERENDER DISPUTEDETAIL')

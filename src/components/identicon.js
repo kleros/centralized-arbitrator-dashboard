@@ -1,6 +1,6 @@
-import Blockies from "react-blockies";
-import PropTypes from "prop-types";
-import React from "react";
+import Blockies from 'react-blockies'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 const Identicon = ({
   bgColor,
@@ -25,7 +25,7 @@ const Identicon = ({
       spotColor={spotColor}
     />
   </a>
-);
+)
 
 Identicon.propTypes = {
   bgColor: PropTypes.string.isRequired,
@@ -35,6 +35,6 @@ Identicon.propTypes = {
   seed: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   spotColor: PropTypes.string.isRequired
-};
+}
 
-export default Identicon;
+export default Identicon
