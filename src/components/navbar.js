@@ -162,7 +162,7 @@ class NavBar extends React.Component {
             >
               <FontAwesomeIcon className="navbar-icon" icon="bell" size="2x" />
             </button>
-            <span class="badge badge-notify primary">
+            <span className="badge badge-notify primary">
               {this.props.notifications.length}
             </span>
             <div
