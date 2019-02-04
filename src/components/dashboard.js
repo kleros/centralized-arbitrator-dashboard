@@ -28,24 +28,6 @@ class Dashboard extends React.Component {
       return `https://kovan-events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
   }
 
-  postContractAddressToEventNotificationService(
-    route,
-    callbackURI,
-    contractABI
-  ) {
-    fetch(route, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: ENV_VAR_HERE
-      },
-      body: JSON.stringify({
-        callbackURI: callbackURI,
-        contractABI: contractABI
-      })
-    })
-  }
-
   scanContracts(networkType, account) {
     const limiter = new RateLimiter(1, 250)
     const api = {

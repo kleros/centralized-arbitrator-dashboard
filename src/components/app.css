@@ -77,6 +77,10 @@ hr {
   min-width: 300px;
 }
 
+.email-notification-control {
+  min-width: 300px;
+}
+
 #dropdownMenu2 {
   background-color: #1e075f;
   border-color: #1e075f;

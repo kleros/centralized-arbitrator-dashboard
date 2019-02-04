@@ -209,101 +209,18 @@ class NavBar extends React.Component {
               className="p-4 dropdown-menu dropdown-menu-right email-notification-control"
             >
               <label className="col-md-12 text-center">
-                Register to receive notifications by email
+                Please contact{' '}
+                <a href="mailto:contact@kleros.io">contact@kleros.io</a> for
+                registering email notifications, providing your centralized
+                arbitrator contract address.
               </label>
-              <hr />
-
               <div className="tab-content" id="myTabContent">
                 <div
                   aria-labelledby="all-contracts-tab"
                   className="tab-pane fade show active"
                   id="profile"
                   role="tabpanel"
-                >
-                  <label>Registering your email you will be informed:</label>
-                  <br />
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      id="defaultCheck1"
-                      type="checkbox"
-                      value=""
-                      onChange={e =>
-                        this.setState({ allDisputes: e.target.checked })
-                      }
-                    />
-                    <label className="form-check-label" htmlFor="defaultCheck1">
-                      When there is a new dispute
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      id="defaultCheck2"
-                      type="checkbox"
-                      value=""
-                      onChange={e =>
-                        this.setState({ allEvidences: e.target.checked })
-                      }
-                    />
-                    <label className="form-check-label" htmlFor="defaultCheck2">
-                      When there is a new evidence to an existing dispute
-                    </label>
-                  </div>
-                  <hr />
-                  <form>
-                    <div className="form-group row">
-                      <div className="col-sm-12">
-                        <input
-                          className="form-control"
-                          id="inputNameAllContracts"
-                          placeholder="Name"
-                          type="name"
-                          value={allName}
-                          onChange={this.onAllNameChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <div className="col-sm-12">
-                        <input
-                          className="form-control"
-                          id="inputEmailAllContracts"
-                          placeholder="Email"
-                          type="email"
-                          value={allEmail}
-                          onChange={this.onAllEmailChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                      <div className="col-sm-6">
-                        <button
-                          className="btn"
-                          type="button"
-                          onClick={this.onUnsubscribe()}
-                        >
-                          Unsubscribe
-                        </button>
-                      </div>
-                      <div className="col-sm-6">
-                        <button
-                          className="btn btn-primary float-right"
-                          type="button"
-                          onClick={this.onSubscribe(
-                            allName,
-                            allEmail,
-                            allDisputes,
-                            allEvidences
-                          )}
-                        >
-                          Subscribe
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+                />
               </div>
             </div>
           </div>
