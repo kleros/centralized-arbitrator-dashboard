@@ -180,6 +180,7 @@ class NavBar extends React.Component {
               {this.props.notifications &&
                 this.props.notifications.map(notification => (
                   <NotificationItem
+                    key={notification.notification + notification.time}
                     text={notification.notification}
                     time={notification.time}
                   />
