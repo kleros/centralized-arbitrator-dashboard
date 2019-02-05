@@ -102,7 +102,7 @@ class DisputeList extends React.Component {
   fetchAndAssignMetaevidence = async (disputeID, evidence) => {
     const { disputes } = this.state
 
-    console.log('fetchlog')
+    console.log('fetchlog archon')
     console.log(evidence)
 
     console.log('disputes')
@@ -117,6 +117,8 @@ class DisputeList extends React.Component {
       .then(metaevidence => (disputes[targetIndex].metaevidence = metaevidence))
       .then(this.setState({ disputes }))
   }
+
+  assignMetaEvidenceUsingArchon = () => {}
 
   updateRuling = async event => {
     console.log('eventscheme')
@@ -181,6 +183,29 @@ class DisputeList extends React.Component {
           )
       )
     )
+
+    // console.log('archonhere')
+    // console.log(this.props.archon.arbitrable)
+    // console.log(
+    //   await this.props.archon.arbitrable.getMetaEvidence(arbitrableAddress, 0)
+    // )
+    // console.log('endedhere')
+    // debugger
+    // arbitrable.getPastEvents('Dispute', options).then(events =>
+    //   events.map(
+    //     event =>
+    //       this.props.archon.arbitrable
+    //         .getMetaEvidence(
+    //           arbitrableAddress,
+    //           event.returnValues._metaEvidenceID
+    //         )
+    //         .then(x => {
+    //           console.log(x)
+    //           console.log('look up')
+    //         })
+    //     //.then(x => this.fetchAndAssignMetaevidence(disputeID, x))
+    //   )
+    // )
 
     arbitrable
       .getPastEvents('Evidence', options)
@@ -250,6 +275,7 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
+          archon={this.props.archon}
           activeWallet={activeWallet}
           arbitrated={item.arbitrated}
           centralizedArbitratorInstance={centralizedArbitratorInstance(

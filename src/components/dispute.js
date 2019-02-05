@@ -90,6 +90,7 @@ class Dispute extends React.Component {
             <td colSpan="5">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
+                  archon={this.props.archon}
                   activeWallet={activeWallet}
                   aliases={metaevidence && metaevidence.aliases}
                   category={metaevidence && metaevidence.category}

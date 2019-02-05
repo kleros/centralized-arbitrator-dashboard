@@ -12,8 +12,7 @@ class DisputeDetail extends React.Component {
     super(props)
     console.log('DISPUTE DETAIL PROPS')
     console.log(props)
-    this.archon = new Archon(window.web3.currentProvider)
-    console.log(this.archon)
+    console.log(this.props.archon)
     this.state = {
       validationResult: 'Integrity not tested.'
     }
@@ -27,9 +26,9 @@ class DisputeDetail extends React.Component {
   validate(fileURI, fileHash) {
     this.setState({ validationResult: 'Testing integrity...' })
     console.log('validate')
-    console.log(this.archon)
+    console.log(this.props.archon)
     console.log(fileURI)
-    this.archon.utils
+    this.props.archon.utils
       .validateFileFromURI(fileURI, { hash: fileHash, preValidated: true })
       .then(data => {
         console.log('data')

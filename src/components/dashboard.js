@@ -7,6 +7,7 @@ import React from 'react'
 import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
 import $ from 'jquery'
+import Archon from '@kleros/archon'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -17,8 +18,11 @@ class Dashboard extends React.Component {
       owner: '',
       selectedAddress: undefined,
       notifications: [],
-      uglyFixtoBug13: '' // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
+      uglyFixtoBug13: '', // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
+      archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io')
     }
+
+    console.log(this.state.archon)
   }
 
   eventNotificationServiceRoute(address, eventName, networkName) {
@@ -122,12 +126,13 @@ class Dashboard extends React.Component {
 
     console.log('deploying')
     const result = await deployCentralizedArbitrator(account, arbitrationPrice)
+
+    const item = window.localStorage.getItem(account) || ''
+
+    console.log(item)
     window.localStorage.setItem(
       account,
-      window.localStorage
-        .getItem(account)
-        .concat(' ')
-        .concat(result._address)
+      item.concat(' ').concat(result._address)
     )
     this.setState({
       contractAddresses: window.localStorage.getItem(account).split(' ')
@@ -174,6 +179,7 @@ class Dashboard extends React.Component {
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
     const {
+      archon,
       arbitrationCost,
       contractAddresses,
       deployInputEnabled,
@@ -290,6 +296,7 @@ class Dashboard extends React.Component {
                 <div className="disputes">
                   {selectedAddress && wallet && (
                     <DisputeList
+                      archon={archon}
                       activeWallet={wallet}
                       contractAddress={selectedAddress}
                       networkType={networkType}
