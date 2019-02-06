@@ -227,6 +227,7 @@ class NavBar extends React.Component {
           </div>
           <div className="align-bottom mx-2 pt-2">
             <Identicon
+              networkType={this.props.networkType}
               bgColor="#4004A3"
               className="identicon"
               color="#009AFF"

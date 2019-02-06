@@ -9,11 +9,16 @@ const Identicon = ({
   scale,
   seed,
   size,
-  spotColor
+  spotColor,
+  networkType
 }) => (
   <a
     className="align-bottom"
-    href={`https://kovan.etherscan.io/address/${seed}`}
+    href={
+      networkType == 'main'
+        ? `https://etherscan.io/address/${seed}`
+        : `https://kovan.etherscan.io/address/${seed}`
+    }
     rel="noopener noreferrer"
     target="_blank"
   >

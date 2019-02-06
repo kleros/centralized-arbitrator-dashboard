@@ -200,6 +200,7 @@ class Dashboard extends React.Component {
           <div className="row">
             <div className="col">
               <NavBar
+                networkType={networkType}
                 clearNotifications={this.clearNotificationsCallback}
                 notifications={notifications}
                 wallet={wallet}
