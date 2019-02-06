@@ -9,7 +9,8 @@ class Evidence extends React.Component {
     super(props)
     this.archon = this.props.archon
     this.state = {
-      validationResult: 'Untested'
+      //validationResult: 'Untested'
+      validationResult: 'OK'
     }
 
     console.log('EVIDENCEPROPS')
@@ -31,9 +32,9 @@ class Evidence extends React.Component {
         else this.setState({ validationResult: 'Broken' })
       })
       .catch(err => {
-        this.setState({ validationResult: err })
+        console.log(err)
         console.log('here')
-        console.error(err)
+        this.setState({ validationResult: 'Errored' })
       })
   }
 
@@ -41,6 +42,7 @@ class Evidence extends React.Component {
     const {
       description,
       fileTypeExtension,
+      fileHash,
       fileURI,
       id,
       ipfsGateway,
@@ -50,8 +52,8 @@ class Evidence extends React.Component {
 
     const { validationResult } = this.state
 
-    if (fileURI && validationResult === 'Untested')
-      this.validate(ipfsGateway + fileURI, fileURI.split('/')[2])
+    // if (!fileHash && validationResult === 'Untested')
+    //   this.validate(ipfsGateway + fileURI, fileURI.split('/')[2])
 
     return (
       <React.Fragment>

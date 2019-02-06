@@ -15,6 +15,7 @@ class EvidenceList extends React.Component {
         archon={this.props.archon}
         description={item && item.description}
         fileURI={item && item.fileURI}
+        fileHash={item && item.fileHash}
         ipfsGateway={ipfsGateway}
         key={item.name + item.fileURI}
         name={item.name}
