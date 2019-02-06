@@ -222,7 +222,7 @@ class DisputeList extends React.Component {
       )
       .then(
         this.props.notificationCallback(
-          `New evidence submitted to dispute #${disputeID} in contact ${contractAddress.substring(
+          `New evidence submitted to dispute #${disputeID} in contract ${contractAddress.substring(
             0,
             8
           )}...`,
