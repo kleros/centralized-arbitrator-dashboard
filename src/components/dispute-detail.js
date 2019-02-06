@@ -157,6 +157,7 @@ class DisputeDetail extends React.Component {
                   {address}
                 </Identicon>
                 <EvidenceList
+                  archon={this.props.archon}
                   evidences={evidences[address]}
                   ipfsGateway={ipfsGateway}
                   name={aliases[address]}

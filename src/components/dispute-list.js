@@ -19,6 +19,8 @@ class DisputeList extends React.Component {
     this.subscriptions = []
 
     this.gateway = 'https://ipfs.kleros.io'
+    console.log('archonindisputelist')
+    console.log(this.props.archon)
   }
 
   componentDidMount() {

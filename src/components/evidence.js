@@ -7,10 +7,13 @@ import React from 'react'
 class Evidence extends React.Component {
   constructor(props) {
     super(props)
-    this.archon = new Archon(window.web3.currentProvider)
+    this.archon = this.props.archon
     this.state = {
       validationResult: 'Untested'
     }
+
+    console.log('EVIDENCEPROPS')
+    console.log(this.props)
   }
 
   validate(fileURI, fileHash) {

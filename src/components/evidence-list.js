@@ -12,6 +12,7 @@ class EvidenceList extends React.Component {
   evidences = (evidences, ipfsGateway) => {
     const items = evidences.map(item => (
       <Evidence
+        archon={this.props.archon}
         description={item && item.description}
         fileURI={item && item.fileURI}
         ipfsGateway={ipfsGateway}

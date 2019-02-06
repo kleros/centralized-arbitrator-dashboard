@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
       uglyFixtoBug13: '', // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
       archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io')
     }
-
+    console.log('archonconstructed')
     console.log(this.state.archon)
   }
 
