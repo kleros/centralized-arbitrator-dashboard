@@ -114,10 +114,9 @@ class DisputeList extends React.Component {
 
     const targetIndex = disputes.findIndex(d => d.id === disputeID)
 
-    fetch(this.gateway + evidence)
-      .then(response => response.json())
-      .then(metaevidence => (disputes[targetIndex].metaevidence = metaevidence))
-      .then(this.setState({ disputes }))
+    disputes[targetIndex].metaevidence = evidence.metaEvidenceJSON
+
+    this.setState({ disputes })
   }
 
   assignMetaEvidenceUsingArchon = () => {}
@@ -170,44 +169,24 @@ class DisputeList extends React.Component {
     const filter = { _disputeID: disputeID, _arbitrator: contractAddress }
     const options = { filter, fromBlock: 0 }
 
-    arbitrable.getPastEvents('Dispute', options).then(events =>
-      events.map(event =>
-        arbitrable
-          .getPastEvents('MetaEvidence', {
-            filter: { _metaEvidenceID: event.returnValues._metaEvidenceID },
-            fromBlock: 0
-          })
-          .then(events =>
-            this.fetchAndAssignMetaevidence(
-              disputeID,
-              events[0].returnValues._evidence
-            )
-          )
-      )
+    console.log('archonhere')
+    console.log(this.props.archon.arbitrable)
+    console.log(
+      await this.props.archon.arbitrable.getMetaEvidence(arbitrableAddress, 0)
     )
-
-    // console.log('archonhere')
-    // console.log(this.props.archon.arbitrable)
-    // console.log(
-    //   await this.props.archon.arbitrable.getMetaEvidence(arbitrableAddress, 0)
-    // )
-    // console.log('endedhere')
-    // debugger
-    // arbitrable.getPastEvents('Dispute', options).then(events =>
-    //   events.map(
-    //     event =>
-    //       this.props.archon.arbitrable
-    //         .getMetaEvidence(
-    //           arbitrableAddress,
-    //           event.returnValues._metaEvidenceID
-    //         )
-    //         .then(x => {
-    //           console.log(x)
-    //           console.log('look up')
-    //         })
-    //     //.then(x => this.fetchAndAssignMetaevidence(disputeID, x))
-    //   )
-    // )
+    console.log('endedhere')
+    arbitrable
+      .getPastEvents('Dispute', options)
+      .then(events =>
+        events.map(event =>
+          this.props.archon.arbitrable
+            .getMetaEvidence(
+              arbitrableAddress,
+              event.returnValues._metaEvidenceID
+            )
+            .then(x => this.fetchAndAssignMetaevidence(disputeID, x))
+        )
+      )
 
     arbitrable
       .getPastEvents('Evidence', options)
