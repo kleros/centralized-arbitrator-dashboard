@@ -81,6 +81,10 @@ class DisputeList extends React.Component {
     console.log(disputeID)
     console.log('disputes')
     console.log(disputes)
+    console.log('party')
+    console.log(party)
+    console.log('evidence')
+    console.log(evidence)
 
     disputes[targetIndex].evidences = disputes[targetIndex].evidences || {}
     disputes[targetIndex].evidences[party] =
@@ -89,16 +93,9 @@ class DisputeList extends React.Component {
     console.log('evidence')
     console.log(evidence)
 
-    fetch(this.gateway + evidence)
-      .then(response =>
-        response
-          .json()
-          .catch(function() {
-            console.log('error')
-          })
-          .then(data => disputes[targetIndex].evidences[party].push(data))
-      )
-      .then(this.setState({ disputes }))
+    disputes[targetIndex].evidences[party].push(evidence)
+
+    this.setState({ disputes })
   }
 
   fetchAndAssignMetaevidence = async (disputeID, evidence) => {
@@ -189,41 +186,50 @@ class DisputeList extends React.Component {
         )
       )
 
-    arbitrable
-      .getPastEvents('Evidence', options)
-      .then(events =>
-        events.map(event =>
+    // arbitrable
+    //   .getPastEvents('Evidence', options)
+    //   .then(events =>
+    //     events.map(event =>
+    //       this.fetchAndAssignEvidence(
+    //         disputeID,
+    //         event.returnValues._party,
+    //         event.returnValues._evidence
+    //       )
+    //     )
+    //   )
+    //   .then(
+    //     this.props.notificationCallback(
+    //       `New evidence submitted to dispute #${disputeID} in contract ${contractAddress.substring(
+    //         0,
+    //         8
+    //       )}...`,
+    //       date.getTime()
+    //     )
+    //   )
+
+    console.log('testing getevidence')
+    this.props.archon.arbitrable
+      .getEvidence(arbitrableAddress, contractAddress, disputeID, {})
+      .then(x => {
+        console.log(x)
+        console.log('HELLO')
+      })
+
+    this.props.archon.arbitrable
+      .getEvidence(arbitrableAddress, contractAddress, disputeID)
+      .then(evidences =>
+        evidences.map(evidence =>
           this.fetchAndAssignEvidence(
             disputeID,
-            event.returnValues._party,
-            event.returnValues._evidence
+            evidence.submittedBy,
+            evidence.evidenceJSON
           )
-        )
-      )
-      .then(
-        this.props.notificationCallback(
-          `New evidence submitted to dispute #${disputeID} in contract ${contractAddress.substring(
-            0,
-            8
-          )}...`,
-          date.getTime()
         )
       )
 
     arbitrable
       .getPastEvents('Ruling', options)
       .then(events => events.map(event => this.updateRuling(event)))
-
-    arbitrable.events
-      .Dispute({
-        filter
-      })
-      .on('data', event => {
-        this.fetchAndAssignMetaevidence(
-          event.returnValues._disputeID,
-          event.returnValues._metaEvidenceID
-        )
-      })
 
     arbitrable.events
       .Dispute({
@@ -242,11 +248,18 @@ class DisputeList extends React.Component {
           filter
         })
         .on('data', event => {
-          this.fetchAndAssignEvidence(
-            disputeID,
-            event.returnValues._party,
-            event.returnValues._evidence
-          )
+          this.props.archon.arbitrable
+            .getEvidence(arbitrableAddress, contractAddress, disputeID, {
+              fromBlock: event.blockNumber
+            })
+            // .then(evidence => console.log(evidence))
+            .then(evidence =>
+              this.fetchAndAssignEvidence(
+                disputeID,
+                evidence.submittedBy,
+                evidence.evidenceJSON
+              )
+            )
         })
     )
 

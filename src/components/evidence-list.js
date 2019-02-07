@@ -17,8 +17,8 @@ class EvidenceList extends React.Component {
         fileURI={item && item.fileURI}
         fileHash={item && item.fileHash}
         ipfsGateway={ipfsGateway}
-        key={item.name + item.fileURI}
-        name={item.name}
+        key={item && item.name + item.fileURI}
+        name={item && item.name}
       />
     ))
 
