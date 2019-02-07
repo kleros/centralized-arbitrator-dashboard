@@ -294,6 +294,7 @@ class DisputeList extends React.Component {
           ipfsGateway={this.gateway}
           key={item.id}
           metaevidence={item.metaevidence}
+          metaevidenceObject={item.metaevidenceObject}
           networkType={networkType}
           status={item.status || '0'}
         />

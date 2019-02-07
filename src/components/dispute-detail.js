@@ -23,27 +23,6 @@ class DisputeDetail extends React.Component {
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  validate(fileURI, fileHash) {
-    this.setState({ validationResult: 'Testing integrity...' })
-    console.log('validate')
-    console.log(this.props.archon)
-    console.log(fileURI)
-    this.props.archon.utils
-      .validateFileFromURI(fileURI, { hash: fileHash, preValidated: true })
-      .then(data => {
-        console.log('data')
-        console.log(data) // true
-        if (data.isValid)
-          this.setState({ validationResult: 'Integrity is intact.' })
-        else this.setState({ validationResult: 'Integrity is broken.' })
-      })
-      .catch(err => {
-        this.setState({ validationResult: 'Integrity test failed.' })
-        console.log('here')
-        console.error(err)
-      })
-  }
-
   renderedRulingOptions = (
     options,
     activeWallet,
@@ -86,9 +65,6 @@ class DisputeDetail extends React.Component {
 
     const { validationResult } = this.state
 
-    if (fileURI && validationResult === 'Integrity not tested.')
-      this.validate(ipfsGateway + fileURI, fileURI.split('/')[2])
-
     console.log(this.state)
     return (
       <div className="container">
@@ -125,15 +101,13 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <sub>{fileHash}</sub>
-          </div>
+          <div className="col">{fileHash}</div>
         </div>
-        {validationResult}
-        {fileURI && fileHash && (
+        {this.props.fileValid ? 'file ok' : 'file bad'}
+        {true && true && (
           <div className="row">
             <div className="col">
-              <sub>{validationResult}</sub>
+              <sub>{this.props.fileValid}</sub>
             </div>
           </div>
         )}

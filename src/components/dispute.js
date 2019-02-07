@@ -7,8 +7,7 @@ import web3 from '../ethereum/web3'
 class Dispute extends React.Component {
   constructor(props) {
     super(props)
-    console.log('DISPUTE PROPS')
-    console.log(props)
+
     this.state = {
       reload: false
     }
@@ -40,6 +39,8 @@ class Dispute extends React.Component {
   }
 
   render() {
+    console.log('DISPUTE PROPS')
+    console.log(this.props)
     const {
       activeWallet,
       arbitrated,
@@ -49,6 +50,7 @@ class Dispute extends React.Component {
       id,
       ipfsGateway,
       metaevidence,
+      metaevidenceObject,
       networkType,
       status
     } = this.props
@@ -92,18 +94,50 @@ class Dispute extends React.Component {
                 <DisputeDetail
                   archon={this.props.archon}
                   activeWallet={activeWallet}
-                  aliases={metaevidence && metaevidence.aliases}
-                  category={metaevidence && metaevidence.category}
+                  aliases={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.aliases
+                  }
+                  category={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.category
+                  }
                   centralizedArbitratorInstance={centralizedArbitratorInstance}
-                  description={metaevidence && metaevidence.description}
+                  description={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.description
+                  }
                   evidences={evidences}
-                  fileHash={metaevidence && metaevidence.fileHash}
-                  fileURI={metaevidence && metaevidence.fileURI}
+                  fileHash={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.fileHash
+                  }
+                  fileURI={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.fileURI
+                  }
                   id={id}
                   ipfsGateway={ipfsGateway}
-                  question={metaevidence && metaevidence.question}
-                  rulingOptions={metaevidence && metaevidence.rulingOptions}
-                  title={metaevidence && metaevidence.title}
+                  question={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.question
+                  }
+                  rulingOptions={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.rulingOptions
+                  }
+                  title={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.title
+                  }
+                  metaEvidenceJSONValid={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSONValid
+                  }
+                  fileValid={metaevidenceObject && metaevidenceObject.fileValid}
+                  interfaceValid={
+                    metaevidenceObject && metaevidenceObject.interfaceValid
+                  }
                 />
               </div>
             </td>
@@ -123,7 +157,7 @@ Dispute.propTypes = {
   fee: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   ipfsGateway: PropTypes.string.isRequired,
-  metaevidence: PropTypes.shape({
+  metaevidenceObject: PropTypes.shape({
     aliases: PropTypes.shape({
       [PropTypes.string]: PropTypes.string
     }),
