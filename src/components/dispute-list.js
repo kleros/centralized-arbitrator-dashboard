@@ -115,6 +115,7 @@ class DisputeList extends React.Component {
     const targetIndex = disputes.findIndex(d => d.id === disputeID)
 
     disputes[targetIndex].metaevidence = evidence.metaEvidenceJSON
+    disputes[targetIndex].metaevidenceObject = evidence
 
     this.setState({ disputes })
   }
@@ -221,6 +222,17 @@ class DisputeList extends React.Component {
         this.fetchAndAssignMetaevidence(
           event.returnValues._disputeID,
           event.returnValues._metaEvidenceID
+        )
+      })
+
+    arbitrable.events
+      .Dispute({
+        filter
+      })
+      .on('data', event => {
+        this.props.archon.arbitrable.getMetaEvidence(
+          arbitrableAddress,
+          event.returnValues._disputeID
         )
       })
 
