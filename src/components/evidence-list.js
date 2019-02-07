@@ -13,12 +13,14 @@ class EvidenceList extends React.Component {
     const items = evidences.map(item => (
       <Evidence
         archon={this.props.archon}
-        description={item && item.description}
-        fileURI={item && item.fileURI}
-        fileHash={item && item.fileHash}
+        description={item && item.evidenceJSON.description}
+        fileURI={item && item.evidenceJSON.fileURI}
+        fileHash={item && item.evidenceJSON.fileHash}
         ipfsGateway={ipfsGateway}
-        key={item && item.name + item.fileURI}
-        name={item && item.name}
+        key={item && item.evidenceJSON.name + item.evidenceJSON.fileURI}
+        name={item && item.evidenceJSON.name}
+        evidenceJSONValid={item && item.evidenceJSONValid}
+        fileValid={item && item.fileValid}
       />
     ))
 

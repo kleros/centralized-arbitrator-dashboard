@@ -72,7 +72,7 @@ class DisputeList extends React.Component {
     }
   }
 
-  fetchAndAssignEvidence = async (disputeID, party, evidence) => {
+  fetchAndAssignEvidence = async (disputeID, evidence) => {
     const { disputes } = this.state
     const targetIndex = disputes.findIndex(d => d.id === disputeID)
     console.log('do we have the dispute?')
@@ -81,19 +81,17 @@ class DisputeList extends React.Component {
     console.log(disputeID)
     console.log('disputes')
     console.log(disputes)
-    console.log('party')
-    console.log(party)
     console.log('evidence')
     console.log(evidence)
 
     disputes[targetIndex].evidences = disputes[targetIndex].evidences || {}
-    disputes[targetIndex].evidences[party] =
-      disputes[targetIndex].evidences[party] || []
+    disputes[targetIndex].evidences[evidence.submittedBy] =
+      disputes[targetIndex].evidences[evidence.submittedBy] || []
 
     console.log('evidence')
     console.log(evidence)
 
-    disputes[targetIndex].evidences[party].push(evidence)
+    disputes[targetIndex].evidences[evidence.submittedBy].push(evidence)
 
     this.setState({ disputes })
   }
@@ -186,27 +184,6 @@ class DisputeList extends React.Component {
         )
       )
 
-    // arbitrable
-    //   .getPastEvents('Evidence', options)
-    //   .then(events =>
-    //     events.map(event =>
-    //       this.fetchAndAssignEvidence(
-    //         disputeID,
-    //         event.returnValues._party,
-    //         event.returnValues._evidence
-    //       )
-    //     )
-    //   )
-    //   .then(
-    //     this.props.notificationCallback(
-    //       `New evidence submitted to dispute #${disputeID} in contract ${contractAddress.substring(
-    //         0,
-    //         8
-    //       )}...`,
-    //       date.getTime()
-    //     )
-    //   )
-
     console.log('testing getevidence')
     this.props.archon.arbitrable
       .getEvidence(arbitrableAddress, contractAddress, disputeID, {})
@@ -219,11 +196,7 @@ class DisputeList extends React.Component {
       .getEvidence(arbitrableAddress, contractAddress, disputeID)
       .then(evidences =>
         evidences.map(evidence =>
-          this.fetchAndAssignEvidence(
-            disputeID,
-            evidence.submittedBy,
-            evidence.evidenceJSON
-          )
+          this.fetchAndAssignEvidence(disputeID, evidence)
         )
       )
 
@@ -253,13 +226,7 @@ class DisputeList extends React.Component {
               fromBlock: event.blockNumber
             })
             // .then(evidence => console.log(evidence))
-            .then(evidence =>
-              this.fetchAndAssignEvidence(
-                disputeID,
-                evidence.submittedBy,
-                evidence.evidenceJSON
-              )
-            )
+            .then(evidence => this.fetchAndAssignEvidence(disputeID, evidence))
         })
     )
 
