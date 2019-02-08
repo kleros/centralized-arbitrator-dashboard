@@ -1,4 +1,3 @@
-import Archon from '@kleros/archon'
 import EvidenceDetail from './evidence-detail'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
@@ -7,7 +6,6 @@ import React from 'react'
 class Evidence extends React.Component {
   constructor(props) {
     super(props)
-    this.archon = this.props.archon
     this.state = {
       // validationResult: 'Untested'
       validationResult: 'OK'
@@ -17,32 +15,10 @@ class Evidence extends React.Component {
     console.log(this.props)
   }
 
-  validate(fileURI, fileHash) {
-    this.setState({ validationResult: 'Testing' })
-    console.log('validate')
-    console.log(this.archon)
-    console.log(fileURI)
-    console.log(fileHash)
-    this.archon.utils
-      .validateFileFromURI(fileURI, { preValidated: true })
-      .then(data => {
-        console.log('data-evidence')
-        console.log(data) // true
-        if (data.isValid) this.setState({ validationResult: 'OK' })
-        else this.setState({ validationResult: 'Broken' })
-      })
-      .catch(err => {
-        console.log(err)
-        console.log('here')
-        this.setState({ validationResult: 'Errored' })
-      })
-  }
-
   render() {
     const {
       description,
       fileTypeExtension,
-      fileHash,
       fileURI,
       id,
       ipfsGateway,
@@ -51,9 +27,6 @@ class Evidence extends React.Component {
     } = this.props
 
     const { validationResult } = this.state
-
-    // if (!fileHash && validationResult === 'Untested')
-    //   this.validate(ipfsGateway + fileURI, fileURI.split('/')[2])
 
     return (
       <React.Fragment>
