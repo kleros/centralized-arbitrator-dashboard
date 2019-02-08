@@ -3,12 +3,12 @@ import {
   getDispute,
   getDisputeStatus
 } from '../ethereum/centralized-arbitrator'
+import Archon from '@kleros/archon'
 import Dispute from './dispute'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { arbitrableInstanceAt } from '../ethereum/arbitrable'
-import update from 'immutability-helper'
 
 class DisputeList extends React.Component {
   constructor(props) {
@@ -19,8 +19,6 @@ class DisputeList extends React.Component {
     this.subscriptions = []
 
     this.gateway = 'https://ipfs.kleros.io'
-    console.log('archonindisputelist')
-    console.log(this.props.archon)
   }
 
   componentDidMount() {
@@ -40,8 +38,7 @@ class DisputeList extends React.Component {
           console.log(event)
           return this.addDispute(
             event.returnValues._disputeID,
-            event.returnValues._arbitrable,
-            false
+            event.returnValues._arbitrable
           )
         })
       )
@@ -132,8 +129,8 @@ class DisputeList extends React.Component {
     this.setState({ disputes })
   }
 
-  addDispute = async (disputeID, arbitrableAddress, isNew) => {
-    const { contractAddress } = this.props
+  addDispute = async (disputeID, arbitrableAddress) => {
+    const { archon, contractAddress, notificationCallback } = this.props
 
     console.log('ARGS')
     console.log(arbitrableAddress)
@@ -146,7 +143,7 @@ class DisputeList extends React.Component {
 
     const date = new Date()
 
-    this.props.notificationCallback(
+    notificationCallback(
       `New dispute #${disputeID} in contract ${contractAddress.substring(
         0,
         8
@@ -162,20 +159,14 @@ class DisputeList extends React.Component {
     }))
 
     const arbitrable = arbitrableInstanceAt(arbitrableAddress)
-    const filter = { _disputeID: disputeID, _arbitrator: contractAddress }
+    const filter = { _arbitrator: contractAddress, _disputeID: disputeID }
     const options = { filter, fromBlock: 0 }
 
-    console.log('archonhere')
-    console.log(this.props.archon.arbitrable)
-    console.log(
-      await this.props.archon.arbitrable.getMetaEvidence(arbitrableAddress, 0)
-    )
-    console.log('endedhere')
     arbitrable
       .getPastEvents('Dispute', options)
       .then(events =>
         events.map(event =>
-          this.props.archon.arbitrable
+          archon.arbitrable
             .getMetaEvidence(
               arbitrableAddress,
               event.returnValues._metaEvidenceID
@@ -185,14 +176,14 @@ class DisputeList extends React.Component {
       )
 
     console.log('testing getevidence')
-    this.props.archon.arbitrable
+    archon.arbitrable
       .getEvidence(arbitrableAddress, contractAddress, disputeID, {})
       .then(x => {
         console.log(x)
         console.log('HELLO')
       })
 
-    this.props.archon.arbitrable
+    archon.arbitrable
       .getEvidence(arbitrableAddress, contractAddress, disputeID)
       .then(evidences =>
         evidences.map(evidence =>
@@ -209,7 +200,7 @@ class DisputeList extends React.Component {
         filter
       })
       .on('data', event => {
-        this.props.archon.arbitrable.getMetaEvidence(
+        archon.arbitrable.getMetaEvidence(
           arbitrableAddress,
           event.returnValues._disputeID
         )
@@ -221,7 +212,7 @@ class DisputeList extends React.Component {
           filter
         })
         .on('data', event => {
-          this.props.archon.arbitrable
+          archon.arbitrable
             .getEvidence(arbitrableAddress, contractAddress, disputeID, {
               fromBlock: event.blockNumber
             })
@@ -241,8 +232,9 @@ class DisputeList extends React.Component {
     )
   }
 
-  disputeComponents = (contractAddress, networkType, activeWallet, items) =>
-    items
+  disputeComponents = (contractAddress, networkType, activeWallet, items) => {
+    const { archon } = this.props
+    return items
       .sort(function(a, b) {
         return a.id - b.id
       })
@@ -250,7 +242,7 @@ class DisputeList extends React.Component {
         <Dispute
           activeWallet={activeWallet}
           arbitrated={item.arbitrated}
-          archon={this.props.archon}
+          archon={archon}
           centralizedArbitratorInstance={centralizedArbitratorInstance(
             contractAddress
           )}
@@ -266,6 +258,7 @@ class DisputeList extends React.Component {
           status={item.status || '0'}
         />
       ))
+  }
 
   render() {
     const { activeWallet, contractAddress, networkType } = this.props
@@ -305,8 +298,10 @@ class DisputeList extends React.Component {
 
 DisputeList.propTypes = {
   activeWallet: PropTypes.string.isRequired,
+  archon: PropTypes.instanceOf(Archon).isRequired,
   contractAddress: PropTypes.string.isRequired,
-  networkType: PropTypes.string.isRequired
+  networkType: PropTypes.string.isRequired,
+  notificationCallback: PropTypes.func.isRequired
 }
 
 export default DisputeList
