@@ -157,7 +157,7 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  clearNotifications: PropTypes.function.isRequired,
+  clearNotifications: PropTypes.func.isRequired,
   networkType: PropTypes.string.isRequired,
   notifications: PropTypes.arrayOf(NotificationItem).isRequired,
   wallet: PropTypes.string.isRequired
