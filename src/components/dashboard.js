@@ -13,7 +13,6 @@ class Dashboard extends React.Component {
     super(props)
     this.state = {
       arbitrationCost: '',
-      archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io'),
       contractAddresses: [],
       notifications: [],
       owner: '',
@@ -80,6 +79,10 @@ class Dashboard extends React.Component {
   }
 
   async componentDidMount() {
+    this.setState({
+      archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io')
+    })
+
     $('*').on('click', () => {
       this.setState({ uglyFixtoBug13: '' })
     })
