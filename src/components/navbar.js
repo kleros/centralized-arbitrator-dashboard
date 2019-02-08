@@ -1,101 +1,22 @@
+import $ from 'jquery'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Identicon from './identicon.js'
+import NotificationItem from './notification-item'
 import PropTypes from 'prop-types'
 import React from 'react'
-import NotificationItem from './notification-item'
-import $ from 'jquery'
-import web3 from '../ethereum/web3'
 
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      allName: '',
-      allEmail: '',
-      allDisputes: false,
-      allEvidences: false,
-      currentName: '',
-      currentEmail: '',
-      currentDisputes: false,
-      currentEvidences: false
-    }
-  }
-
   componentDidMount(props) {
     console.log(props)
 
     $('.notification-control').on('click', () => {
-      console.log(this.props)
-      this.props.clearNotifications()
+      this.clearNotifications()
     })
   }
 
   clearNotifications() {
-    this.props.clearNotifications()
-  }
-
-  componentDidUpdate() {}
-
-  onSubscribe = (
-    name,
-    email,
-    sendWhenNewDispute,
-    sendWhenNewEvidence
-  ) => async e => {
-    console.log(e)
-    const { wallet } = this.props
-    const address = web3.utils.toChecksumAddress(wallet)
-    const settings = {
-      email: { S: email },
-      fullName: { S: name },
-      centralizedArbitratorDashboardNotificationSettingDisputes: {
-        S: sendWhenNewDispute
-      },
-      centralizedArbitratorDashboardNotificationSettingEvidences: {
-        S: sendWhenNewEvidence
-      }
-    }
-    const signature = await web3.eth.personal.sign(
-      JSON.stringify(settings),
-      address
-    )
-
-    fetch(
-      'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
-      {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          payload: { address, settings, signature }
-        })
-      }
-    )
-  }
-
-  onUnsubscribe = () => async e => {
-    const { wallet } = this.props
-    const address = web3.utils.toChecksumAddress(wallet)
-    const settings = {
-      centralizedArbitratorDashboardNotificationSettingDisputes: {
-        S: false
-      },
-      centralizedArbitratorDashboardNotificationSettingEvidences: {
-        S: false
-      }
-    }
-    const signature = await web3.eth.personal.sign(
-      JSON.stringify(settings),
-      address
-    )
-
-    fetch(
-      'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
-      {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payload: { address, settings, signature } })
-      }
-    )
+    const { clearNotifications } = this.props
+    clearNotifications()
   }
 
   onAllNameChange = e => {
@@ -109,15 +30,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { wallet } = this.props
-    const {
-      allName,
-      allEmail,
-      allDisputes,
-      allEvidences,
-      currentName,
-      currentEmail
-    } = this.state
+    const { networkType, notifications, wallet } = this.props
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -163,7 +76,7 @@ class NavBar extends React.Component {
               <FontAwesomeIcon className="navbar-icon" icon="bell" size="2x" />
             </button>
             <span className="badge badge-notify primary">
-              {this.props.notifications.length}
+              {notifications.length}
             </span>
             <div
               aria-labelledby="dropdownMenu2"
@@ -177,15 +90,15 @@ class NavBar extends React.Component {
                 </div>
               </div>
               <hr />
-              {this.props.notifications &&
-                this.props.notifications.map(notification => (
+              {notifications &&
+                notifications.map(notification => (
                   <NotificationItem
                     key={notification.notification + notification.time}
                     text={notification.notification}
                     time={notification.time}
                   />
                 ))}
-              {this.props.notifications.length == 0 && (
+              {notifications.length === 0 && (
                 <div className="text-center">No New Notifications</div>
               )}
             </div>
@@ -230,7 +143,7 @@ class NavBar extends React.Component {
               bgColor="#4004A3"
               className="identicon"
               color="#009AFF"
-              networkType={this.props.networkType}
+              networkType={networkType}
               scale={3}
               seed={wallet}
               size={10}
@@ -244,6 +157,9 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
+  clearNotifications: PropTypes.function.isRequired,
+  networkType: PropTypes.string.isRequired,
+  notifications: PropTypes.arrayOf(NotificationItem).isRequired,
   wallet: PropTypes.string.isRequired
 }
 
