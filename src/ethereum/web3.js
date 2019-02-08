@@ -11,21 +11,13 @@ window.addEventListener('load', async () => {
       // Request account access if needed
       await window.ethereum.enable()
       // Acccounts now exposed
-      web3.eth.sendTransaction({
-        /* ... */
-      })
-    } catch (error) {
+    } catch (_) {
       // User denied account access...
     }
   }
   // Legacy dapp browsers...
-  else if (window.web3) {
-    window.web3 = new Web3(web3.currentProvider)
-    // Acccounts always exposed
-    web3.eth.sendTransaction({
-      /* ... */
-    })
-  }
+  else if (window.web3) window.web3 = new Web3(web3.currentProvider)
+  // Acccounts always exposed
   // Non-dapp browsers...
   else
     console.log(
