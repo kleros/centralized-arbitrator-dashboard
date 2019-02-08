@@ -14,13 +14,13 @@ class EvidenceList extends React.Component {
       <Evidence
         archon={this.props.archon}
         description={item && item.evidenceJSON.description}
-        fileURI={item && item.evidenceJSON.fileURI}
+        evidenceJSONValid={item && item.evidenceJSONValid}
         fileHash={item && item.evidenceJSON.fileHash}
+        fileURI={item && item.evidenceJSON.fileURI}
+        fileValid={item && item.fileValid}
         ipfsGateway={ipfsGateway}
         key={item && item.evidenceJSON.name + item.evidenceJSON.fileURI}
         name={item && item.evidenceJSON.name}
-        evidenceJSONValid={item && item.evidenceJSONValid}
-        fileValid={item && item.fileValid}
       />
     ))
 

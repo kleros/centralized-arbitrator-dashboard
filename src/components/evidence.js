@@ -9,7 +9,7 @@ class Evidence extends React.Component {
     super(props)
     this.archon = this.props.archon
     this.state = {
-      //validationResult: 'Untested'
+      // validationResult: 'Untested'
       validationResult: 'OK'
     }
 

@@ -92,12 +92,12 @@ class Dispute extends React.Component {
             <td colSpan="5">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
-                  archon={this.props.archon}
                   activeWallet={activeWallet}
                   aliases={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.aliases
                   }
+                  archon={this.props.archon}
                   category={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.category
@@ -116,8 +116,16 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.fileURI
                   }
+                  fileValid={metaevidenceObject && metaevidenceObject.fileValid}
                   id={id}
+                  interfaceValid={
+                    metaevidenceObject && metaevidenceObject.interfaceValid
+                  }
                   ipfsGateway={ipfsGateway}
+                  metaEvidenceJSONValid={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSONValid
+                  }
                   question={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.question
@@ -129,14 +137,6 @@ class Dispute extends React.Component {
                   title={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.title
-                  }
-                  metaEvidenceJSONValid={
-                    metaevidenceObject &&
-                    metaevidenceObject.metaEvidenceJSONValid
-                  }
-                  fileValid={metaevidenceObject && metaevidenceObject.fileValid}
-                  interfaceValid={
-                    metaevidenceObject && metaevidenceObject.interfaceValid
                   }
                 />
               </div>

@@ -248,9 +248,9 @@ class DisputeList extends React.Component {
       })
       .map(item => (
         <Dispute
-          archon={this.props.archon}
           activeWallet={activeWallet}
           arbitrated={item.arbitrated}
+          archon={this.props.archon}
           centralizedArbitratorInstance={centralizedArbitratorInstance(
             contractAddress
           )}

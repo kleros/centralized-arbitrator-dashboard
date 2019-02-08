@@ -27,11 +27,10 @@ window.addEventListener('load', async () => {
     })
   }
   // Non-dapp browsers...
-  else {
+  else
     console.log(
       'Non-Ethereum browser detected. You should consider trying MetaMask!'
     )
-  }
 })
 
 if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {

@@ -103,6 +103,7 @@ class ArbitrationPrice extends React.Component {
 }
 
 ArbitrationPrice.propTypes = {
+  activeWallet: PropTypes.string.isRequired,
   contractAddress: PropTypes.string.isRequired
 }
 

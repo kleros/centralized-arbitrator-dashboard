@@ -1,32 +1,29 @@
+import $ from 'jquery'
 import ArbitrationPrice from './arbitration-price'
+import Archon from '@kleros/archon'
 import DisputeList from './dispute-list'
-import Identicon from './identicon.js'
 import NavBar from './navbar.js'
 import { RateLimiter } from 'limiter'
 import React from 'react'
 import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
-import $ from 'jquery'
-import Archon from '@kleros/archon'
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       arbitrationCost: '',
+      archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io'),
       contractAddresses: [],
+      notifications: [],
       owner: '',
       selectedAddress: undefined,
-      notifications: [],
-      uglyFixtoBug13: '', // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
-      archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io')
+      uglyFixtoBug13: '' // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
     }
-    console.log('archonconstructed')
-    console.log(this.state.archon)
   }
 
   eventNotificationServiceRoute(address, eventName, networkName) {
-    if (networkName == 'main')
+    if (networkName === 'main')
       return `https://events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
     else
       return `https://kovan-events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
@@ -171,7 +168,7 @@ class Dashboard extends React.Component {
 
   clearNotificationsCallback = () => {
     console.log('clearNotifications called')
-    this.setState(state => ({
+    this.setState(() => ({
       notifications: []
     }))
   }
@@ -179,10 +176,9 @@ class Dashboard extends React.Component {
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
     const {
-      archon,
       arbitrationCost,
+      archon,
       contractAddresses,
-      deployInputEnabled,
       networkType,
       notifications,
       selectedAddress,
@@ -200,8 +196,8 @@ class Dashboard extends React.Component {
           <div className="row">
             <div className="col">
               <NavBar
-                networkType={networkType}
                 clearNotifications={this.clearNotificationsCallback}
+                networkType={networkType}
                 notifications={notifications}
                 wallet={wallet}
               />
@@ -297,8 +293,8 @@ class Dashboard extends React.Component {
                 <div className="disputes">
                   {selectedAddress && wallet && (
                     <DisputeList
-                      archon={archon}
                       activeWallet={wallet}
+                      archon={archon}
                       contractAddress={selectedAddress}
                       networkType={networkType}
                       notificationCallback={this.notificationCallback}
