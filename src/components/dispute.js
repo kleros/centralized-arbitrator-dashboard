@@ -44,12 +44,12 @@ class Dispute extends React.Component {
     const {
       activeWallet,
       arbitrated,
+      archon,
       centralizedArbitratorInstance,
       evidences,
       fee,
       id,
       ipfsGateway,
-      metaevidence,
       metaevidenceObject,
       networkType,
       status
@@ -97,7 +97,7 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.aliases
                   }
-                  archon={this.props.archon}
+                  archon={archon}
                   category={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.category
@@ -151,6 +151,7 @@ class Dispute extends React.Component {
 Dispute.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   arbitrated: PropTypes.string.isRequired,
+  archon: PropTypes.instanceOf.isRequired,
   centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
     .isRequired,
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
