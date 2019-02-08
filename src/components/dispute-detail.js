@@ -3,16 +3,13 @@ import EvidenceList from './evidence-list'
 import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
+import _ from 'lodash'
 import { giveRuling } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
-import _ from 'lodash'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
     super(props)
-    console.log('DISPUTE DETAIL PROPS')
-    console.log(props)
-    console.log(this.props.archon)
     this.state = {
       validationResult: 'Integrity not tested.'
     }
@@ -50,20 +47,20 @@ class DisputeDetail extends React.Component {
     const {
       activeWallet,
       aliases,
+      archon,
       category,
       centralizedArbitratorInstance,
       description,
       evidences,
       fileHash,
       fileURI,
+      fileValid,
       id,
       ipfsGateway,
       question,
       rulingOptions,
       title
     } = this.props
-
-    const { validationResult } = this.state
 
     console.log(this.state)
     return (
@@ -103,11 +100,11 @@ class DisputeDetail extends React.Component {
         <div className="row">
           <div className="col">{fileHash}</div>
         </div>
-        {this.props.fileValid ? 'file ok' : 'file bad'}
+        {fileValid ? 'file ok' : 'file bad'}
         {true && true && (
           <div className="row">
             <div className="col">
-              <sub>{this.props.fileValid}</sub>
+              <sub>{fileValid}</sub>
             </div>
           </div>
         )}
@@ -131,7 +128,7 @@ class DisputeDetail extends React.Component {
                   {address}
                 </Identicon>
                 <EvidenceList
-                  archon={this.props.archon}
+                  archon={archon}
                   evidences={evidences[address]}
                   ipfsGateway={ipfsGateway}
                   name={aliases[address]}
@@ -193,6 +190,7 @@ class DisputeDetail extends React.Component {
 DisputeDetail.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
+  archon: PropTypes.instanceOf(Archon).isRequired,
   category: PropTypes.number.isRequired,
   centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
     .isRequired,
@@ -200,6 +198,7 @@ DisputeDetail.propTypes = {
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   fileHash: PropTypes.string.isRequired,
   fileURI: PropTypes.string.isRequired,
+  fileValid: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
   ipfsGateway: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
