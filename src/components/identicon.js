@@ -6,16 +6,14 @@ const Identicon = ({
   bgColor,
   className,
   color,
-  scale,
+  networkType,
   seed,
-  size,
-  spotColor,
-  networkType
+  spotColor
 }) => (
   <a
     className="align-bottom"
     href={
-      networkType == 'main'
+      networkType === 'main'
         ? `https://etherscan.io/address/${seed}`
         : `https://kovan.etherscan.io/address/${seed}`
     }
@@ -36,9 +34,8 @@ Identicon.propTypes = {
   bgColor: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  scale: PropTypes.number.isRequired,
+  networkType: PropTypes.string.isRequired,
   seed: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
   spotColor: PropTypes.string.isRequired
 }
 
