@@ -8,13 +8,6 @@ import { giveRuling } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
 
 class DisputeDetail extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      validationResult: 'Integrity not tested.'
-    }
-  }
-
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     console.log(ruling)
     giveRuling(account, instance, id, ruling) /* Why don't we await? */
@@ -52,8 +45,8 @@ class DisputeDetail extends React.Component {
       centralizedArbitratorInstance,
       description,
       evidences,
-      fileHash,
       fileURI,
+      fileHash,
       fileValid,
       id,
       ipfsGateway,
@@ -65,78 +58,79 @@ class DisputeDetail extends React.Component {
     console.log(this.state)
     return (
       <div className="container">
-        <div className="row">
-          <div className="col">
+        <div className="row p-0">
+          <div className="col p-0">
             <h3 className="float-left">
               <b>{`${title}`}</b>
             </h3>
           </div>
-          <div className="col">
+          <div className="col p-0">
             <h3 className="float-right">
               <b>{`${category}`}</b>
             </h3>
           </div>
         </div>
         <br />
-        <div className="row">
-          <div className="col text-left">
+        <div className="row p-0">
+          <div className="col p-0 text-left">
             <h4 className="">{description}</h4>
           </div>
         </div>
         <br />
-        <div className="row">
-          <div className="col">
-            <h4 className="">
-              <a
-                href={ipfsGateway + fileURI}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Agreement File
-              </a>
-            </h4>
+        <div className="row border p-4">
+          <div className="col-md-1">
+            <a
+              href={ipfsGateway + fileURI}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img alt="" src="text.svg" />
+            </a>
+          </div>
+          <div className="col text-left">
+            <div className="row">
+              <div className="col secondary-inverted">
+                <h6>File URI: {fileURI}</h6>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col secondary-inverted">
+                <h6>File Hash: {fileHash}</h6>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col">{fileHash}</div>
-        </div>
-        {fileValid ? 'file ok' : 'file bad'}
-        {true && true && (
+
+        <br />
+        {aliases && (
           <div className="row">
-            <div className="col">
-              <sub>{fileValid}</sub>
+            <div className="col-md-6 p-0" key={Object.keys(aliases)[0]}>
+              <div className="col-md-11 border">
+                <EvidenceList
+                  address={Object.keys(aliases)[0]}
+                  aliases={aliases}
+                  archon={archon}
+                  evidences={evidences[Object.keys(aliases)[0]]}
+                  ipfsGateway={ipfsGateway}
+                  name={aliases[Object.keys(aliases)[0]]}
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6 p-0" key={Object.keys(aliases)[1]}>
+              <div className="offset-md-1 col-md-11 border">
+                <EvidenceList
+                  address={Object.keys(aliases)[1]}
+                  aliases={aliases}
+                  archon={archon}
+                  evidences={evidences[Object.keys(aliases)[1]]}
+                  ipfsGateway={ipfsGateway}
+                  name={aliases[Object.keys(aliases)[1]]}
+                />
+              </div>
             </div>
           </div>
         )}
-
-        <hr />
-        <br />
-        <div className="row">
-          {aliases &&
-            Object.keys(aliases).map(address => (
-              <div className="col" key={address}>
-                <Identicon
-                  bgColor="#4004A3"
-                  className="identicon"
-                  color="#009AFF"
-                  scale={3}
-                  seed={address}
-                  size={10}
-                  spotColor="white"
-                  title={aliases[address]}
-                >
-                  {address}
-                </Identicon>
-                <EvidenceList
-                  archon={archon}
-                  evidences={evidences[address]}
-                  ipfsGateway={ipfsGateway}
-                  name={aliases[address]}
-                />
-              </div>
-            ))}
-        </div>
-        <hr />
         <br />
         <div className="row">
           <div className="col">
@@ -196,7 +190,6 @@ DisputeDetail.propTypes = {
     .isRequired,
   description: PropTypes.string.isRequired,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
-  fileHash: PropTypes.string.isRequired,
   fileURI: PropTypes.string.isRequired,
   fileValid: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,

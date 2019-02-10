@@ -53,6 +53,10 @@
   color: white;
 }
 
+.secondary-inverted {
+  color: #4004a3;
+}
+
 hr {
   background-color: #eee;
   border: 0 none;

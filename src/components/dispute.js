@@ -108,10 +108,6 @@ class Dispute extends React.Component {
                     metaevidenceObject.metaEvidenceJSON.description
                   }
                   evidences={evidences}
-                  fileHash={
-                    metaevidenceObject &&
-                    metaevidenceObject.metaEvidenceJSON.fileHash
-                  }
                   fileURI={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.fileURI

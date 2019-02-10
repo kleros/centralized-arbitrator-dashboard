@@ -8,10 +8,11 @@ const Identicon = ({
   color,
   networkType,
   seed,
-  spotColor
+  spotColor,
+  size,
+  scale
 }) => (
   <a
-    className="align-bottom"
     href={
       networkType === 'main'
         ? `https://etherscan.io/address/${seed}`
@@ -26,6 +27,8 @@ const Identicon = ({
       color={color}
       seed={seed}
       spotColor={spotColor}
+      size={size}
+      scale={scale}
     />
   </a>
 )
