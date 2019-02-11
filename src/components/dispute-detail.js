@@ -20,18 +20,20 @@ class DisputeDetail extends React.Component {
     id
   ) =>
     _.zip(options.titles, options.descriptions).map((option, key) => (
-      <button
-        className="dropdown-item"
-        key={key + 1}
-        onClick={this.handleGiveRulingButtonClick(
-          activeWallet,
-          centralizedArbitratorInstance,
-          id,
-          key + 1
-        )}
-      >
-        {option[0]}: {option[1]}
-      </button>
+      <div className="col">
+        <button
+          className="btn btn-primary btn-lg primary "
+          key={key + 1}
+          onClick={this.handleGiveRulingButtonClick(
+            activeWallet,
+            centralizedArbitratorInstance,
+            id,
+            key + 1
+          )}
+        >
+          {option[0]}
+        </button>
+      </div>
     ))
 
   render() {
@@ -152,43 +154,15 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <div className="dropdown">
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                className="btn btn-secondary dropdown-toggle primary"
-                data-toggle="dropdown"
-                id="dropdownMenuButton"
-                type="button"
-              >
-                Give Ruling
-              </button>
-              <div
-                aria-labelledby="dropdownMenuButton"
-                className="dropdown-menu"
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={this.handleGiveRulingButtonClick(
-                    activeWallet,
-                    centralizedArbitratorInstance,
-                    id,
-                    0
-                  )}
-                >
-                  {rulingOptions && `Abstain: Refuse to Rule`}
-                </button>
-                {rulingOptions &&
-                  this.renderedRulingOptions(
-                    rulingOptions,
-                    activeWallet,
-                    centralizedArbitratorInstance,
-                    id
-                  )}
-              </div>
-            </div>
-          </div>
+          <div className="col" />
+          {rulingOptions &&
+            this.renderedRulingOptions(
+              rulingOptions,
+              activeWallet,
+              centralizedArbitratorInstance,
+              id
+            )}
+          <div className="col" />
         </div>
       </div>
     )
