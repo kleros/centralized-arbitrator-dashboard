@@ -95,7 +95,7 @@ class DisputeDetail extends React.Component {
             </div>
             <div className="row">
               <div className="col secondary-inverted">
-                <h6>File Hash: {fileHash}</h6>
+                <h6>File Hash: {fileURI && fileURI.split('/')[2]}</h6>
               </div>
             </div>
           </div>
