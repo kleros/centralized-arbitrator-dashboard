@@ -18,7 +18,6 @@ class EvidenceList extends React.Component {
         evidenceJSONValid={item && item.evidenceJSONValid}
         fileHash={item && item.evidenceJSON.fileHash}
         fileURI={item && item.evidenceJSON.fileURI}
-        fileValid={item && item.fileValid}
         ipfsGateway={ipfsGateway}
         key={item && item.evidenceJSON.name + item.evidenceJSON.fileURI}
         name={item && item.evidenceJSON.name}
@@ -26,6 +25,10 @@ class EvidenceList extends React.Component {
     ))
 
     return items
+  }
+
+  isEvidenceIntegrityOK = evidences => {
+    return evidences.reduce((op1, op2) => op1 && op2)
   }
 
   render() {
@@ -81,10 +84,23 @@ class EvidenceList extends React.Component {
                 role="tabpanel"
                 aria-labelledby="home-tab"
               >
-                <div className="row my-2">
-                  <div className="col text-left">
+                <div className="row">
+                  <div className="col-md-8 text-left">
                     {this.evidences(evidences, ipfsGateway)}
                   </div>
+                  {this.isEvidenceIntegrityOK(evidences) && (
+                    <div className="col-md-4">
+                      <div className="row">
+                        <div className="col-md-8 py-2 ">
+                          <h6 className="">Integrity Broken!</h6>
+                        </div>
+                        <div className="col-md-3 ">
+                          <img className="" src="warning.svg" />
+                        </div>
+                        <div className="offset-md-1" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
