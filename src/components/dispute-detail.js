@@ -50,6 +50,7 @@ class DisputeDetail extends React.Component {
       fileValid,
       id,
       ipfsGateway,
+      metaEvidenceValid,
       question,
       rulingOptions,
       title
@@ -99,6 +100,19 @@ class DisputeDetail extends React.Component {
               </div>
             </div>
           </div>
+          {(!fileValid || !metaEvidenceValid) && (
+            <div className="col-md-2">
+              <div className="row">
+                <div className="col-md-8 py-2 ">
+                  <h6 className="">Integrity Broken!</h6>
+                </div>
+                <div className="col-md-3 ">
+                  <img className="" src="warning.svg" />
+                </div>
+                <div className="offset-md-1" />
+              </div>
+            </div>
+          )}
         </div>
 
         <br />

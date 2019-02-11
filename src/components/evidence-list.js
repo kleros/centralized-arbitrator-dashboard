@@ -28,12 +28,14 @@ class EvidenceList extends React.Component {
   }
 
   isEvidenceIntegrityOK = evidences => {
-    return evidences.reduce((op1, op2) => op1 && op2)
+    if (evidences.length == 0) return true
+    return evidences
+      .map(evidence => evidence.fileValid)
+      .reduce((op1, op2) => op1 && op2)
   }
 
   render() {
     const { address, aliases, evidences, ipfsGateway, name } = this.props
-    if (!evidences) return <h4>No Evidence From {name}</h4>
 
     return (
       <div className="">
@@ -86,7 +88,8 @@ class EvidenceList extends React.Component {
               >
                 <div className="row">
                   <div className="col-md-8 text-left">
-                    {this.evidences(evidences, ipfsGateway)}
+                    {this.evidences.length > 0 &&
+                      this.evidences(evidences, ipfsGateway)}
                   </div>
                   {this.isEvidenceIntegrityOK(evidences) && (
                     <div className="col-md-4">
@@ -111,8 +114,24 @@ class EvidenceList extends React.Component {
   }
 }
 
+EvidenceList.defaultProps = {
+  evidences: []
+}
+
 EvidenceList.propTypes = {
-  evidences: PropTypes.string.isRequired,
+  evidences: PropTypes.arrayOf(
+    PropTypes.shape({
+      evidenceJSONValid: PropTypes.bool,
+      fileValid: PropTypes.bool,
+      evidenceJSON: PropTypes.shape({
+        fileURI: PropTypes.string
+      }),
+      submittedBy: PropTypes.string,
+      submittedAt: PropTypes.number,
+      blockNumber: PropTypes.number,
+      transactionHash: PropTypes.string
+    })
+  ),
   ipfsGateway: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired
 }
