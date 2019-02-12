@@ -153,16 +153,51 @@ class DisputeDetail extends React.Component {
             <h4 className="">{question}</h4>
           </div>
         </div>
+        <br />
         <div className="row">
-          <div className="col" />
-          {rulingOptions &&
-            this.renderedRulingOptions(
-              rulingOptions,
-              activeWallet,
-              centralizedArbitratorInstance,
-              id
-            )}
-          <div className="col" />
+          <div className="offset-md-2 col-md-3">
+            <button
+              className="btn btn-primary btn-lg btn-block primary"
+              onClick={this.handleGiveRulingButtonClick(
+                activeWallet,
+                centralizedArbitratorInstance,
+                id,
+                1
+              )}
+            >
+              {rulingOptions && rulingOptions.titles[0]}
+            </button>
+          </div>
+          <div className="col-md-2">X</div>
+          <div className="col-md-3">
+            <button
+              className="btn btn-primary btn-lg btn-block primary"
+              onClick={this.handleGiveRulingButtonClick(
+                activeWallet,
+                centralizedArbitratorInstance,
+                id,
+                2
+              )}
+            >
+              {rulingOptions && rulingOptions.titles[1]}
+            </button>
+          </div>
+        </div>
+        <br />
+        <div className="row">
+          <div className="offset-md-4 col-md-4">
+            <button
+              className="btn btn-primary btn-lg btn-block secondary"
+              onClick={this.handleGiveRulingButtonClick(
+                activeWallet,
+                centralizedArbitratorInstance,
+                id,
+                0
+              )}
+            >
+              {rulingOptions && `Refuse to Arbitrate`}
+            </button>
+          </div>
         </div>
       </div>
     )
