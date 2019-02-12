@@ -118,8 +118,9 @@ class Dispute extends React.Component {
                     metaevidenceObject && metaevidenceObject.interfaceValid
                   }
                   ipfsGateway={ipfsGateway}
-                  metaEvidenceValid={
-                    metaevidenceObject && metaevidenceObject.metaEvidenceValid
+                  metaEvidenceJSONValid={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSONValid
                   }
                   question={
                     metaevidenceObject &&

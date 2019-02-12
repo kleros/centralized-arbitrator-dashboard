@@ -110,3 +110,10 @@ hr {
   left: -35px;
   border-radius: 50%;
 }
+
+
+
+.vertical-center {
+    display: flex;
+    align-items: center;
+}

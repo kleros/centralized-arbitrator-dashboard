@@ -91,7 +91,7 @@ class EvidenceList extends React.Component {
                     {this.evidences.length > 0 &&
                       this.evidences(evidences, ipfsGateway)}
                   </div>
-                  {this.isEvidenceIntegrityOK(evidences) && (
+                  {!this.isEvidenceIntegrityOK(evidences) && (
                     <div className="col-md-4">
                       <div className="row">
                         <div className="col-md-8 py-2 ">

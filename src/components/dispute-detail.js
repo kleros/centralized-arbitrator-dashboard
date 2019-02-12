@@ -52,7 +52,7 @@ class DisputeDetail extends React.Component {
       fileValid,
       id,
       ipfsGateway,
-      metaEvidenceValid,
+      metaEvidenceJSONValid,
       question,
       rulingOptions,
       title
@@ -80,7 +80,7 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <br />
-        <div className="row border p-4">
+        <div className="row border p-3">
           <div className="col-md-1">
             <a
               href={ipfsGateway + fileURI}
@@ -90,19 +90,12 @@ class DisputeDetail extends React.Component {
               <img alt="" src="text.svg" />
             </a>
           </div>
-          <div className="col text-left">
-            <div className="row">
-              <div className="col secondary-inverted">
-                <h6>File URI: {fileURI}</h6>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col secondary-inverted">
-                <h6>File Hash: {fileURI && fileURI.split('/')[2]}</h6>
-              </div>
-            </div>
+
+          <div className="col p-6 vertical-center secondary-inverted">
+            <h6 className="m-0">File URI: {fileURI}</h6>
           </div>
-          {(!fileValid || !metaEvidenceValid) && (
+
+          {(!fileValid || !metaEvidenceJSONValid) && (
             <div className="col-md-2">
               <div className="row">
                 <div className="col-md-8 py-2 ">
