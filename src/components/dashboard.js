@@ -125,7 +125,10 @@ class Dashboard extends React.Component {
     e.preventDefault()
 
     console.log('deploying')
-    const result = await deployCentralizedArbitrator(account, arbitrationPrice)
+    const result = await deployCentralizedArbitrator(
+      account,
+      web3.utils.toWei(arbitrationPrice, 'ether')
+    )
 
     const item = window.localStorage.getItem(account) || ''
 
@@ -261,7 +264,7 @@ class Dashboard extends React.Component {
                       aria-label=""
                       className="form-control"
                       onChange={this.handleArbitrationPriceChange()}
-                      placeholder="Please enter desired arbitration price (Wei)"
+                      placeholder="Please enter desired arbitration price (ETH)"
                       type="text"
                       value={arbitrationCost}
                     />
@@ -288,6 +291,7 @@ class Dashboard extends React.Component {
                 <ArbitrationPrice
                   activeWallet={wallet}
                   contractAddress={selectedAddress}
+                  web3={web3}
                 />
               </div>
             </div>

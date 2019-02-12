@@ -17,12 +17,15 @@ class ArbitrationPrice extends React.Component {
   }
 
   async componentDidMount() {
-    const { contractAddress } = this.props
+    const { contractAddress, web3 } = this.props
 
     this.setState({
-      arbitrationCost: await getArbitrationCost(
-        centralizedArbitratorInstance(contractAddress),
-        ''
+      arbitrationCost: web3.utils.fromWei(
+        await getArbitrationCost(
+          centralizedArbitratorInstance(contractAddress),
+          ''
+        ),
+        'ether'
       )
     })
   }
@@ -42,26 +45,21 @@ class ArbitrationPrice extends React.Component {
       })
   }
 
-  setArbitrationCost = async newCost => {
-    const { contractAddress } = this.props
-
-    this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(newCost)
-    const arbitrationCost = await getArbitrationCost(
-      centralizedArbitratorInstance(contractAddress),
-      ''
-    )
-    this.setState({ arbitrationCost })
-  }
-
   handleSetArbitrationPriceButtonClick = newCost => async e => {
-    const { activeWallet, contractAddress } = this.props
+    const { activeWallet, contractAddress, web3 } = this.props
 
     const centralizedArbitrator = centralizedArbitratorInstance(contractAddress)
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(activeWallet, centralizedArbitrator, newCost)
-    const arbitrationCost = await getArbitrationCost(centralizedArbitrator, '')
+    await setArbitrationPrice(
+      activeWallet,
+      centralizedArbitrator,
+      web3.utils.toWei(newCost, 'ether')
+    )
+    const arbitrationCost = web3.utils.fromWei(
+      await getArbitrationCost(centralizedArbitrator, ''),
+      'ether'
+    )
     this.setState({ arbitrationCost })
   }
 
@@ -76,7 +74,7 @@ class ArbitrationPrice extends React.Component {
       <div className="input-group mb-3">
         <div className="input-group-append">
           <label className="input-group-text" id="">
-            Arbitration Price
+            Arbitration Price (ETH)
           </label>
         </div>
         <input
