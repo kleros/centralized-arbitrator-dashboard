@@ -62,10 +62,10 @@ class EvidenceList extends React.Component {
 
         <div className="row m-1">
           <div className="col">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item">
+            <ul className="nav nav-tabs" id="myTab" role="tablist">
+              <li className="nav-item">
                 <a
-                  class="nav-link active"
+                  className="nav-link active"
                   id="evidence-tab"
                   data-toggle="tab"
                   href="#evidence"
@@ -79,9 +79,9 @@ class EvidenceList extends React.Component {
                 </a>
               </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
+            <div className="tab-content" id="myTabContent">
               <div
-                class="tab-pane fade show active"
+                className="tab-pane fade show active"
                 id="evidence"
                 role="tabpanel"
                 aria-labelledby="home-tab"
