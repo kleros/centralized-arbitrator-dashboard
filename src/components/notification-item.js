@@ -11,7 +11,7 @@ const NotificationItem = ({ text, time }) => (
           <FontAwesomeIcon className="primary-inverted" icon="check-circle" />
         </label>
       </div>
-      <div className="col-8">
+      <div className="col-10">
         <label>{text}</label>
       </div>
     </div>

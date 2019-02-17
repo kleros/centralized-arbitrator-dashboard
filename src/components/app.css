@@ -78,7 +78,7 @@ hr {
 }
 
 .notification-control {
-  min-width: 300px;
+  min-width: 400px;
 }
 
 .email-notification-control {
@@ -111,9 +111,7 @@ hr {
   border-radius: 50%;
 }
 
-
-
 .vertical-center {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
