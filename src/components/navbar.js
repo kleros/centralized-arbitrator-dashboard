@@ -122,12 +122,25 @@ class NavBar extends React.Component {
               aria-labelledby="dropdownMenu2"
               className="p-4 dropdown-menu dropdown-menu-right email-notification-control"
             >
-              <label className="col-md-12 text-center">
-                Please contact{' '}
-                <a href="mailto:contact@kleros.io">contact@kleros.io</a> for
-                registering email notifications, providing your centralized
-                arbitrator contract address.
-              </label>
+              <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">E-mail Notifications</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                  />
+                  <small id="emailHelp" class="form-text text-muted">
+                    We'll never share your email with anyone else.
+                  </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  Signup
+                </button>
+              </form>
               <div className="tab-content" id="myTabContent">
                 <div
                   aria-labelledby="all-contracts-tab"
