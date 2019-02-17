@@ -163,9 +163,9 @@ class Dashboard extends React.Component {
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
-      <div className="dropdown-item ">
+      <div className="dropdown-item p-0">
         <button
-          className="dropdown-item"
+          className="dropdown-item "
           key={address}
           onClick={this.handleCentralizedArbitratorDropdownButtonClick(address)}
         >
@@ -267,11 +267,37 @@ class Dashboard extends React.Component {
 
                       {this.centralizedArbitratorButtons(contractAddresses)}
                       <div class="dropdown-divider" />
-                      <input
-                        className="dropdown-item"
-                        onKeyUp={this.handleCentralizedArbitratorDropdownKeyEnter()}
-                        placeholder="Or enter the address manually and hit enter"
-                      />
+                      <div className="px-3 m-3">
+                        <label className="px-3">
+                          <b>Enter Custom Address</b>
+                        </label>
+                        <div class="input-group px-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="0x..."
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={this.state.customAddressValue}
+                            onChange={e =>
+                              this.setState({
+                                customAddressValue: e.target.value
+                              })
+                            }
+                          />
+                          <div class="input-group-append">
+                            <button
+                              class="btn btn-outline-secondary primary"
+                              type="button"
+                              onClick={this.handleCentralizedArbitratorDropdownButtonClick(
+                                this.state.customAddressValue
+                              )}
+                            >
+                              Select
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
