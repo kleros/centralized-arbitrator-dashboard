@@ -78,6 +78,17 @@ class Dashboard extends React.Component {
       )
   }
 
+  apiPrefix = networkType => {
+    switch (networkType) {
+      case 'main':
+        return ' '
+      case 'kovan':
+        return 'kovan.'
+      default:
+        return ' '
+    }
+  }
+
   async componentDidMount() {
     this.setState({
       archon: new Archon(window.web3.currentProvider, 'https://ipfs.kleros.io')
@@ -146,19 +157,30 @@ class Dashboard extends React.Component {
     if (e.keyCode === 13) this.setState({ selectedAddress: e.target.value })
   }
 
-  handleCentralizedArbitratorDropdownButtonClick = () => e => {
-    this.setState({ selectedAddress: e.target.innerHTML })
+  handleCentralizedArbitratorDropdownButtonClick = address => e => {
+    this.setState({ selectedAddress: address })
   }
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
-      <button
-        className="dropdown-item"
-        key={address}
-        onClick={this.handleCentralizedArbitratorDropdownButtonClick()}
-      >
-        {address}
-      </button>
+      <div className="dropdown-item ">
+        <button
+          className="dropdown-item"
+          key={address}
+          onClick={this.handleCentralizedArbitratorDropdownButtonClick(address)}
+        >
+          <a
+            href={`https://${this.apiPrefix(
+              this.state.networkType
+            )}etherscan.io/address/${address}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img className="m-2" src="etherscan.svg" width="30" height="30" />
+          </a>
+          {address}
+        </button>
+      </div>
     ))
 
   handleArbitrationPriceChange = () => e => {
@@ -240,8 +262,11 @@ class Dashboard extends React.Component {
                       aria-labelledby="dropdownMenuButton"
                       className="dropdown-menu"
                     >
+                      <h5 className="text-center my-3">Contract Addresses</h5>
+                      <div class="dropdown-divider" />
+
                       {this.centralizedArbitratorButtons(contractAddresses)}
-                      <hr />
+                      <div class="dropdown-divider" />
                       <input
                         className="dropdown-item"
                         onKeyUp={this.handleCentralizedArbitratorDropdownKeyEnter()}
