@@ -38,7 +38,8 @@ class DisputeList extends React.Component {
           console.log(event)
           return this.addDispute(
             event.returnValues._disputeID,
-            event.returnValues._arbitrable
+            event.returnValues._arbitrable,
+            false
           )
         })
       )
@@ -129,7 +130,7 @@ class DisputeList extends React.Component {
     this.setState({ disputes })
   }
 
-  addDispute = async (disputeID, arbitrableAddress) => {
+  addDispute = async (disputeID, arbitrableAddress, isNew) => {
     const { archon, contractAddress, notificationCallback } = this.props
 
     console.log('ARGS')
@@ -143,13 +144,14 @@ class DisputeList extends React.Component {
 
     const date = new Date()
 
-    notificationCallback(
-      `New dispute #${disputeID} in contract ${contractAddress.substring(
-        0,
-        8
-      )}...`,
-      date.getTime()
-    )
+    if (isNew)
+      notificationCallback(
+        `New dispute #${disputeID} in contract ${contractAddress.substring(
+          0,
+          8
+        )}...`,
+        date.getTime()
+      )
 
     dispute.id = disputeID
     dispute.evidences = {}
@@ -200,10 +202,9 @@ class DisputeList extends React.Component {
         filter
       })
       .on('data', event => {
-        archon.arbitrable.getMetaEvidence(
-          arbitrableAddress,
-          event.returnValues._disputeID
-        )
+        archon.arbitrable
+          .getMetaEvidence(arbitrableAddress, event.returnValues._disputeID)
+          .console.log('new dispute')
       })
 
     this.subscriptions.push(
