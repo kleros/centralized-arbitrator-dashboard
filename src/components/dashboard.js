@@ -260,7 +260,7 @@ class Dashboard extends React.Component {
                     </button>
                     <div
                       aria-labelledby="dropdownMenuButton"
-                      className="dropdown-menu"
+                      className="dropdown-menu dropdown-menu-right"
                     >
                       <h5 className="text-center my-3">Contract Addresses</h5>
                       <div class="dropdown-divider" />
