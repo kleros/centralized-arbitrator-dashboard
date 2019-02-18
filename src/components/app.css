@@ -115,3 +115,7 @@ hr {
   display: flex;
   align-items: center;
 }
+
+#fileURICard {
+  background-color: #f8f8f8;
+}

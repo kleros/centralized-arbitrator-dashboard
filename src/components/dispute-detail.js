@@ -80,7 +80,7 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <br />
-        <div className="row border p-3">
+        <div className="row border p-3" id="fileURICard">
           <div className="col-md-1">
             <a
               href={ipfsGateway + fileURI}

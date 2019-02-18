@@ -243,7 +243,7 @@ class DisputeList extends React.Component {
           <b>Disputes That Await Your Arbitration</b>
         </h1>
 
-        <table className="table table-hover" id="disputes">
+        <table className="table" id="disputes">
           <thead>
             <tr className="secondary">
               <th>ID</th>
