@@ -118,6 +118,7 @@ class Dashboard extends React.Component {
         if (error) console.error(error)
         console.log(accounts[0])
         this.setState({ networkType: networkType })
+        this.setState({ wallet: accounts[0] })
         if (accounts[0])
           if (window.localStorage.getItem(accounts[0]))
             this.setState({
@@ -164,7 +165,7 @@ class Dashboard extends React.Component {
 
   centralizedArbitratorButtons = addresses =>
     addresses.map(address => (
-      <div className="dropdown-item p-0">
+      <div className="dropdown-item p-0" key={address}>
         <button
           className="dropdown-item "
           key={address}
