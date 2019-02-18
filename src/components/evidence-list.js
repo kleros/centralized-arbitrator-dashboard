@@ -72,6 +72,8 @@ class EvidenceList extends React.Component {
                   role="tab"
                   aria-controls="evidence"
                   aria-selected="true"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <h6 className="secondary-inverted">
                     <b>Evidence</b>

@@ -31,7 +31,7 @@ class Evidence extends React.Component {
     } = this.props
 
     return (
-      <a href={ipfsGateway + fileURI}>
+      <a href={ipfsGateway + fileURI} rel="noopener noreferrer" target="_blank">
         {' '}
         <img
           className="m-1"
