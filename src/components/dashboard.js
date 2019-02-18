@@ -229,6 +229,7 @@ class Dashboard extends React.Component {
                 networkType={networkType}
                 notifications={notifications}
                 wallet={wallet}
+                web3={web3}
               />
             </div>
           </div>

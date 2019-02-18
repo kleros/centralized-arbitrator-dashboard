@@ -6,9 +6,14 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 class NavBar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: ''
+    }
+  }
   componentDidMount(props) {
     console.log(props)
-
     $('.notification-control').on('click', () => {
       this.clearNotifications()
     })
@@ -27,6 +32,31 @@ class NavBar extends React.Component {
   onAllEmailChange = e => {
     console.log(e)
     this.setState({ allEmail: e.target.value })
+  }
+
+  onSignup = email => async e => {
+    console.log(e)
+    const { wallet, web3 } = this.props
+    const address = web3.utils.toChecksumAddress(wallet)
+    const settings = {
+      email: { S: email },
+      centralizedArbitratorDashboardNotificationSettingDisputes: { BOOL: true }
+    }
+    const signature = await web3.eth.personal.sign(
+      JSON.stringify(settings),
+      address
+    )
+
+    fetch(
+      'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payload: { address, settings, signature }
+        })
+      }
+    ).then(console.log)
   }
 
   render() {
@@ -131,13 +161,19 @@ class NavBar extends React.Component {
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
                     placeholder="Enter email"
+                    value={this.state.email}
+                    onChange={e => this.setState({ email: e.target.value })}
                   />
                   <small id="emailHelp" class="form-text text-muted">
                     We'll never share your email with anyone else.
                   </small>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={this.onSignup(this.state.email)}
+                >
                   Signup
                 </button>
               </form>
