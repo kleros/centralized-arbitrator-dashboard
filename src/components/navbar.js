@@ -9,7 +9,8 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      email: ''
+      email: '',
+      Successful: false
     }
   }
   componentDidMount(props) {
@@ -34,6 +35,11 @@ class NavBar extends React.Component {
     this.setState({ allEmail: e.target.value })
   }
 
+  onEmailChange = e => {
+    console.log(e)
+    this.setState({ email: e.target.value, successful: false })
+  }
+
   onSignup = email => async e => {
     console.log(e)
     const { wallet, web3 } = this.props
@@ -56,7 +62,7 @@ class NavBar extends React.Component {
           payload: { address, settings, signature }
         })
       }
-    ).then(console.log)
+    ).then(e => this.setState({ successful: true }))
   }
 
   render() {
@@ -162,20 +168,26 @@ class NavBar extends React.Component {
                     aria-describedby="emailHelp"
                     placeholder="Enter email"
                     value={this.state.email}
-                    onChange={e => this.setState({ email: e.target.value })}
+                    onChange={this.onEmailChange}
                   />
                   <small id="emailHelp" class="form-text text-muted">
                     We'll never share your email with anyone else.
                   </small>
                 </div>
-
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={this.onSignup(this.state.email)}
-                >
-                  Signup
-                </button>
+                {!this.state.successful && (
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onClick={this.onSignup(this.state.email)}
+                  >
+                    Signup
+                  </button>
+                )}
+                {this.state.successful && (
+                  <button type="button" class="btn btn-success disabled">
+                    Request Pending
+                  </button>
+                )}
               </form>
               <div className="tab-content" id="myTabContent">
                 <div
