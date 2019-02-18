@@ -92,7 +92,9 @@ class DisputeDetail extends React.Component {
           </div>
 
           <div className="col p-6 vertical-center secondary-inverted">
-            <h6 className="m-0">File URI: {fileURI}</h6>
+            <h6 className="m-0">
+              <b>File URI</b>: {fileURI}
+            </h6>
           </div>
 
           {(!fileValid || !metaEvidenceJSONValid) && (

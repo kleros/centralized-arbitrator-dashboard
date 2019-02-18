@@ -115,21 +115,6 @@ class DisputeList extends React.Component {
 
   assignMetaEvidenceUsingArchon = () => {}
 
-  updateRuling = async event => {
-    console.log('eventscheme')
-    console.log(event)
-    const { disputes } = this.state
-    const disputeID = parseInt(event.returnValues._disputeID)
-    const targetIndex = disputes.findIndex(d => d.id === disputeID)
-
-    disputes[targetIndex].ruling = event.returnValues[2]
-    disputes[targetIndex].status = await getDisputeStatus(
-      event.returnValues._disputeID
-    )
-
-    this.setState({ disputes })
-  }
-
   addDispute = async (disputeID, arbitrableAddress, isNew) => {
     const { archon, contractAddress, notificationCallback } = this.props
 
@@ -193,10 +178,6 @@ class DisputeList extends React.Component {
         )
       )
 
-    arbitrable
-      .getPastEvents('Ruling', options)
-      .then(events => events.map(event => this.updateRuling(event)))
-
     arbitrable.events
       .Dispute({
         filter
@@ -219,16 +200,6 @@ class DisputeList extends React.Component {
             })
             // .then(evidence => console.log(evidence))
             .then(evidence => this.fetchAndAssignEvidence(disputeID, evidence))
-        })
-    )
-
-    this.subscriptions.push(
-      arbitrableInstanceAt(arbitrableAddress)
-        .events.Ruling({
-          filter
-        })
-        .on('data', event => {
-          this.updateRuling(event)
         })
     )
   }
