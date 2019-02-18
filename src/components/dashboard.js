@@ -7,6 +7,7 @@ import { RateLimiter } from 'limiter'
 import React from 'react'
 import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
 import web3 from '../ethereum/web3'
+import Identicon from './identicon.js'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -237,9 +238,21 @@ class Dashboard extends React.Component {
             <h4 className="text-center">
               Select A Deployed Centralized Arbitrator
             </h4>
-            <div className="row">
-              <div className="col">
-                <div className="input-group mb-3">
+            <div className="row mb-3">
+              <div className="col-md-1 pb-10 mb-6 align-top">
+                <Identicon
+                  bgColor="#4004A3"
+                  className="identicon rounded-circle"
+                  color="#009AFF"
+                  networkType={networkType}
+                  scale={3}
+                  seed={selectedAddress}
+                  size={13}
+                  spotColor="white"
+                />
+              </div>
+              <div className="col p-0">
+                <div className="input-group">
                   <input
                     className="form-control"
                     disabled
