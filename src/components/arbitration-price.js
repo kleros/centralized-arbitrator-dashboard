@@ -31,16 +31,19 @@ class ArbitrationPrice extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { activeWallet, contractAddress } = this.props
+    const { activeWallet, contractAddress, web3 } = this.props
 
     if (
       contractAddress !== prevProps.contractAddress ||
       activeWallet !== prevProps.activeWallet
     )
       this.setState({
-        arbitrationCost: await getArbitrationCost(
-          centralizedArbitratorInstance(contractAddress),
-          ''
+        arbitrationCost: web3.utils.fromWei(
+          await getArbitrationCost(
+            centralizedArbitratorInstance(contractAddress),
+            ''
+          ),
+          'ether'
         )
       })
   }
