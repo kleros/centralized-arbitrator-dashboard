@@ -99,13 +99,25 @@ class Dashboard extends React.Component {
       this.setState({ uglyFixtoBug13: '' })
     })
     const { contractAddresses } = this.state
+    console.log('is metamask')
+    console.log(window.web3.currentProvider.isMetaMask)
     if (window.web3 && window.web3.currentProvider.isMetaMask)
       window.web3.eth.getAccounts((error, accounts) => {
         if (error) console.error(error)
 
         this.setState({ wallet: accounts[0] })
 
-        console.warn('FETCH')
+        if (accounts[0])
+          if (window.localStorage.getItem(accounts[0]))
+            this.setState({
+              contractAddresses: window.localStorage
+                .getItem(accounts[0])
+                .split(' ')
+            })
+          else {
+            this.setState({ contractAddresses: [] })
+            this.scanContracts(this.state.networkType, accounts[0])
+          }
       })
     else console.log('MetaMask account not detected :(')
 
