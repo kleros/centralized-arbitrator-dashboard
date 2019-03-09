@@ -1,4 +1,4 @@
-import arbitrable from '@kleros/kleros-interaction/build/contracts/Arbitrable.json'
+import arbitrable from './abi/Arbitrable.json'
 import web3 from './web3'
 
 export const arbitrableInstanceAt = address =>
