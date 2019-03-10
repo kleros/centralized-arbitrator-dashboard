@@ -118,7 +118,7 @@ class DisputeList extends React.Component {
   addDispute = async (disputeID, arbitrableAddress, isNew) => {
     const { archon, contractAddress, notificationCallback } = this.props
 
-    console.log('ARGS')
+    console.log('ARGSASDASD')
     console.log(arbitrableAddress)
 
     const dispute = await getDispute(

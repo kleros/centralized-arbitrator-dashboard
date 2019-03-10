@@ -76,7 +76,7 @@ class EvidenceList extends React.Component {
                   target="_blank"
                 >
                   <h6 className="secondary-inverted">
-                    <b>Evidence</b>
+                    <b>Argument</b>
                   </h6>
                 </a>
               </li>

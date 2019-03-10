@@ -80,37 +80,6 @@ class DisputeDetail extends React.Component {
           </div>
         </div>
         <br />
-        <div className="row border p-3" id="fileURICard">
-          <div className="col-md-1">
-            <a
-              href={ipfsGateway + fileURI}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img alt="" src="text.svg" />
-            </a>
-          </div>
-
-          <div className="col p-6 vertical-center secondary-inverted">
-            <h6 className="m-0">
-              <b>File URI</b>: {fileURI}
-            </h6>
-          </div>
-
-          {(!fileValid || !metaEvidenceJSONValid) && (
-            <div className="col-md-2">
-              <div className="row">
-                <div className="col-md-8 py-2 ">
-                  <h6 className="">Integrity Broken!</h6>
-                </div>
-                <div className="col-md-3 ">
-                  <img className="" src="warning.svg" />
-                </div>
-                <div className="offset-md-1" />
-              </div>
-            </div>
-          )}
-        </div>
 
         <br />
         {aliases && (
@@ -160,7 +129,7 @@ class DisputeDetail extends React.Component {
                 1
               )}
             >
-              {rulingOptions && rulingOptions.titles[0]}
+              Accept
             </button>
           </div>
           <div className="col-md-2">X</div>
@@ -174,26 +143,11 @@ class DisputeDetail extends React.Component {
                 2
               )}
             >
-              {rulingOptions && rulingOptions.titles[1]}
+              Reject
             </button>
           </div>
         </div>
         <br />
-        <div className="row">
-          <div className="offset-md-4 col-md-4">
-            <button
-              className="btn btn-primary btn-lg btn-block secondary"
-              onClick={this.handleGiveRulingButtonClick(
-                activeWallet,
-                centralizedArbitratorInstance,
-                id,
-                0
-              )}
-            >
-              {rulingOptions && `Refuse to Arbitrate`}
-            </button>
-          </div>
-        </div>
       </div>
     )
   }
