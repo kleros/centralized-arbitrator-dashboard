@@ -129,7 +129,7 @@ class DisputeDetail extends React.Component {
                 1
               )}
             >
-              Accept
+              Approve
             </button>
           </div>
           <div className="col-md-2">X</div>
@@ -143,7 +143,7 @@ class DisputeDetail extends React.Component {
                 2
               )}
             >
-              Reject
+              Deny
             </button>
           </div>
         </div>
