@@ -368,7 +368,7 @@ class Dashboard extends React.Component {
         {selectedAddress && (
           <div>
             <div className="row">
-              <div className="col-md-6 offset-md-3">
+              <div className="col-md-6 offset-md-3 pt-3">
                 <ArbitrationPrice
                   activeWallet={wallet}
                   contractAddress={selectedAddress}
@@ -376,7 +376,8 @@ class Dashboard extends React.Component {
                 />
               </div>
             </div>
-            <div className="row mt-5">
+            <hr />
+            <div className="row my-5">
               <div className="col">
                 <div className="disputes">
                   {selectedAddress && wallet && (
