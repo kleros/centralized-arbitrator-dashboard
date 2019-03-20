@@ -240,7 +240,7 @@ class DisputeList extends React.Component {
     return (
       <div>
         <h1>
-          <b>Disputes That Await Your Arbitration</b>
+          <b>Disputes</b>
         </h1>
 
         <table className="table" id="disputes">
