@@ -91,7 +91,7 @@ class NavBar extends React.Component {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse pl-5" id="navbarNav">
           <ul className="navbar-nav mr-auto mb-1">
             <li className="nav-item active">
               <a className="nav-link " href="./">
