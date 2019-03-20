@@ -247,6 +247,7 @@ class DisputeList extends React.Component {
           <thead>
             <tr className="secondary">
               <th>ID</th>
+              <th>Title</th>
               <th>Arbitrable</th>
               <th>Fee (Ether)</th>
               <th>Status</th>

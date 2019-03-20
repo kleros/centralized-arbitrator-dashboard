@@ -66,6 +66,9 @@ class Dispute extends React.Component {
           >
             <td>{id}</td>
             <td>
+              {metaevidenceObject && metaevidenceObject.metaEvidenceJSON.title}
+            </td>
+            <td>
               <a
                 href={`https://${this.apiPrefix(
                   networkType
