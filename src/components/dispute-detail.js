@@ -174,7 +174,7 @@ class DisputeDetail extends React.Component {
         </div>
         <br />
         <div className="row">
-          <div className="offset-md-4 col-md-4">
+          <div className="offset-md-4 col-md-4 mb-5">
             <button
               className="btn btn-primary btn-lg btn-block secondary"
               onClick={this.handleGiveRulingButtonClick(
