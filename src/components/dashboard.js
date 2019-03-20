@@ -239,7 +239,7 @@ class Dashboard extends React.Component {
       <div className="container-fluid">
         {wallet && (
           <div className="row">
-            <div className="col">
+            <div className="col p-0">
               <NavBar
                 clearNotifications={this.clearNotificationsCallback}
                 networkType={networkType}
