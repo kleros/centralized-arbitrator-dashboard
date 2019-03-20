@@ -376,7 +376,7 @@ class Dashboard extends React.Component {
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-5">
               <div className="col">
                 <div className="disputes">
                   {selectedAddress && wallet && (
