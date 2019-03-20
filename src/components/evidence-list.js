@@ -39,8 +39,8 @@ class EvidenceList extends React.Component {
 
     return (
       <div className="">
-        <div className="row m-2">
-          <div className="col-md-2">
+        <div className="row mt-2 ml-2">
+          <div className="col">
             <Identicon
               bgColor="#4004A3"
               className="identicon rounded-circle align-center"
@@ -58,59 +58,62 @@ class EvidenceList extends React.Component {
             <b>{name}</b>
           </div>
         </div>
-        <hr className="col-md-10" />
 
-        <div className="row m-1">
-          <div className="col">
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  id="evidence-tab"
-                  data-toggle="tab"
-                  href="#evidence"
-                  role="tab"
-                  aria-controls="evidence"
-                  aria-selected="true"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <h6 className="secondary-inverted">
-                    <b>Evidence</b>
-                  </h6>
-                </a>
-              </li>
-            </ul>
-            <div className="tab-content" id="myTabContent">
-              <div
-                className="tab-pane fade show active"
-                id="evidence"
-                role="tabpanel"
-                aria-labelledby="home-tab"
-              >
-                <div className="row">
-                  <div className="col-md-8 text-left">
-                    {this.evidences.length > 0 &&
-                      this.evidences(evidences, ipfsGateway)}
-                  </div>
-                  {!this.isEvidenceIntegrityOK(evidences) && (
-                    <div className="col-md-4">
-                      <div className="row">
-                        <div className="col-md-8 py-2 ">
-                          <h6 className="">Integrity Broken!</h6>
-                        </div>
-                        <div className="col-md-3 ">
-                          <img className="" src="warning.svg" />
-                        </div>
-                        <div className="offset-md-1" />
+        {evidences.length > 0 && (
+          <div>
+            <div className="row m-1">
+              <div className="col">
+                <ul className="nav nav-tabs" id="myTab" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      id="evidence-tab"
+                      data-toggle="tab"
+                      href="#evidence"
+                      role="tab"
+                      aria-controls="evidence"
+                      aria-selected="true"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <h6 className="secondary-inverted">
+                        <b>Evidence</b>
+                      </h6>
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content" id="myTabContent">
+                  <div
+                    className="tab-pane fade show active"
+                    id="evidence"
+                    role="tabpanel"
+                    aria-labelledby="home-tab"
+                  >
+                    <div className="row">
+                      <div className="col-md-8 text-left">
+                        {this.evidences.length > 0 &&
+                          this.evidences(evidences, ipfsGateway)}
                       </div>
+                      {!this.isEvidenceIntegrityOK(evidences) && (
+                        <div className="col-md-4">
+                          <div className="row">
+                            <div className="col-md-8 py-2 ">
+                              <h6 className="">Integrity Broken!</h6>
+                            </div>
+                            <div className="col-md-3 ">
+                              <img className="" src="warning.svg" />
+                            </div>
+                            <div className="offset-md-1" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     )
   }
