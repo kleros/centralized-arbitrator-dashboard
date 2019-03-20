@@ -79,9 +79,7 @@ class Dispute extends React.Component {
                 {`${arbitrated.substring(0, 8)}...`}
               </a>
             </td>
-            <td>
-              {parseFloat(web3.utils.fromWei(fee, 'ether')).toExponential()}
-            </td>
+            <td>{web3.utils.fromWei(fee, 'ether')}</td>
             <td className="primary-inverted">
               <b>{this.disputeStatusToString(status)}</b>
             </td>
