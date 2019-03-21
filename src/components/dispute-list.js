@@ -14,11 +14,29 @@ class DisputeList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      disputes: []
+      disputes: [],
+      filter: -1
     }
     this.subscriptions = []
 
     this.gateway = 'https://ipfs.kleros.io'
+  }
+
+  setFilter = filter => async e => {
+    this.setState({ filter })
+  }
+
+  disputeStatusToString = code => {
+    switch (code) {
+      case 0:
+        return 'Vote Pending'
+      case 1:
+        return 'Active'
+      case 2:
+        return 'Closed'
+      default:
+        return 'All'
+    }
   }
 
   componentDidMount() {
@@ -204,12 +222,20 @@ class DisputeList extends React.Component {
     )
   }
 
-  disputeComponents = (contractAddress, networkType, activeWallet, items) => {
+  disputeComponents = (
+    contractAddress,
+    networkType,
+    activeWallet,
+    items,
+    filter
+  ) => {
     const { archon } = this.props
+    console.log('disputeComponents')
     return items
       .sort(function(a, b) {
         return a.id - b.id
       })
+      .filter(item => item.status == filter || filter === -1)
       .map(item => (
         <Dispute
           activeWallet={activeWallet}
@@ -234,36 +260,97 @@ class DisputeList extends React.Component {
 
   render() {
     const { activeWallet, contractAddress, networkType } = this.props
-    const { disputes } = this.state
+    const { disputes, filter } = this.state
     console.log('final disputes')
     console.log(disputes)
     return (
-      <div>
-        <h1>
-          <b>Disputes</b>
-        </h1>
-        <br />
-        <table className="table" id="disputes">
-          <thead>
-            <tr className="secondary">
-              <th>ID</th>
-              <th>Title</th>
-              <th>Arbitrable</th>
-              <th>Fee (Ether)</th>
-              <th>Status</th>
-              <th>
-                <FontAwesomeIcon icon="gavel" />
-              </th>
-            </tr>
-          </thead>
+      <div className="row">
+        <div className="col">
+          <div className="row">
+            <div className="col">
+              <h1>
+                <b>Disputes</b>
+              </h1>
+              <br />
+            </div>
+          </div>
+          <div className="row">
+            <div className="offset-md-9 col-md-3">
+              <div className="input-group mb-3">
+                <div className="input-group-prepend" />
+                <label>
+                  Filter: {this.disputeStatusToString(this.state.filter)}
+                </label>
+                <div className="input-group-append">
+                  <button
+                    type="button"
+                    className="btn dropdown-toggle dropdown-toggle-split "
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span className="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div className="dropdown-menu">
+                    <button
+                      className="dropdown-item"
+                      onClick={this.setFilter(-1)}
+                    >
+                      All
+                    </button>
+                    <div role="separator" className="dropdown-divider" />
+                    <button
+                      className="dropdown-item"
+                      onClick={this.setFilter(0)}
+                    >
+                      Vote Pending
+                    </button>
+                    <div role="separator" className="dropdown-divider" />
+                    <button
+                      className="dropdown-item"
+                      onClick={this.setFilter(1)}
+                    >
+                      Appealable
+                    </button>
+                    <div role="separator" className="dropdown-divider" />
+                    <button
+                      className="dropdown-item"
+                      onClick={this.setFilter(2)}
+                    >
+                      Solved
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <table className="table" id="disputes">
+                <thead>
+                  <tr className="secondary">
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Arbitrable</th>
+                    <th>Fee (Ether)</th>
+                    <th>Status</th>
+                    <th>
+                      <FontAwesomeIcon icon="gavel" />
+                    </th>
+                  </tr>
+                </thead>
 
-          {this.disputeComponents(
-            contractAddress,
-            networkType,
-            activeWallet,
-            disputes
-          )}
-        </table>
+                {this.disputeComponents(
+                  contractAddress,
+                  networkType,
+                  activeWallet,
+                  disputes,
+                  filter
+                )}
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
