@@ -275,10 +275,10 @@ class DisputeList extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="offset-md-9 col-md-3">
+            <div className="offset-md-10 col-md-2">
               <div className="input-group mb-3">
-                <div className="input-group-prepend" />
-                <label>
+                <div className="input-group-prepend ml-auto" />
+                <label className="secondary-inverted">
                   Filter: {this.disputeStatusToString(this.state.filter)}
                 </label>
                 <div className="input-group-append">
@@ -293,31 +293,43 @@ class DisputeList extends React.Component {
                   </button>
                   <div className="dropdown-menu">
                     <button
-                      className="dropdown-item"
+                      className={
+                        'dropdown-item ' +
+                        (this.state.filter === -1 ? 'secondary' : '')
+                      }
                       onClick={this.setFilter(-1)}
                     >
                       All
                     </button>
-                    <div role="separator" className="dropdown-divider" />
+                    <div role="separator" className="dropdown-divider m-0" />
                     <button
-                      className="dropdown-item"
+                      className={
+                        'dropdown-item ' +
+                        (this.state.filter === 0 ? 'secondary' : '')
+                      }
                       onClick={this.setFilter(0)}
                     >
                       Vote Pending
                     </button>
-                    <div role="separator" className="dropdown-divider" />
+                    <div role="separator" className="dropdown-divider m-0" />
                     <button
-                      className="dropdown-item"
+                      className={
+                        'dropdown-item ' +
+                        (this.state.filter === 1 ? 'secondary' : '')
+                      }
                       onClick={this.setFilter(1)}
                     >
-                      Appealable
+                      Active
                     </button>
-                    <div role="separator" className="dropdown-divider" />
+                    <div role="separator" className="dropdown-divider m-0" />
                     <button
-                      className="dropdown-item"
+                      className={
+                        'dropdown-item ' +
+                        (this.state.filter === 2 ? 'secondary' : '')
+                      }
                       onClick={this.setFilter(2)}
                     >
-                      Solved
+                      Closed
                     </button>
                   </div>
                 </div>
