@@ -15,7 +15,7 @@ class DisputeList extends React.Component {
     super(props)
     this.state = {
       disputes: [],
-      filter: -1
+      filter: 0
     }
     this.subscriptions = []
 
