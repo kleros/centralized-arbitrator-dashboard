@@ -103,7 +103,7 @@ class Dispute extends React.Component {
         </tbody>
         <tbody>
           <tr>
-            <td colSpan="5">
+            <td colSpan="6">
               <div className="collapse" id={`accordion${id}`}>
                 <DisputeDetail
                   activeWallet={activeWallet}
