@@ -125,7 +125,7 @@ class DisputeList extends React.Component {
       centralizedArbitratorInstance(contractAddress),
       disputeID
     )
-    if (dispute.status === '2') return
+    //if (dispute.status === '2') return
 
     const date = new Date()
 
