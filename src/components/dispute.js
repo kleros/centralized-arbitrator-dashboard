@@ -16,11 +16,11 @@ class Dispute extends React.Component {
   disputeStatusToString = code => {
     switch (code) {
       case '0':
-        return 'Waiting'
+        return 'Vote Pending'
       case '1':
-        return 'Appealable'
+        return 'Active'
       case '2':
-        return 'Solved'
+        return 'Closed'
 
       default:
         return `${code}`
