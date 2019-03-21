@@ -13,17 +13,32 @@ class Dispute extends React.Component {
     }
   }
 
-  disputeStatusToString = code => {
+  disputeStatusElement = code => {
     switch (code) {
       case '0':
-        return 'Vote Pending'
+        return (
+          <td className="orange-inverted">
+            <b>Vote Pending</b>
+          </td>
+        )
       case '1':
-        return 'Active'
+        return (
+          <td className="red-inverted">
+            <b>Active</b>
+          </td>
+        )
       case '2':
-        return 'Closed'
-
+        return (
+          <td className="primary-inverted">
+            <b>Closed</b>
+          </td>
+        )
       default:
-        return `${code}`
+        return (
+          <td className="red-inverted">
+            <b>Undefined</b>
+          </td>
+        )
     }
   }
 
@@ -80,9 +95,7 @@ class Dispute extends React.Component {
               </a>
             </td>
             <td>{web3.utils.fromWei(fee, 'ether')}</td>
-            <td className="primary-inverted">
-              <b>{this.disputeStatusToString(status)}</b>
-            </td>
+            {this.disputeStatusElement(status)}
             <td>
               <FontAwesomeIcon icon="caret-down" />
             </td>

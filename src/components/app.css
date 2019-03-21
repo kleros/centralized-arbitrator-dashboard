@@ -48,6 +48,14 @@
   color: #009aff;
 }
 
+.orange-inverted {
+  color: #ff9900;
+}
+
+.red-inverted {
+  color: #f60c36;
+}
+
 .secondary {
   background-color: #4004a3;
   color: white;
