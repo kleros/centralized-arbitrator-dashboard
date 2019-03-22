@@ -67,7 +67,8 @@ class Dispute extends React.Component {
       ipfsGateway,
       metaevidenceObject,
       networkType,
-      status
+      status,
+      ruling
     } = this.props
     return (
       <React.Fragment>
@@ -148,6 +149,8 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.title
                   }
+                  status={status}
+                  ruling={ruling}
                 />
               </div>
             </td>

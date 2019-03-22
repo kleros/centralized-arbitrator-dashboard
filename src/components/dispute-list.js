@@ -143,7 +143,6 @@ class DisputeList extends React.Component {
       centralizedArbitratorInstance(contractAddress),
       disputeID
     )
-    //if (dispute.status === '2') return
 
     const date = new Date()
 
@@ -254,6 +253,7 @@ class DisputeList extends React.Component {
           metaevidenceObject={item.metaevidenceObject}
           networkType={networkType}
           status={item.status || '0'}
+          ruling={item.ruling || '0'}
         />
       ))
   }

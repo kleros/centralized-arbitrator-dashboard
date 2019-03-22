@@ -137,57 +137,77 @@ class DisputeDetail extends React.Component {
           </div>
         )}
         <br />
-        <div className="row">
-          <div className="col">
-            <h4 className="">{question}</h4>
+
+        {this.props.status == 0 && (
+          <div>
+            <div className="row">
+              <div className="col">
+                <h4 className="">{question}</h4>
+              </div>
+            </div>
+            <br />
+            <div className="row">
+              <div className="offset-md-2 col-md-3">
+                <button
+                  className="btn btn-primary btn-lg btn-block primary"
+                  onClick={this.handleGiveRulingButtonClick(
+                    activeWallet,
+                    centralizedArbitratorInstance,
+                    id,
+                    1
+                  )}
+                >
+                  {rulingOptions && rulingOptions.titles[0]}
+                </button>
+              </div>
+              <div className="col-md-2">X</div>
+              <div className="col-md-3">
+                <button
+                  className="btn btn-primary btn-lg btn-block primary"
+                  onClick={this.handleGiveRulingButtonClick(
+                    activeWallet,
+                    centralizedArbitratorInstance,
+                    id,
+                    2
+                  )}
+                >
+                  {rulingOptions && rulingOptions.titles[1]}
+                </button>
+              </div>
+            </div>
+            <br />
+            <div className="row">
+              <div className="offset-md-4 col-md-4 mb-5">
+                <button
+                  className="btn btn-primary btn-lg btn-block secondary"
+                  onClick={this.handleGiveRulingButtonClick(
+                    activeWallet,
+                    centralizedArbitratorInstance,
+                    id,
+                    0
+                  )}
+                >
+                  {rulingOptions && `Refuse to Arbitrate`}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="offset-md-2 col-md-3">
-            <button
-              className="btn btn-primary btn-lg btn-block primary"
-              onClick={this.handleGiveRulingButtonClick(
-                activeWallet,
-                centralizedArbitratorInstance,
-                id,
-                1
-              )}
-            >
-              {rulingOptions && rulingOptions.titles[0]}
-            </button>
+        )}
+
+        {this.props.status == 2 && (
+          <div className="row">
+            <div className="col">
+              <h1>
+                <b>
+                  {this.props.ruling &&
+                    aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
+                  won
+                </b>
+              </h1>
+              <h1>The case is closed</h1>
+            </div>
           </div>
-          <div className="col-md-2">X</div>
-          <div className="col-md-3">
-            <button
-              className="btn btn-primary btn-lg btn-block primary"
-              onClick={this.handleGiveRulingButtonClick(
-                activeWallet,
-                centralizedArbitratorInstance,
-                id,
-                2
-              )}
-            >
-              {rulingOptions && rulingOptions.titles[1]}
-            </button>
-          </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="offset-md-4 col-md-4 mb-5">
-            <button
-              className="btn btn-primary btn-lg btn-block secondary"
-              onClick={this.handleGiveRulingButtonClick(
-                activeWallet,
-                centralizedArbitratorInstance,
-                id,
-                0
-              )}
-            >
-              {rulingOptions && `Refuse to Arbitrate`}
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     )
   }
