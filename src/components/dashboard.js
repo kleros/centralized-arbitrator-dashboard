@@ -5,7 +5,7 @@ import DisputeList from './dispute-list'
 import NavBar from './navbar.js'
 import { RateLimiter } from 'limiter'
 import React from 'react'
-import { deployCentralizedArbitrator } from '../ethereum/centralized-arbitrator'
+import { deployAutoAppealableArbitrator } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
 import Identicon from './identicon.js'
 
@@ -153,7 +153,7 @@ class Dashboard extends React.Component {
     e.preventDefault()
 
     console.log('deploying')
-    const result = await deployCentralizedArbitrator(
+    const result = await deployAutoAppealableArbitrator(
       account,
       web3.utils.toWei(arbitrationPrice, 'ether')
     )

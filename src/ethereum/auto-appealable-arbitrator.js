@@ -9,7 +9,7 @@ export const deployAutoAppealableArbitrator = (account, arbitrationPrice) =>
     })
     .send({ from: account })
 
-export const AutoAppealableArbitratorInstance = address =>
+export const autoAppealableArbitratorInstance = address =>
   new web3.eth.Contract(AutoAppealableArbitrator.abi, address, {
     gasPrice: 20000000000
   })

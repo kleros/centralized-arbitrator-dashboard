@@ -4,7 +4,7 @@ import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
-import { giveRuling } from '../ethereum/centralized-arbitrator'
+import { giveRuling } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
 
 class DisputeDetail extends React.Component {

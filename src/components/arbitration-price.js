@@ -1,8 +1,8 @@
 import {
-  centralizedArbitratorInstance,
+  autoAppealableArbitratorInstance,
   getArbitrationCost,
   setArbitrationPrice
-} from '../ethereum/centralized-arbitrator'
+} from '../ethereum/auto-appealable-arbitrator'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -22,7 +22,7 @@ class ArbitrationPrice extends React.Component {
     this.setState({
       arbitrationCost: web3.utils.fromWei(
         await getArbitrationCost(
-          centralizedArbitratorInstance(contractAddress),
+          autoAppealableArbitratorInstance(contractAddress),
           ''
         ),
         'ether'
@@ -40,7 +40,7 @@ class ArbitrationPrice extends React.Component {
       this.setState({
         arbitrationCost: web3.utils.fromWei(
           await getArbitrationCost(
-            centralizedArbitratorInstance(contractAddress),
+            autoAppealableArbitratorInstance(contractAddress),
             ''
           ),
           'ether'
@@ -51,16 +51,18 @@ class ArbitrationPrice extends React.Component {
   handleSetArbitrationPriceButtonClick = newCost => async e => {
     const { activeWallet, contractAddress, web3 } = this.props
 
-    const centralizedArbitrator = centralizedArbitratorInstance(contractAddress)
+    const autoAppealableArbitrator = autoAppealableArbitratorInstance(
+      contractAddress
+    )
     e.preventDefault()
     this.setState({ arbitrationCost: 'awaiting...' })
     await setArbitrationPrice(
       activeWallet,
-      centralizedArbitrator,
+      autoAppealableArbitrator,
       web3.utils.toWei(newCost, 'ether')
     )
     const arbitrationCost = web3.utils.fromWei(
-      await getArbitrationCost(centralizedArbitrator, ''),
+      await getArbitrationCost(autoAppealableArbitrator, ''),
       'ether'
     )
     this.setState({ arbitrationCost })

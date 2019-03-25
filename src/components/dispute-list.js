@@ -1,8 +1,8 @@
 import {
-  centralizedArbitratorInstance,
+  autoAppealableArbitratorInstance,
   getDispute,
   getDisputeStatus
-} from '../ethereum/centralized-arbitrator'
+} from '../ethereum/auto-appealable-arbitrator'
 import Archon from '@kleros/archon'
 import Dispute from './dispute'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,13 +42,22 @@ class DisputeList extends React.Component {
   componentDidMount() {
     const { contractAddress } = this.props
 
-    const centralizedArbitrator = centralizedArbitratorInstance(contractAddress)
+    const autoAppealableArbitrator = autoAppealableArbitratorInstance(
+      contractAddress
+    )
 
-    this.getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator)
+    autoAppealableArbitrator
+      .getPastEvents('DisputeCreation', {
+        fromBlock: 0
+      })
+      .then(events => console.log(events))
+
+    this.getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator)
+    console.log('callgetpastdispute')
   }
 
-  getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator) {
-    centralizedArbitrator
+  getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator) {
+    autoAppealableArbitrator
       .getPastEvents('DisputeCreation', { fromBlock: 0 })
       .then(events =>
         events.map(event => {
@@ -63,7 +72,7 @@ class DisputeList extends React.Component {
       )
 
     this.subscriptions.push(
-      centralizedArbitrator.events
+      autoAppealableArbitrator.events
         .DisputeCreation()
         .on('data', event =>
           this.addDispute(
@@ -81,10 +90,10 @@ class DisputeList extends React.Component {
     if (contractAddress !== prevProps.contractAddress) {
       this.subscriptions.map(subscription => subscription.unsubscribe())
       this.setState({ disputes: [] })
-      const centralizedArbitrator = centralizedArbitratorInstance(
+      const autoAppealableArbitrator = autoAppealableArbitratorInstance(
         contractAddress
       )
-      this.getPastDisputeCreationsAndListenToNewOnes(centralizedArbitrator)
+      this.getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator)
     }
   }
 
@@ -140,7 +149,7 @@ class DisputeList extends React.Component {
     console.log(arbitrableAddress)
 
     const dispute = await getDispute(
-      centralizedArbitratorInstance(contractAddress),
+      autoAppealableArbitratorInstance(contractAddress),
       disputeID
     )
 
@@ -240,12 +249,12 @@ class DisputeList extends React.Component {
           activeWallet={activeWallet}
           arbitrated={item.arbitrated}
           archon={archon}
-          centralizedArbitratorInstance={centralizedArbitratorInstance(
+          autoAppealableArbitratorInstance={autoAppealableArbitratorInstance(
             contractAddress
           )}
           choices={item.choices}
           evidences={item.evidences}
-          fee={item.fee}
+          fee={item.fees}
           id={item.id}
           ipfsGateway={this.gateway}
           key={item.id}
