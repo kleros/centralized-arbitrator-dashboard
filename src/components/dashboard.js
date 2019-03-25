@@ -293,18 +293,18 @@ class Dashboard extends React.Component {
                       className="dropdown-menu dropdown-menu-right"
                     >
                       <h5 className="text-center my-3">Contract Addresses</h5>
-                      <div class="dropdown-divider" />
+                      <div className="dropdown-divider" />
 
                       {this.centralizedArbitratorButtons(contractAddresses)}
-                      <div class="dropdown-divider" />
+                      <div className="dropdown-divider" />
                       <div className="px-3 m-3">
                         <label className="px-3">
                           <b>Enter Custom Address</b>
                         </label>
-                        <div class="input-group px-3">
+                        <div className="input-group px-3">
                           <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             placeholder="0x..."
                             aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
@@ -315,9 +315,9 @@ class Dashboard extends React.Component {
                               })
                             }
                           />
-                          <div class="input-group-append">
+                          <div className="input-group-append">
                             <button
-                              class="btn btn-outline-secondary primary"
+                              className="btn btn-outline-secondary primary"
                               type="button"
                               onClick={this.handleCentralizedArbitratorDropdownButtonClick(
                                 this.state.customAddressValue
