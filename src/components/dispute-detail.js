@@ -4,13 +4,40 @@ import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
-import { giveRuling } from '../ethereum/auto-appealable-arbitrator'
+import {
+  giveRuling,
+  giveAppealableRuling
+} from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
 
 class DisputeDetail extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      appealable: true,
+      appealFee: 0.1,
+      timeToAppeal: 240
+    }
+  }
+
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     console.log(ruling)
-    giveRuling(account, instance, id, ruling) /* Why don't we await? */
+    if (this.state.appealable)
+      giveAppealableRuling(
+        account,
+        instance,
+        id,
+        ruling,
+        web3.utils.toWei(this.state.appealFee.toString(), 'ether'),
+        this.state.timeToAppeal
+      )
+    /* Why don't we await? */ else
+      giveRuling(account, instance, id, ruling) /* Why don't we await? */
+  }
+
+  handleAppealableRulingCheckboxClick = () => () => {
+    console.log('handlecheckbox')
+    this.setState(prevState => ({ appealable: !prevState.appealable }))
   }
 
   renderedRulingOptions = (
@@ -140,6 +167,29 @@ class DisputeDetail extends React.Component {
 
         {this.props.status == 0 && (
           <div>
+            <div className="row" id="appealable-ruling">
+              <div className="col">
+                <input
+                  type="checkbox"
+                  aria-label="Checkbox for following text input"
+                  defaultChecked={this.state.appealable}
+                  onClick={this.handleAppealableRulingCheckboxClick()}
+                />
+                <label>Give an appealable ruling</label>
+              </div>
+            </div>
+            {this.state.appealable && (
+              <div className="row border">
+                <div className="col">
+                  <label>Appeal Fee(ETH)</label>{' '}
+                  <input type="number" value={this.state.appealFee} />
+                </div>
+                <div className="col">
+                  <label>Time to Appeal(Seconds)</label>{' '}
+                  <input type="number" value={this.state.timeToAppeal} />
+                </div>
+              </div>
+            )}
             <div className="row">
               <div className="col">
                 <h4 className="">{question}</h4>

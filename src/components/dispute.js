@@ -60,7 +60,7 @@ class Dispute extends React.Component {
       activeWallet,
       arbitrated,
       archon,
-      centralizedArbitratorInstance,
+      autoAppealableArbitratorInstance,
       evidences,
       fee,
       id,
@@ -117,7 +117,9 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.category
                   }
-                  centralizedArbitratorInstance={centralizedArbitratorInstance}
+                  centralizedArbitratorInstance={
+                    autoAppealableArbitratorInstance
+                  }
                   description={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.description
