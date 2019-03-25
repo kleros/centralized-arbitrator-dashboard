@@ -40,6 +40,16 @@ class DisputeDetail extends React.Component {
     this.setState(prevState => ({ appealable: !prevState.appealable }))
   }
 
+  handleTimeToAppealChange = () => e => {
+    console.log('handletimetoappeal')
+    this.setState({ timeToAppeal: e.target.value })
+  }
+
+  handleAppealFeeChange = () => e => {
+    console.log('handleAppealFeeChange')
+    this.setState({ appealFee: e.target.value })
+  }
+
   renderedRulingOptions = (
     options,
     activeWallet,
@@ -182,11 +192,19 @@ class DisputeDetail extends React.Component {
               <div className="row border">
                 <div className="col">
                   <label>Appeal Fee(ETH)</label>{' '}
-                  <input type="number" value={this.state.appealFee} />
+                  <input
+                    type="number"
+                    value={this.state.appealFee}
+                    onChange={this.handleAppealFeeChange()}
+                  />
                 </div>
                 <div className="col">
                   <label>Time to Appeal(Seconds)</label>{' '}
-                  <input type="number" value={this.state.timeToAppeal} />
+                  <input
+                    type="number"
+                    value={this.state.timeToAppeal}
+                    onChange={this.handleTimeToAppealChange()}
+                  />
                 </div>
               </div>
             )}
