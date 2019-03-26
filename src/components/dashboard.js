@@ -55,7 +55,9 @@ class Dashboard extends React.Component {
             )
               .then(response => response.json())
               .then(data => {
-                if (data.result[0].ContractName === 'CentralizedArbitrator') {
+                if (
+                  data.result[0].ContractName === 'AutoAppealableArbitrator'
+                ) {
                   this.setState(state => ({
                     contractAddresses: [...state.contractAddresses, address]
                   }))
