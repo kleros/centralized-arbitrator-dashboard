@@ -263,6 +263,8 @@ class DisputeList extends React.Component {
           networkType={networkType}
           status={item.status || '0'}
           ruling={item.ruling || '0'}
+          appealPeriodStart={item.appealPeriodStart || 0}
+          appealPeriodEnd={item.appealPeriodEnd || 0}
         />
       ))
   }

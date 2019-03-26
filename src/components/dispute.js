@@ -68,7 +68,9 @@ class Dispute extends React.Component {
       metaevidenceObject,
       networkType,
       status,
-      ruling
+      ruling,
+      appealPeriodStart,
+      appealPeriodEnd
     } = this.props
     return (
       <React.Fragment>
@@ -153,6 +155,8 @@ class Dispute extends React.Component {
                   }
                   status={status}
                   ruling={ruling}
+                  appealPeriodStart={appealPeriodStart}
+                  appealPeriodEnd={appealPeriodEnd}
                 />
               </div>
             </td>

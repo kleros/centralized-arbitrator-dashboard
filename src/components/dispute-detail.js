@@ -9,6 +9,7 @@ import {
   giveAppealableRuling
 } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
+import TimeAgo from 'react-timeago'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -258,6 +259,30 @@ class DisputeDetail extends React.Component {
                   {rulingOptions && `Refuse to Arbitrate`}
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {this.props.status == 1 && (
+          <div className="row">
+            <div className="col">
+              <h1>
+                <b>
+                  {' '}
+                  You voted for{' '}
+                  {this.props.ruling &&
+                    aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
+                </b>
+              </h1>
+              {this.props.appealPeriodEnd * 1000 < new Date().getTime() && (
+                <h1>Appeal period is over.</h1>
+              )}
+              {this.props.appealPeriodEnd * 1000 > new Date().getTime() && (
+                <h1>
+                  The case can still be appealable until{' '}
+                  <TimeAgo date={this.props.appealPeriodEnd * 1000} />
+                </h1>
+              )}
             </div>
           </div>
         )}
