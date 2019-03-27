@@ -107,7 +107,7 @@ class Dispute extends React.Component {
         <tbody>
           <tr>
             <td colSpan="6">
-              <div className="collapse" id={`accordion${id}`}>
+              <div className="collapse mb-5" id={`accordion${id}`}>
                 <DisputeDetail
                   activeWallet={activeWallet}
                   aliases={

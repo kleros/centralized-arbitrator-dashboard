@@ -303,25 +303,39 @@ class DisputeDetail extends React.Component {
         )}
 
         {this.props.status == 1 && (
-          <div className="row">
-            <div className="col">
-              <h1>
-                <b>
-                  {' '}
-                  You voted for{' '}
-                  {this.props.ruling &&
-                    aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
-                </b>
-              </h1>
-              {this.props.appealPeriodEnd * 1000 < new Date().getTime() && (
-                <h1>Appeal period is over.</h1>
-              )}
-              {this.props.appealPeriodEnd * 1000 > new Date().getTime() && (
+          <div className="row px-0">
+            <div className="col px-0">
+              <div
+                className="text-white pt-5"
+                style={{
+                  background:
+                    'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
+                  'background-size': 'cover',
+                  height: '200px',
+                  'background-size': 'auto, cover',
+                  'background-position': 'center',
+                  'background-repeat': 'no-repeat, no-repeat',
+                  width: '100%'
+                }}
+              >
                 <h1>
-                  The case can still be appealable until{' '}
-                  <TimeAgo date={this.props.appealPeriodEnd * 1000} />
+                  <b>
+                    {' '}
+                    You voted for{' '}
+                    {this.props.ruling &&
+                      aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
+                  </b>
                 </h1>
-              )}
+                {this.props.appealPeriodEnd * 1000 < new Date().getTime() && (
+                  <h2>Appeal period is over.</h2>
+                )}
+                {this.props.appealPeriodEnd * 1000 > new Date().getTime() && (
+                  <h2>
+                    The case can still be appealable until{' '}
+                    <TimeAgo date={this.props.appealPeriodEnd * 1000} />
+                  </h2>
+                )}
+              </div>
             </div>
           </div>
         )}
