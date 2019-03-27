@@ -341,16 +341,30 @@ class DisputeDetail extends React.Component {
         )}
 
         {this.props.status == 2 && (
-          <div className="row">
-            <div className="col">
-              <h1>
-                <b>
-                  {this.props.ruling &&
-                    aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
-                  won
-                </b>
-              </h1>
-              <h1>The case is closed</h1>
+          <div className="row px-0">
+            <div className="col px-0">
+              <div
+                className="text-white pt-5"
+                style={{
+                  background:
+                    'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
+                  'background-size': 'cover',
+                  height: '200px',
+                  'background-size': 'auto, cover',
+                  'background-position': 'center',
+                  'background-repeat': 'no-repeat, no-repeat',
+                  width: '100%'
+                }}
+              >
+                <h1>
+                  <b>
+                    {this.props.ruling &&
+                      aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
+                    won
+                  </b>
+                </h1>
+                <h2>The case is closed</h2>
+              </div>
             </div>
           </div>
         )}
