@@ -178,74 +178,76 @@ class DisputeDetail extends React.Component {
 
         {this.props.status == 0 && (
           <div>
-            <div className="row" id="appealable-ruling">
-              <div className="col">
-                <input
-                  type="checkbox"
-                  aria-label="Checkbox for following text input"
-                  defaultChecked={this.state.appealable}
-                  onClick={this.handleAppealableRulingCheckboxClick()}
-                />
-                <label>Give an appealable ruling</label>
-              </div>
-            </div>
-            {this.state.appealable && (
-              <>
-                <div className="row border background-shade mb-5 pt-3">
-                  <div className="col-4 offset-1">
-                    <div className="input-group input-group-sm mb-3">
-                      <div className="input-group-prepend">
-                        <span
-                          className="input-group-text background-shade border-0"
-                          id="inputGroup-sizing-sm"
-                        >
-                          Appeal Fee(ETH)
-                        </span>
-                      </div>
-                      <input
-                        type="number"
-                        className="form-control"
-                        aria-label="Small"
-                        aria-describedby="inputGroup-sizing-sm"
-                        value={this.state.appealFee}
-                        onChange={this.handleAppealFeeChange()}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-2">
-                    <hr
-                      className="mt-0"
-                      style={{
-                        width: '1px',
-                        height: '30px',
-                        background: '#CCCCCC',
-                        border: 'none'
-                      }}
-                    />
-                  </div>
-                  <div className="col-4">
-                    <div className="input-group input-group-sm mb-3">
-                      <div className="input-group-prepend">
-                        <span
-                          className="input-group-text background-shade border-0"
-                          id="inputGroup-sizing-sm"
-                        >
-                          Time to Appeal(Seconds)
-                        </span>
-                      </div>
-                      <input
-                        type="number"
-                        className="form-control"
-                        aria-label="Small"
-                        aria-describedby="inputGroup-sizing-sm"
-                        value={this.state.timeToAppeal}
-                        onChange={this.handleTimeToAppealChange()}
-                      />
-                    </div>
-                  </div>
+            <div className="mb-5">
+              <div className="row" id="appealable-ruling">
+                <div className="col">
+                  <input
+                    type="checkbox"
+                    aria-label="Checkbox for following text input"
+                    defaultChecked={this.state.appealable}
+                    onClick={this.handleAppealableRulingCheckboxClick()}
+                  />
+                  <label>Give an appealable ruling</label>
                 </div>
-              </>
-            )}
+              </div>
+              {this.state.appealable && (
+                <>
+                  <div className="row border background-shade pt-3">
+                    <div className="col-4 offset-1">
+                      <div className="input-group input-group-sm mb-3">
+                        <div className="input-group-prepend">
+                          <span
+                            className="input-group-text background-shade border-0"
+                            id="inputGroup-sizing-sm"
+                          >
+                            Appeal Fee(ETH)
+                          </span>
+                        </div>
+                        <input
+                          type="number"
+                          className="form-control"
+                          aria-label="Small"
+                          aria-describedby="inputGroup-sizing-sm"
+                          value={this.state.appealFee}
+                          onChange={this.handleAppealFeeChange()}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-2">
+                      <hr
+                        className="mt-0"
+                        style={{
+                          width: '1px',
+                          height: '30px',
+                          background: '#CCCCCC',
+                          border: 'none'
+                        }}
+                      />
+                    </div>
+                    <div className="col-4">
+                      <div className="input-group input-group-sm mb-3">
+                        <div className="input-group-prepend">
+                          <span
+                            className="input-group-text background-shade border-0"
+                            id="inputGroup-sizing-sm"
+                          >
+                            Time to Appeal(Seconds)
+                          </span>
+                        </div>
+                        <input
+                          type="number"
+                          className="form-control"
+                          aria-label="Small"
+                          aria-describedby="inputGroup-sizing-sm"
+                          value={this.state.timeToAppeal}
+                          onChange={this.handleTimeToAppealChange()}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
             <div className="row">
               <div className="col">
                 <h4 className="">{question}</h4>
