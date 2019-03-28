@@ -182,12 +182,15 @@ class DisputeDetail extends React.Component {
               <div className="row" id="appealable-ruling">
                 <div className="col">
                   <input
+                    className="h-90"
                     type="checkbox"
                     aria-label="Checkbox for following text input"
                     defaultChecked={this.state.appealable}
                     onClick={this.handleAppealableRulingCheckboxClick()}
                   />
-                  <label>Give an appealable ruling</label>
+                  <label>
+                    <small>Give an appealable ruling</small>
+                  </label>
                 </div>
               </div>
               {this.state.appealable && (
