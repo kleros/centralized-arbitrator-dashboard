@@ -29,7 +29,7 @@ class DisputeList extends React.Component {
   disputeStatusToString = code => {
     switch (code) {
       case 0:
-        return 'Vote Pending'
+        return 'Pending'
       case 1:
         return 'Active'
       case 2:
@@ -319,7 +319,7 @@ class DisputeList extends React.Component {
                       }
                       onClick={this.setFilter(0)}
                     >
-                      Vote Pending
+                      Pending
                     </button>
                     <div role="separator" className="dropdown-divider m-0" />
                     <button
