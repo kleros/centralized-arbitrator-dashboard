@@ -282,7 +282,6 @@ class DisputeList extends React.Component {
               <h1>
                 <b>Disputes</b>
               </h1>
-              <br />
             </div>
           </div>
           <div className="row">
