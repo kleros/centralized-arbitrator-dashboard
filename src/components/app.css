@@ -132,3 +132,8 @@ hr {
 .background-shade {
   background-color: #f8f8f8;
 }
+
+.dropdown-menu > button:hover {
+  background-color: #e7dff2;
+  background-image: none;
+}
