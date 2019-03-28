@@ -78,7 +78,7 @@ class ArbitrationPrice extends React.Component {
     return (
       <div className="input-group mb-3">
         <div className="input-group-append">
-          <label className="input-group-text" id="">
+          <label className="input-group-text bg-white border-0" id="">
             Arbitration Price (ETH)
           </label>
         </div>
