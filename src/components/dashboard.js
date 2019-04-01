@@ -2,12 +2,12 @@ import $ from 'jquery'
 import ArbitrationPrice from './arbitration-price'
 import Archon from '@kleros/archon'
 import DisputeList from './dispute-list'
+import Identicon from './identicon.js'
 import NavBar from './navbar.js'
 import { RateLimiter } from 'limiter'
 import React from 'react'
 import { deployAutoAppealableArbitrator } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
-import Identicon from './identicon.js'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -105,7 +105,7 @@ class Dashboard extends React.Component {
     const { contractAddresses } = this.state
 
     if (window.web3 && window.web3.currentProvider.isMetaMask)
-      window.web3.eth.getAccounts((error, accounts) => {
+      window.web3.eth.getAccounts((_, accounts) => {
         web3.eth.net.getNetworkType((error, networkType) => {
           if (error) console.error(error)
           console.log(accounts[0])
@@ -176,12 +176,13 @@ class Dashboard extends React.Component {
     if (e.keyCode === 13) this.setState({ selectedAddress: e.target.value })
   }
 
-  handleCentralizedArbitratorDropdownButtonClick = address => e => {
+  handleCentralizedArbitratorDropdownButtonClick = address => _ => {
     this.setState({ selectedAddress: address })
   }
 
-  centralizedArbitratorButtons = addresses =>
-    addresses.map(address => (
+  centralizedArbitratorButtons = addresses => {
+    const { networkType } = this.state
+    return addresses.map(address => (
       <div className="dropdown-item p-0" key={address}>
         <button
           className="dropdown-item "
@@ -190,17 +191,24 @@ class Dashboard extends React.Component {
         >
           <a
             href={`https://${this.apiPrefix(
-              this.state.networkType
+              networkType
             )}etherscan.io/address/${address}`}
             rel="noopener noreferrer"
             target="_blank"
           >
-            <img className="m-2" src="etherscan.svg" width="30" height="30" />
+            <img
+              alt="etherscan-logo"
+              className="m-2"
+              height="30"
+              src="etherscan.svg"
+              width="30"
+            />
           </a>
           {address}
         </button>
       </div>
     ))
+  }
 
   handleArbitrationPriceChange = () => e => {
     console.log(e)
@@ -220,12 +228,17 @@ class Dashboard extends React.Component {
     }))
   }
 
+  handleCustomAddressValueChange = e => {
+    this.setState({ customAddressValue: e.target.value })
+  }
+
   render() {
     console.log(`RENDERING${new Date().getTime()}`)
     const {
       arbitrationCost,
       archon,
       contractAddresses,
+      customAddressValue,
       networkType,
       notifications,
       selectedAddress,
@@ -305,25 +318,21 @@ class Dashboard extends React.Component {
                         </label>
                         <div className="input-group px-3">
                           <input
-                            type="text"
-                            className="form-control"
-                            placeholder="0x..."
-                            aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
-                            value={this.state.customAddressValue}
-                            onChange={e =>
-                              this.setState({
-                                customAddressValue: e.target.value
-                              })
-                            }
+                            aria-label="Recipient's username"
+                            className="form-control"
+                            onChange={this.handleCustomAddressValueChange}
+                            placeholder="0x..."
+                            type="text"
+                            value={customAddressValue}
                           />
                           <div className="input-group-append">
                             <button
                               className="btn btn-outline-secondary primary"
-                              type="button"
                               onClick={this.handleCentralizedArbitratorDropdownButtonClick(
-                                this.state.customAddressValue
+                                customAddressValue
                               )}
+                              type="button"
                             >
                               Select
                             </button>
