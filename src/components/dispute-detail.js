@@ -1,35 +1,35 @@
-import Archon from '@kleros/archon'
-import EvidenceList from './evidence-list'
-import PropTypes from 'prop-types'
-import React from 'react'
-import _ from 'lodash'
 import {
   giveAppealableRuling,
   giveRuling
 } from '../ethereum/auto-appealable-arbitrator'
-import web3 from '../ethereum/web3'
+import Archon from '@kleros/archon'
+import EvidenceList from './evidence-list'
+import Lodash from 'lodash'
+import PropTypes from 'prop-types'
+import React from 'react'
 import TimeAgo from 'react-timeago'
+import Web3 from '../ethereum/web3'
 
 class DisputeDetail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      appealable: true,
       appealFee: 0.1,
+      appealable: true,
       timeToAppeal: 240
     }
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
-    console.log(ruling)
-    if (this.state.appealable)
+    const { appealFee, appealable, timeToAppeal } = this.state
+    if (appealable)
       giveAppealableRuling(
         account,
         instance,
         id,
         ruling,
-        web3.utils.toWei(this.state.appealFee.toString(), 'ether'),
-        this.state.timeToAppeal
+        Web3.utils.toWei(appealFee.toString(), 'ether'),
+        timeToAppeal
       )
     /* Why don't we await? */ else
       giveRuling(account, instance, id, ruling) /* Why don't we await? */
@@ -56,7 +56,7 @@ class DisputeDetail extends React.Component {
     centralizedArbitratorInstance,
     id
   ) =>
-    _.zip(options.titles, options.descriptions).map((option, key) => (
+    Lodash.zip(options.titles, options.descriptions).map((option, key) => (
       <div className="col">
         <button
           className="btn btn-primary btn-lg primary "
@@ -74,28 +74,29 @@ class DisputeDetail extends React.Component {
     ))
 
   render() {
-    console.log('PRERENDER DISPUTEDETAIL')
-    console.log(this.props)
     const {
       activeWallet,
       aliases,
+      appealPeriodEnd,
       archon,
       category,
       centralizedArbitratorInstance,
       description,
       evidences,
       fileURI,
-      fileHash,
       fileValid,
       id,
       ipfsGateway,
       metaEvidenceJSONValid,
       question,
+      ruling,
       rulingOptions,
+      status,
       title
     } = this.props
 
-    console.log(this.state)
+    const { appealFee, appealable, timeToAppeal } = this.state
+
     return (
       <div className="container">
         <div className="row p-0">
@@ -135,7 +136,7 @@ class DisputeDetail extends React.Component {
                   <h6 className="">Integrity Broken!</h6>
                 </div>
                 <div className="col-md-3 ">
-                  <img className="" src="warning.svg" />
+                  <img alt="warning" className="" src="warning.svg" />
                 </div>
                 <div className="offset-md-1" />
               </div>
@@ -175,7 +176,7 @@ class DisputeDetail extends React.Component {
         )}
         <br />
 
-        {this.props.status == 0 && (
+        {status === '0' && (
           <div>
             <div className="mb-5">
               <div className="row" id="appealable-ruling">
@@ -184,7 +185,7 @@ class DisputeDetail extends React.Component {
                     <input
                       aria-label="Checkbox for following text input"
                       className="custom-control-input"
-                      defaultChecked={this.state.appealable}
+                      defaultChecked={appealable}
                       id="appealable"
                       onClick={this.handleAppealableRulingCheckboxClick()}
                       type="checkbox"
@@ -198,7 +199,7 @@ class DisputeDetail extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.state.appealable && (
+              {appealable && (
                 <>
                   <div className="row border background-shade pt-3">
                     <div className="col-4 offset-1">
@@ -217,7 +218,7 @@ class DisputeDetail extends React.Component {
                           className="form-control"
                           onChange={this.handleAppealFeeChange()}
                           type="number"
-                          value={this.state.appealFee}
+                          value={appealFee}
                         />
                       </div>
                     </div>
@@ -225,10 +226,10 @@ class DisputeDetail extends React.Component {
                       <hr
                         className="mt-0"
                         style={{
-                          width: '1px',
-                          height: '30px',
                           background: '#CCCCCC',
-                          border: 'none'
+                          border: 'none',
+                          height: '30px',
+                          width: '1px'
                         }}
                       />
                     </div>
@@ -248,7 +249,7 @@ class DisputeDetail extends React.Component {
                           className="form-control"
                           onChange={this.handleTimeToAppealChange()}
                           type="number"
-                          value={this.state.timeToAppeal}
+                          value={timeToAppeal}
                         />
                       </div>
                     </div>
@@ -310,7 +311,7 @@ class DisputeDetail extends React.Component {
           </div>
         )}
 
-        {this.props.status == 1 && (
+        {status === '1' && (
           <div className="row px-0">
             <div className="col px-0">
               <div
@@ -318,11 +319,10 @@ class DisputeDetail extends React.Component {
                 style={{
                   background:
                     'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
-                  'background-size': 'cover',
-                  height: '200px',
-                  'background-size': 'auto, cover',
                   'background-position': 'center',
                   'background-repeat': 'no-repeat, no-repeat',
+                  'background-size': 'auto, cover',
+                  height: '200px',
                   width: '100%'
                 }}
               >
@@ -330,17 +330,16 @@ class DisputeDetail extends React.Component {
                   <b>
                     {' '}
                     You voted for{' '}
-                    {this.props.ruling &&
-                      aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
+                    {ruling && aliases[Object.keys(aliases)[ruling - 1]]}{' '}
                   </b>
                 </h1>
-                {this.props.appealPeriodEnd * 1000 < new Date().getTime() && (
+                {appealPeriodEnd * 1000 < new Date().getTime() && (
                   <h2>Appeal period is over.</h2>
                 )}
-                {this.props.appealPeriodEnd * 1000 > new Date().getTime() && (
+                {appealPeriodEnd * 1000 > new Date().getTime() && (
                   <h2>
                     The case can still be appealable until{' '}
-                    <TimeAgo date={this.props.appealPeriodEnd * 1000} />
+                    <TimeAgo date={appealPeriodEnd * 1000} />
                   </h2>
                 )}
               </div>
@@ -348,7 +347,7 @@ class DisputeDetail extends React.Component {
           </div>
         )}
 
-        {this.props.status == 2 && (
+        {status === '2' && (
           <div className="row px-0">
             <div className="col px-0">
               <div
@@ -356,19 +355,16 @@ class DisputeDetail extends React.Component {
                 style={{
                   background:
                     'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
-                  'background-size': 'cover',
-                  height: '200px',
-                  'background-size': 'auto, cover',
                   'background-position': 'center',
                   'background-repeat': 'no-repeat, no-repeat',
+                  'background-size': 'auto, cover',
+                  height: '200px',
                   width: '100%'
                 }}
               >
                 <h1>
                   <b>
-                    {this.props.ruling &&
-                      aliases[Object.keys(aliases)[this.props.ruling - 1]]}{' '}
-                    won
+                    {ruling && aliases[Object.keys(aliases)[ruling - 1]]} won
                   </b>
                 </h1>
                 <h2>The case is closed</h2>
@@ -384,9 +380,10 @@ class DisputeDetail extends React.Component {
 DisputeDetail.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
+  appealPeriodEnd: PropTypes.number.isRequired,
   archon: PropTypes.instanceOf(Archon).isRequired,
   category: PropTypes.number.isRequired,
-  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
+  centralizedArbitratorInstance: PropTypes.instanceOf(Web3.eth.Contract)
     .isRequired,
   description: PropTypes.string.isRequired,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -394,8 +391,11 @@ DisputeDetail.propTypes = {
   fileValid: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
   ipfsGateway: PropTypes.string.isRequired,
+  metaEvidenceJSONValid: PropTypes.bool.isRequired,
   question: PropTypes.string.isRequired,
+  ruling: PropTypes.string.isRequired,
   rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 }
 
