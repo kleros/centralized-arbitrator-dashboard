@@ -1,8 +1,6 @@
-import EvidenceDetail from './evidence-detail'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Mime from 'mime-types'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Mime from 'mime-types'
 
 class Evidence extends React.Component {
   typeToIcon = type => {
@@ -19,16 +17,7 @@ class Evidence extends React.Component {
   }
 
   render() {
-    const {
-      description,
-      fileTypeExtension,
-      fileURI,
-      fileValid,
-      id,
-      ipfsGateway,
-      name,
-      selfHash
-    } = this.props
+    const { fileURI, ipfsGateway } = this.props
 
     return (
       <a href={ipfsGateway + fileURI} rel="noopener noreferrer" target="_blank">
@@ -48,14 +37,8 @@ class Evidence extends React.Component {
 }
 
 Evidence.propTypes = {
-  description: PropTypes.string.isRequired,
-  fileTypeExtension: PropTypes.string.isRequired,
   fileURI: PropTypes.string.isRequired,
-  fileValid: PropTypes.bool.isRequired,
-  id: PropTypes.number.isRequired,
-  ipfsGateway: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  selfHash: PropTypes.string.isRequired
+  ipfsGateway: PropTypes.string.isRequired
 }
 
 export default Evidence
