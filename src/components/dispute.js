@@ -58,6 +58,8 @@ class Dispute extends React.Component {
     console.log(this.props)
     const {
       activeWallet,
+      appealPeriodEnd,
+      appealPeriodStart,
       arbitrated,
       archon,
       autoAppealableArbitratorInstance,
@@ -67,10 +69,8 @@ class Dispute extends React.Component {
       ipfsGateway,
       metaevidenceObject,
       networkType,
-      status,
       ruling,
-      appealPeriodStart,
-      appealPeriodEnd
+      status
     } = this.props
     return (
       <React.Fragment>
@@ -169,9 +169,11 @@ class Dispute extends React.Component {
 
 Dispute.propTypes = {
   activeWallet: PropTypes.string.isRequired,
+  appealPeriodEnd: PropTypes.number.isRequired,
+  appealPeriodStart: PropTypes.number.isRequired,
   arbitrated: PropTypes.string.isRequired,
   archon: PropTypes.instanceOf.isRequired,
-  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
+  autoAppealableArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
     .isRequired,
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
   fee: PropTypes.string.isRequired,
@@ -194,6 +196,7 @@ Dispute.propTypes = {
     title: PropTypes.string
   }).isRequired,
   networkType: PropTypes.string.isRequired,
+  ruling: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired
 }
 
