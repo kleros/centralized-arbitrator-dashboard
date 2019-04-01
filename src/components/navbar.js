@@ -4,13 +4,14 @@ import Identicon from './identicon.js'
 import NotificationItem from './notification-item'
 import PropTypes from 'prop-types'
 import React from 'react'
+import Web3 from '../ethereum/web3'
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      email: '',
-      Successful: false
+      Successful: false,
+      email: ''
     }
   }
   componentDidMount(props) {
@@ -45,8 +46,8 @@ class NavBar extends React.Component {
     const { wallet, web3 } = this.props
     const address = web3.utils.toChecksumAddress(wallet)
     const settings = {
-      email: { S: email },
-      centralizedArbitratorDashboardNotificationSettingDisputes: { BOOL: true }
+      centralizedArbitratorDashboardNotificationSettingDisputes: { BOOL: true },
+      email: { S: email }
     }
     const signature = await web3.eth.personal.sign(
       JSON.stringify(settings),
@@ -56,17 +57,19 @@ class NavBar extends React.Component {
     fetch(
       'https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings',
       {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           payload: { address, settings, signature }
-        })
+        }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'PATCH'
       }
-    ).then(e => this.setState({ successful: true }))
+    ).then(_ => this.setState({ successful: true }))
   }
 
   render() {
     const { networkType, notifications, wallet } = this.props
+
+    const { email, successful } = this.state
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark">
@@ -170,22 +173,22 @@ class NavBar extends React.Component {
                     onChange={this.onEmailChange}
                     placeholder="Enter email"
                     type="email"
-                    value={this.state.email}
+                    value={email}
                   />
                   <small className="form-text text-muted" id="emailHelp">
                     We'll never share your email with anyone else.
                   </small>
                 </div>
-                {!this.state.successful && (
+                {!successful && (
                   <button
                     className="btn btn-primary"
-                    onClick={this.onSignup(this.state.email)}
+                    onClick={this.onSignup(email)}
                     type="button"
                   >
                     Signup
                   </button>
                 )}
-                {this.state.successful && (
+                {successful && (
                   <button className="btn btn-success disabled" type="button">
                     Request Pending
                   </button>
@@ -223,7 +226,8 @@ NavBar.propTypes = {
   clearNotifications: PropTypes.func.isRequired,
   networkType: PropTypes.string.isRequired,
   notifications: PropTypes.arrayOf(NotificationItem).isRequired,
-  wallet: PropTypes.string.isRequired
+  wallet: PropTypes.string.isRequired,
+  web3: PropTypes.instanceOf(Web3).isRequired
 }
 
 export default NavBar
