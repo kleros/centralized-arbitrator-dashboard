@@ -22,7 +22,7 @@ class DisputeList extends React.Component {
     this.gateway = 'https://ipfs.kleros.io'
   }
 
-  setFilter = filter => async e => {
+  setFilter = filter => async _ => {
     this.setState({ filter })
   }
 
@@ -166,6 +166,10 @@ class DisputeList extends React.Component {
 
     dispute.id = disputeID
     dispute.evidences = {}
+    dispute.statusERC792 = getDisputeStatus(
+      autoAppealableArbitratorInstance(contractAddress),
+      disputeID
+    )
 
     await this.setState(state => ({
       disputes: [...state.disputes, dispute]
@@ -243,7 +247,7 @@ class DisputeList extends React.Component {
       .sort(function(a, b) {
         return a.id - b.id
       })
-      .filter(item => item.status == filter || filter === -1)
+      .filter(item => item.status === filter.toString() || filter === -1)
       .map(item => (
         <Dispute
           activeWallet={activeWallet}
@@ -289,7 +293,7 @@ class DisputeList extends React.Component {
               <div className="input-group mb-3">
                 <div className="input-group-prepend ml-auto" />
                 <label className="secondary-inverted">
-                  Filter: {this.disputeStatusToString(this.state.filter)}
+                  Filter: {this.disputeStatusToString(filter)}
                 </label>
                 <div className="input-group-append">
                   <button
@@ -304,7 +308,7 @@ class DisputeList extends React.Component {
                   <div className="dropdown-menu">
                     <button
                       className={`dropdown-item ${
-                        this.state.filter === -1 ? 'secondary' : ''
+                        filter === -1 ? 'secondary' : ''
                       }`}
                       onClick={this.setFilter(-1)}
                     >
@@ -313,7 +317,7 @@ class DisputeList extends React.Component {
                     <div className="dropdown-divider m-0" role="separator" />
                     <button
                       className={`dropdown-item ${
-                        this.state.filter === 0 ? 'secondary' : ''
+                        filter === 0 ? 'secondary' : ''
                       }`}
                       onClick={this.setFilter(0)}
                     >
@@ -322,7 +326,7 @@ class DisputeList extends React.Component {
                     <div className="dropdown-divider m-0" role="separator" />
                     <button
                       className={`dropdown-item ${
-                        this.state.filter === 1 ? 'secondary' : ''
+                        filter === 1 ? 'secondary' : ''
                       }`}
                       onClick={this.setFilter(1)}
                     >
@@ -331,7 +335,7 @@ class DisputeList extends React.Component {
                     <div className="dropdown-divider m-0" role="separator" />
                     <button
                       className={`dropdown-item ${
-                        this.state.filter === 2 ? 'secondary' : ''
+                        filter === 2 ? 'secondary' : ''
                       }`}
                       onClick={this.setFilter(2)}
                     >
