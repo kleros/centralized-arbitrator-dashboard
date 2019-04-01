@@ -1,5 +1,4 @@
 import Evidence from './evidence'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -27,7 +26,7 @@ class EvidenceList extends React.Component {
   }
 
   isEvidenceIntegrityOK = evidences => {
-    if (evidences.length == 0) return true
+    if (evidences.length === 0) return true
     return evidences
       .map(evidence => evidence.fileValid)
       .reduce((op1, op2) => op1 && op2)
@@ -100,7 +99,11 @@ class EvidenceList extends React.Component {
                               <h6 className="">Integrity Broken!</h6>
                             </div>
                             <div className="col-md-3 ">
-                              <img className="" src="warning.svg" />
+                              <img
+                                alt="warning"
+                                className=""
+                                src="warning.svg"
+                              />
                             </div>
                             <div className="offset-md-1" />
                           </div>
@@ -123,16 +126,18 @@ EvidenceList.defaultProps = {
 }
 
 EvidenceList.propTypes = {
+  address: PropTypes.string.isRequired,
+  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   evidences: PropTypes.arrayOf(
     PropTypes.shape({
-      evidenceJSONValid: PropTypes.bool,
-      fileValid: PropTypes.bool,
+      blockNumber: PropTypes.number,
       evidenceJSON: PropTypes.shape({
         fileURI: PropTypes.string
       }),
-      submittedBy: PropTypes.string,
+      evidenceJSONValid: PropTypes.bool,
+      fileValid: PropTypes.bool,
       submittedAt: PropTypes.number,
-      blockNumber: PropTypes.number,
+      submittedBy: PropTypes.string,
       transactionHash: PropTypes.string
     })
   ),
