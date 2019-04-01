@@ -114,6 +114,8 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.aliases
                   }
+                  appealPeriodEnd={appealPeriodEnd}
+                  appealPeriodStart={appealPeriodStart}
                   archon={archon}
                   category={
                     metaevidenceObject &&
@@ -145,18 +147,16 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.question
                   }
+                  ruling={ruling}
                   rulingOptions={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.rulingOptions
                   }
+                  status={status}
                   title={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.title
                   }
-                  status={status}
-                  ruling={ruling}
-                  appealPeriodStart={appealPeriodStart}
-                  appealPeriodEnd={appealPeriodEnd}
                 />
               </div>
             </td>

@@ -164,29 +164,29 @@ class NavBar extends React.Component {
                     E-mail Notifications
                   </label>
                   <input
-                    type="email"
+                    aria-describedby="emailHelp"
                     className="form-control"
                     id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                    value={this.state.email}
                     onChange={this.onEmailChange}
+                    placeholder="Enter email"
+                    type="email"
+                    value={this.state.email}
                   />
-                  <small id="emailHelp" className="form-text text-muted">
+                  <small className="form-text text-muted" id="emailHelp">
                     We'll never share your email with anyone else.
                   </small>
                 </div>
                 {!this.state.successful && (
                   <button
-                    type="button"
                     className="btn btn-primary"
                     onClick={this.onSignup(this.state.email)}
+                    type="button"
                   >
                     Signup
                   </button>
                 )}
                 {this.state.successful && (
-                  <button type="button" className="btn btn-success disabled">
+                  <button className="btn btn-success disabled" type="button">
                     Request Pending
                   </button>
                 )}

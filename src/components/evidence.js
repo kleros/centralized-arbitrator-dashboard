@@ -34,8 +34,8 @@ class Evidence extends React.Component {
       <a href={ipfsGateway + fileURI} rel="noopener noreferrer" target="_blank">
         {' '}
         <img
-          className="m-1"
           alt=""
+          className="m-1"
           src={this.typeToIcon(
             Mime.lookup(fileURI.split('.')[1])
               .toString()

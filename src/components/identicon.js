@@ -25,10 +25,10 @@ const Identicon = ({
       bgColor={bgColor}
       className={className}
       color={color}
-      seed={seed}
-      spotColor={spotColor}
-      size={size}
       scale={scale}
+      seed={seed}
+      size={size}
+      spotColor={spotColor}
     />
   </a>
 )

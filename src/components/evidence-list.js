@@ -1,7 +1,6 @@
 import Evidence from './evidence'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Identicon from './identicon.js'
-
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -66,14 +65,14 @@ class EvidenceList extends React.Component {
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                   <li className="nav-item">
                     <a
-                      className="nav-link active"
-                      id="evidence-tab"
-                      data-toggle="tab"
-                      href="#evidence"
-                      role="tab"
                       aria-controls="evidence"
                       aria-selected="true"
+                      className="nav-link active"
+                      data-toggle="tab"
+                      href="#evidence"
+                      id="evidence-tab"
                       rel="noopener noreferrer"
+                      role="tab"
                       target="_blank"
                     >
                       <h6 className="secondary-inverted">
@@ -84,10 +83,10 @@ class EvidenceList extends React.Component {
                 </ul>
                 <div className="tab-content" id="myTabContent">
                   <div
+                    aria-labelledby="home-tab"
                     className="tab-pane fade show active"
                     id="evidence"
                     role="tabpanel"
-                    aria-labelledby="home-tab"
                   >
                     <div className="row">
                       <div className="col-md-8 text-left">

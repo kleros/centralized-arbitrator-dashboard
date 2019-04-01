@@ -247,6 +247,8 @@ class DisputeList extends React.Component {
       .map(item => (
         <Dispute
           activeWallet={activeWallet}
+          appealPeriodEnd={item.appealPeriodEnd || 0}
+          appealPeriodStart={item.appealPeriodStart || 0}
           arbitrated={item.arbitrated}
           archon={archon}
           autoAppealableArbitratorInstance={autoAppealableArbitratorInstance(
@@ -261,10 +263,8 @@ class DisputeList extends React.Component {
           metaevidence={item.metaevidence}
           metaevidenceObject={item.metaevidenceObject}
           networkType={networkType}
-          status={item.status || '0'}
           ruling={item.ruling || '0'}
-          appealPeriodStart={item.appealPeriodStart || 0}
-          appealPeriodEnd={item.appealPeriodEnd || 0}
+          status={item.status || '0'}
         />
       ))
   }
@@ -293,50 +293,46 @@ class DisputeList extends React.Component {
                 </label>
                 <div className="input-group-append">
                   <button
-                    type="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
                     className="btn dropdown-toggle dropdown-toggle-split "
                     data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
+                    type="button"
                   >
                     <span className="sr-only">Toggle Dropdown</span>
                   </button>
                   <div className="dropdown-menu">
                     <button
-                      className={
-                        'dropdown-item ' +
-                        (this.state.filter === -1 ? 'secondary' : '')
-                      }
+                      className={`dropdown-item ${
+                        this.state.filter === -1 ? 'secondary' : ''
+                      }`}
                       onClick={this.setFilter(-1)}
                     >
                       All
                     </button>
-                    <div role="separator" className="dropdown-divider m-0" />
+                    <div className="dropdown-divider m-0" role="separator" />
                     <button
-                      className={
-                        'dropdown-item ' +
-                        (this.state.filter === 0 ? 'secondary' : '')
-                      }
+                      className={`dropdown-item ${
+                        this.state.filter === 0 ? 'secondary' : ''
+                      }`}
                       onClick={this.setFilter(0)}
                     >
                       Pending
                     </button>
-                    <div role="separator" className="dropdown-divider m-0" />
+                    <div className="dropdown-divider m-0" role="separator" />
                     <button
-                      className={
-                        'dropdown-item ' +
-                        (this.state.filter === 1 ? 'secondary' : '')
-                      }
+                      className={`dropdown-item ${
+                        this.state.filter === 1 ? 'secondary' : ''
+                      }`}
                       onClick={this.setFilter(1)}
                     >
                       Active
                     </button>
-                    <div role="separator" className="dropdown-divider m-0" />
+                    <div className="dropdown-divider m-0" role="separator" />
                     <button
-                      className={
-                        'dropdown-item ' +
-                        (this.state.filter === 2 ? 'secondary' : '')
-                      }
+                      className={`dropdown-item ${
+                        this.state.filter === 2 ? 'secondary' : ''
+                      }`}
                       onClick={this.setFilter(2)}
                     >
                       Closed

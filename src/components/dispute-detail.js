@@ -1,12 +1,11 @@
 import Archon from '@kleros/archon'
 import EvidenceList from './evidence-list'
-import Identicon from './identicon.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 import {
-  giveRuling,
-  giveAppealableRuling
+  giveAppealableRuling,
+  giveRuling
 } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
 import TimeAgo from 'react-timeago'
@@ -183,12 +182,12 @@ class DisputeDetail extends React.Component {
                 <div className="col">
                   <div className="custom-control custom-checkbox">
                     <input
-                      id="appealable"
-                      className="custom-control-input"
-                      type="checkbox"
                       aria-label="Checkbox for following text input"
+                      className="custom-control-input"
                       defaultChecked={this.state.appealable}
+                      id="appealable"
                       onClick={this.handleAppealableRulingCheckboxClick()}
+                      type="checkbox"
                     />
                     <label
                       className="custom-control-label"
@@ -213,12 +212,12 @@ class DisputeDetail extends React.Component {
                           </span>
                         </div>
                         <input
-                          type="number"
-                          className="form-control"
-                          aria-label="Small"
                           aria-describedby="inputGroup-sizing-sm"
-                          value={this.state.appealFee}
+                          aria-label="Small"
+                          className="form-control"
                           onChange={this.handleAppealFeeChange()}
+                          type="number"
+                          value={this.state.appealFee}
                         />
                       </div>
                     </div>
@@ -244,12 +243,12 @@ class DisputeDetail extends React.Component {
                           </span>
                         </div>
                         <input
-                          type="number"
-                          className="form-control"
-                          aria-label="Small"
                           aria-describedby="inputGroup-sizing-sm"
-                          value={this.state.timeToAppeal}
+                          aria-label="Small"
+                          className="form-control"
                           onChange={this.handleTimeToAppealChange()}
+                          type="number"
+                          value={this.state.timeToAppeal}
                         />
                       </div>
                     </div>
