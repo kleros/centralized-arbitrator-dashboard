@@ -7,10 +7,10 @@ const Identicon = ({
   className,
   color,
   networkType,
+  scale,
   seed,
-  spotColor,
   size,
-  scale
+  spotColor
 }) => (
   <a
     href={
@@ -38,7 +38,9 @@ Identicon.propTypes = {
   className: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   networkType: PropTypes.string.isRequired,
+  scale: PropTypes.number.isRequired,
   seed: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
   spotColor: PropTypes.string.isRequired
 }
 
