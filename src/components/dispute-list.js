@@ -113,7 +113,7 @@ class DisputeList extends React.Component {
     disputes[targetIndex].evidences[evidence.submittedBy] =
       disputes[targetIndex].evidences[evidence.submittedBy] || []
 
-    console.log('evidence')
+    console.log('evidencexxx')
     console.log(evidence)
 
     disputes[targetIndex].evidences[evidence.submittedBy].push(evidence)
@@ -179,34 +179,31 @@ class DisputeList extends React.Component {
     const filter = { _arbitrator: contractAddress, _disputeID: disputeID }
     const options = { filter, fromBlock: 0 }
 
-    arbitrable
-      .getPastEvents('Dispute', options)
-      .then(events =>
-        events.map(event =>
-          archon.arbitrable
-            .getMetaEvidence(
-              arbitrableAddress,
-              event.returnValues._metaEvidenceID
-            )
-            .then(x => this.fetchAndAssignMetaevidence(disputeID, x))
-        )
+    arbitrable.getPastEvents('Dispute', options).then(events =>
+      events.map(event =>
+        archon.arbitrable
+          .getMetaEvidence(
+            arbitrableAddress,
+            event.returnValues._metaEvidenceID
+          )
+          .then(x => this.fetchAndAssignMetaevidence(disputeID, x))
+          .then(
+            archon.arbitrable
+              .getEvidence(
+                arbitrableAddress,
+                contractAddress,
+                event.returnValues._metaEvidenceID
+              )
+              .then(evidences => {
+                console.log(evidences)
+                console.log('HELLO2')
+                evidences.map(evidence =>
+                  this.fetchAndAssignEvidence(disputeID, evidence)
+                )
+              })
+          )
       )
-
-    console.log('testing getevidence')
-    archon.arbitrable
-      .getEvidence(arbitrableAddress, contractAddress, disputeID, {})
-      .then(x => {
-        console.log(x)
-        console.log('HELLO')
-      })
-
-    archon.arbitrable
-      .getEvidence(arbitrableAddress, contractAddress, disputeID)
-      .then(evidences =>
-        evidences.map(evidence =>
-          this.fetchAndAssignEvidence(disputeID, evidence)
-        )
-      )
+    )
 
     arbitrable.events
       .Dispute({

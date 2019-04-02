@@ -34,7 +34,8 @@ class EvidenceList extends React.Component {
 
   render() {
     const { address, aliases, evidences, ipfsGateway, name } = this.props
-
+    console.log('evidences')
+    console.log(evidences)
     return (
       <div className="">
         <div className="row mt-2 ml-2">
