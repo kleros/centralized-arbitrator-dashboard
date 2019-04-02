@@ -45,30 +45,20 @@ class DisputeList extends React.Component {
     const autoAppealableArbitrator = autoAppealableArbitratorInstance(
       contractAddress
     )
-
-    autoAppealableArbitrator
-      .getPastEvents('DisputeCreation', {
-        fromBlock: 0
-      })
-      .then(events => console.log(events))
-
     this.getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator)
-    console.log('callgetpastdispute')
   }
 
   getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator) {
     autoAppealableArbitrator
       .getPastEvents('DisputeCreation', { fromBlock: 0 })
       .then(events =>
-        events.map(event => {
-          console.log('CHECKTHISOUT')
-          console.log(event)
-          return this.addDispute(
+        events.map(event =>
+          this.addDispute(
             event.returnValues._disputeID,
             event.returnValues._arbitrable,
             false
           )
-        })
+        )
       )
 
     this.subscriptions.push(
@@ -100,21 +90,10 @@ class DisputeList extends React.Component {
   fetchAndAssignEvidence = async (disputeID, evidence) => {
     const { disputes } = this.state
     const targetIndex = disputes.findIndex(d => d.id === disputeID)
-    console.log('do we have the dispute?')
-    console.log(disputes[targetIndex])
-    console.log('disputeID')
-    console.log(disputeID)
-    console.log('disputes')
-    console.log(disputes)
-    console.log('evidence')
-    console.log(evidence)
 
     disputes[targetIndex].evidences = disputes[targetIndex].evidences || {}
     disputes[targetIndex].evidences[evidence.submittedBy] =
       disputes[targetIndex].evidences[evidence.submittedBy] || []
-
-    console.log('evidencexxx')
-    console.log(evidence)
 
     disputes[targetIndex].evidences[evidence.submittedBy].push(evidence)
 
@@ -124,17 +103,8 @@ class DisputeList extends React.Component {
   fetchAndAssignMetaevidence = async (disputeID, evidence) => {
     const { disputes } = this.state
 
-    console.log('fetchlog archon')
-    console.log(evidence)
-
-    console.log('disputes')
-    console.log(disputes)
-    console.log('disputeID')
-    console.log(disputeID)
-
     const targetIndex = disputes.findIndex(d => d.id === disputeID)
 
-    disputes[targetIndex].metaevidence = evidence.metaEvidenceJSON
     disputes[targetIndex].metaevidenceObject = evidence
 
     this.setState({ disputes })
@@ -144,9 +114,6 @@ class DisputeList extends React.Component {
 
   addDispute = async (disputeID, arbitrableAddress, isNew) => {
     const { archon, contractAddress, notificationCallback } = this.props
-
-    console.log('ARGS')
-    console.log(arbitrableAddress)
 
     const dispute = await getDispute(
       autoAppealableArbitratorInstance(contractAddress),
@@ -195,8 +162,6 @@ class DisputeList extends React.Component {
                 event.returnValues._metaEvidenceID
               )
               .then(evidences => {
-                console.log(evidences)
-                console.log('HELLO2')
                 evidences.map(evidence =>
                   this.fetchAndAssignEvidence(disputeID, evidence)
                 )
@@ -210,9 +175,10 @@ class DisputeList extends React.Component {
         filter
       })
       .on('data', event => {
-        archon.arbitrable
-          .getMetaEvidence(arbitrableAddress, event.returnValues._disputeID)
-          .console.log('new dispute')
+        archon.arbitrable.getMetaEvidence(
+          arbitrableAddress,
+          event.returnValues._disputeID
+        )
       })
 
     this.subscriptions.push(
@@ -225,7 +191,6 @@ class DisputeList extends React.Component {
             .getEvidence(arbitrableAddress, contractAddress, disputeID, {
               fromBlock: event.blockNumber
             })
-            // .then(evidence => console.log(evidence))
             .then(evidence => this.fetchAndAssignEvidence(disputeID, evidence))
         })
     )
@@ -239,7 +204,6 @@ class DisputeList extends React.Component {
     filter
   ) => {
     const { archon } = this.props
-    console.log('disputeComponents')
     return items
       .sort(function(a, b) {
         return a.id - b.id
@@ -261,7 +225,6 @@ class DisputeList extends React.Component {
           id={item.id}
           ipfsGateway={this.gateway}
           key={item.id}
-          metaevidence={item.metaevidence}
           metaevidenceObject={item.metaevidenceObject}
           networkType={networkType}
           ruling={item.ruling || '0'}
@@ -273,8 +236,7 @@ class DisputeList extends React.Component {
   render() {
     const { activeWallet, contractAddress, networkType } = this.props
     const { disputes, filter } = this.state
-    console.log('final disputes')
-    console.log(disputes)
+
     return (
       <div className="row">
         <div className="col">
