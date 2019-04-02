@@ -35,7 +35,7 @@ class DisputeDetail extends React.Component {
       giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  handleAppealableRulingCheckboxClick = () => () => {
+  handleAppealableRulingCheckboxClick = () => e => {
     console.log('handlecheckbox')
     this.setState(prevState => ({ appealable: !prevState.appealable }))
   }
@@ -183,6 +183,9 @@ class DisputeDetail extends React.Component {
                 <div className="col">
                   <div className="custom-control custom-checkbox">
                     <input
+                      id={'appealable' + this.props.id}
+                      className="custom-control-input"
+                      type="checkbox"
                       aria-label="Checkbox for following text input"
                       className="custom-control-input"
                       defaultChecked={appealable}
@@ -192,7 +195,7 @@ class DisputeDetail extends React.Component {
                     />
                     <label
                       className="custom-control-label"
-                      htmlFor="appealable"
+                      htmlFor={'appealable' + this.props.id}
                     >
                       <h4>Give an appealable ruling</h4>
                     </label>
