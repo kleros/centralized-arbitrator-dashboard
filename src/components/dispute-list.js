@@ -166,7 +166,7 @@ class DisputeList extends React.Component {
 
     dispute.id = disputeID
     dispute.evidences = {}
-    dispute.statusERC792 = getDisputeStatus(
+    dispute.statusERC792 = await getDisputeStatus(
       autoAppealableArbitratorInstance(contractAddress),
       disputeID
     )
@@ -265,7 +265,7 @@ class DisputeList extends React.Component {
           metaevidenceObject={item.metaevidenceObject}
           networkType={networkType}
           ruling={item.ruling || '0'}
-          status={item.status || '0'}
+          status={item.statusERC792 || '0'}
         />
       ))
   }
