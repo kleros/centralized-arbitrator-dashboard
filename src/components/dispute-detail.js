@@ -35,7 +35,7 @@ class DisputeDetail extends React.Component {
       giveRuling(account, instance, id, ruling) /* Why don't we await? */
   }
 
-  handleAppealableRulingCheckboxClick = () => e => {
+  handleAppealableRulingCheckboxClick = () => _ => {
     console.log('handlecheckbox')
     this.setState(prevState => ({ appealable: !prevState.appealable }))
   }
@@ -78,10 +78,12 @@ class DisputeDetail extends React.Component {
       activeWallet,
       aliases,
       appealPeriodEnd,
+      arbitrableContractAddress,
       archon,
       category,
       centralizedArbitratorInstance,
       description,
+      evidenceDisplayInterfaceURI,
       evidences,
       fileURI,
       fileValid,
@@ -117,6 +119,30 @@ class DisputeDetail extends React.Component {
             <h4 className="">{description}</h4>
           </div>
         </div>
+        <br />
+        {evidenceDisplayInterfaceURI && (
+          <div className="row">
+            <div className="col">
+              <div
+                className="embed-responsive embed-responsive-21by9"
+                style={{ height: '200px' }}
+              >
+                <iframe
+                  className="embed-responsive-item"
+                  src={
+                    'https://t2cr-evidence.netlify.com/?' +
+                    encodeURI(
+                      `{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${
+                        centralizedArbitratorInstance._address
+                      }","disputeID":"${id}"}`
+                    )
+                  }
+                  title="evidence-display"
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <br />
         <div className="row border p-3" id="fileURICard">
           <div className="col-md-1">
@@ -183,19 +209,16 @@ class DisputeDetail extends React.Component {
                 <div className="col">
                   <div className="custom-control custom-checkbox">
                     <input
-                      id={'appealable' + this.props.id}
-                      className="custom-control-input"
-                      type="checkbox"
                       aria-label="Checkbox for following text input"
                       className="custom-control-input"
                       defaultChecked={appealable}
-                      id="appealable"
+                      id={'appealable' + id}
                       onClick={this.handleAppealableRulingCheckboxClick()}
                       type="checkbox"
                     />
                     <label
                       className="custom-control-label"
-                      htmlFor={'appealable' + this.props.id}
+                      htmlFor={'appealable' + id}
                     >
                       <h4>Give an appealable ruling</h4>
                     </label>
@@ -384,11 +407,13 @@ DisputeDetail.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
   appealPeriodEnd: PropTypes.number.isRequired,
+  arbitrableContractAddress: PropTypes.string.isRequired,
   archon: PropTypes.instanceOf(Archon).isRequired,
   category: PropTypes.number.isRequired,
   centralizedArbitratorInstance: PropTypes.instanceOf(Web3.eth.Contract)
     .isRequired,
   description: PropTypes.string.isRequired,
+  evidenceDisplayInterfaceURI: PropTypes.string,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
   fileURI: PropTypes.string.isRequired,
   fileValid: PropTypes.bool.isRequired,
@@ -401,5 +426,7 @@ DisputeDetail.propTypes = {
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 }
+
+DisputeDetail.defaultProps = { evidenceDisplayInterfaceURI: '' }
 
 export default DisputeDetail

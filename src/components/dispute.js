@@ -116,6 +116,7 @@ class Dispute extends React.Component {
                   }
                   appealPeriodEnd={appealPeriodEnd}
                   appealPeriodStart={appealPeriodStart}
+                  arbitrableContractAddress={arbitrated}
                   archon={archon}
                   category={
                     metaevidenceObject &&
@@ -127,6 +128,11 @@ class Dispute extends React.Component {
                   description={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.description
+                  }
+                  evidenceDisplayInterfaceURI={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON
+                      .evidenceDisplayInterfaceURL
                   }
                   evidences={evidences}
                   fileURI={
