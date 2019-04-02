@@ -244,7 +244,7 @@ class DisputeList extends React.Component {
       .sort(function(a, b) {
         return a.id - b.id
       })
-      .filter(item => item.status === filter.toString() || filter === -1)
+      .filter(item => item.statusERC792 === filter.toString() || filter === -1)
       .map(item => (
         <Dispute
           activeWallet={activeWallet}
