@@ -56,5 +56,5 @@ export const giveAppealableRuling = async (
   timeToAppeal
 ) =>
   arbitratorInstance.methods
-    .giveAppelableRuling(disputeID, ruling, appealCost, timeToAppeal)
+    .giveAppealableRuling(disputeID, ruling, appealCost, timeToAppeal)
     .send({ from: account })
