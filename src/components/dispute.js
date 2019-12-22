@@ -132,7 +132,7 @@ class Dispute extends React.Component {
                   evidenceDisplayInterfaceURI={
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON
-                      .evidenceDisplayInterfaceURL
+                      .evidenceDisplayInterfaceURI
                   }
                   evidences={evidences}
                   fileURI={
