@@ -130,11 +130,9 @@ class DisputeDetail extends React.Component {
                 <iframe
                   className="embed-responsive-item"
                   src={
-                    'https://t2cr-evidence.netlify.com/?' +
+                    `${ipfsGateway}${evidenceDisplayInterfaceURI}?` +
                     encodeURI(
-                      `{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${
-                        centralizedArbitratorInstance._address
-                      }","disputeID":"${id}"}`
+                      `{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${centralizedArbitratorInstance._address}","disputeID":"${id}"}`
                     )
                   }
                   title="evidence-display"
