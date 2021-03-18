@@ -98,7 +98,7 @@ class ArbitrationPrice extends React.Component {
             onClick={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
             type="button"
           >
-            Change Price
+            Change Arbitration Fee
           </button>
         </div>
       </div>

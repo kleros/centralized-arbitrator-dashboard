@@ -9,12 +9,13 @@ import React from 'react'
 import { deployAutoAppealableArbitrator } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
 
+import lscache from 'lscache'
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       arbitrationCost: '',
-      contractAddresses: [],
       notifications: [],
       owner: '',
       selectedAddress: undefined,
@@ -29,57 +30,57 @@ class Dashboard extends React.Component {
       return `https://kovan-events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`
   }
 
-  scanContracts(networkType, account) {
-    const limiter = new RateLimiter(1, 250)
-    const api = {
-      kovan: 'api-kovan.',
-      mainnet: 'api.'
-    }
-    console.log(networkType)
-    const apiPrefix = networkType === 'main' ? api.mainnet : api.kovan
-
-    fetch(
-      `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${account}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-    )
-      .then(response => response.json())
-      .then(data =>
-        data.result
-          .filter(({ to }) => to === '')
-          .map(item => item.contractAddress)
-      )
-      .then(addresses =>
-        addresses.map(address =>
-          limiter.removeTokens(1, async () =>
-            fetch(
-              `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-            )
-              .then(response => response.json())
-              .then(data => {
-                if (
-                  data.result[0].ContractName === 'AutoAppealableArbitrator'
-                ) {
-                  this.setState(state => ({
-                    contractAddresses: [...state.contractAddresses, address]
-                  }))
-
-                  // Call eventNotificationService here
-
-                  if (!window.localStorage.getItem(account))
-                    window.localStorage.setItem(account, address)
-                  else
-                    window.localStorage.setItem(
-                      account,
-                      window.localStorage
-                        .getItem(account)
-                        .concat(' ')
-                        .concat(address)
-                    )
-                }
-              })
-          )
-        )
-      )
-  }
+  // scanContracts(networkType, account) {
+  //   const limiter = new RateLimiter(1, 250);
+  //   const api = {
+  //     kovan: "api-kovan.",
+  //     mainnet: "api.",
+  //   };
+  //   console.log(networkType);
+  //   const apiPrefix = networkType === "main" ? api.mainnet : api.kovan;
+  //
+  //   fetch(
+  //     `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${account}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) =>
+  //       data.result
+  //         .filter(({ to }) => to === "")
+  //         .map((item) => item.contractAddress)
+  //     )
+  //     .then((addresses) =>
+  //       addresses.map((address) =>
+  //         limiter.removeTokens(1, async () =>
+  //           fetch(
+  //             `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
+  //           )
+  //             .then((response) => response.json())
+  //             .then((data) => {
+  //               if (
+  //                 data.result[0].ContractName === "AutoAppealableArbitrator"
+  //               ) {
+  //                 this.setState((state) => ({
+  //                   contractAddresses: [...state.contractAddresses, address],
+  //                 }));
+  //
+  //                 // Call eventNotificationService here
+  //
+  //                 if (!window.localStorage.getItem(account))
+  //                   window.localStorage.setItem(account, address);
+  //                 else
+  //                   window.localStorage.setItem(
+  //                     account,
+  //                     window.localStorage
+  //                       .getItem(account)
+  //                       .concat(" ")
+  //                       .concat(address)
+  //                   );
+  //               }
+  //             })
+  //         )
+  //       )
+  //     );
+  // }
 
   apiPrefix = networkType => {
     console.log('apiPrefix')
@@ -104,31 +105,21 @@ class Dashboard extends React.Component {
     })
     const { contractAddresses } = this.state
 
-    if (window.web3 && window.web3.currentProvider.isMetaMask)
-      window.web3.eth.getAccounts((_, accounts) => {
-        web3.eth.net.getNetworkType((error, networkType) => {
-          if (error) console.error(error)
-          console.log(accounts[0])
-          this.setState({ networkType: networkType })
-          this.setState({ wallet: accounts[0] })
-          if (accounts[0])
-            if (window.localStorage.getItem(accounts[0]))
-              this.setState({
-                contractAddresses: window.localStorage
-                  .getItem(accounts[0])
-                  .split(' ')
-              })
-            else {
-              this.setState({ contractAddresses: [] })
-              this.scanContracts(networkType, accounts[0])
-            }
-        })
+    if (window.ethereum) {
+      const ethereum = window.ethereum
+      const accounts = await ethereum.request({
+        method: 'eth_requestAccounts'
       })
-    else console.log('MetaMask account not detected :(')
+      if (lscache.get(accounts[0]))
+        this.setState({
+          selectedAddress: lscache.get(accounts[0])[0]
+        })
 
-    this.setState({
-      selectedAddress: contractAddresses[0]
-    })
+      web3.eth.net.getNetworkType((error, networkType) => {
+        this.setState({ networkType: networkType })
+        this.setState({ wallet: accounts[0] })
+      })
+    } else console.log('MetaMask account not detected :(')
 
     window.ethereum.on('accountsChanged', accounts => {
       web3.eth.net.getNetworkType((error, networkType) => {
@@ -136,17 +127,6 @@ class Dashboard extends React.Component {
         console.log(accounts[0])
         this.setState({ networkType: networkType })
         this.setState({ wallet: accounts[0] })
-        if (accounts[0])
-          if (window.localStorage.getItem(accounts[0]))
-            this.setState({
-              contractAddresses: window.localStorage
-                .getItem(accounts[0])
-                .split(' ')
-            })
-          else {
-            this.setState({ contractAddresses: [] })
-            this.scanContracts(networkType, accounts[0])
-          }
       })
     })
   }
@@ -154,22 +134,21 @@ class Dashboard extends React.Component {
   deploy = (account, arbitrationPrice) => async e => {
     e.preventDefault()
 
-    console.log('deploying')
     const result = await deployAutoAppealableArbitrator(
       account,
       web3.utils.toWei(arbitrationPrice, 'ether')
     )
+    this.setState({ selectedAddress: result._address })
 
-    const item = window.localStorage.getItem(account) || ''
+    if (!lscache.get(this.state.wallet))
+      lscache.set(this.state.wallet, [result._address])
+    else {
+      const currentItem = lscache.get(this.state.wallet)
+      let newItem = [...currentItem, result._address]
+      lscache.set(this.state.wallet, newItem)
+    }
 
-    console.log(item)
-    window.localStorage.setItem(
-      account,
-      item.concat(' ').concat(result._address)
-    )
-    this.setState({
-      contractAddresses: window.localStorage.getItem(account).split(' ')
-    })
+    this.setState({ state: this.state })
   }
 
   handleCentralizedArbitratorDropdownKeyEnter = () => e => {
@@ -222,7 +201,6 @@ class Dashboard extends React.Component {
   }
 
   clearNotificationsCallback = () => {
-    console.log('clearNotifications called')
     this.setState(() => ({
       notifications: []
     }))
@@ -233,11 +211,9 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log(`RENDERING${new Date().getTime()}`)
     const {
       arbitrationCost,
       archon,
-      contractAddresses,
       customAddressValue,
       networkType,
       notifications,
@@ -249,7 +225,9 @@ class Dashboard extends React.Component {
       return (
         <div>Please unlock your MetaMask and refresh the page to continue.</div>
       )
-
+    console.log('render')
+    console.log(lscache.get(this.state.wallet))
+    console.log(this.state)
     return (
       <div className="container-fluid">
         {wallet && (
@@ -310,7 +288,9 @@ class Dashboard extends React.Component {
                       <h5 className="text-center my-3">Contract Addresses</h5>
                       <div className="dropdown-divider" />
 
-                      {this.centralizedArbitratorButtons(contractAddresses)}
+                      {this.centralizedArbitratorButtons(
+                        lscache.get(this.state.wallet)
+                      )}
                       <div className="dropdown-divider" />
                       <div className="px-3 m-3">
                         <label className="px-3">

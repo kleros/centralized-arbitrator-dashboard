@@ -249,9 +249,12 @@ class DisputeList extends React.Component {
           </div>
           <div className="row">
             <div className="offset-md-10 col-md-2">
-              <div className="input-group mb-3">
-                <div className="input-group-prepend ml-auto" />
-                <label className="secondary-inverted">
+              <div
+                className="input-group mb-3"
+                style={{ width: 'max-content' }}
+              >
+                <div className="input-group-prepend ml-auto " />
+                <label className="secondary-inverted ">
                   Filter: {this.disputeStatusToString(filter)}
                 </label>
                 <div className="input-group-append">
@@ -306,7 +309,7 @@ class DisputeList extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col">
+            <div className="col px-0">
               <table className="table" id="disputes">
                 <thead>
                   <tr className="secondary">

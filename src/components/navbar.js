@@ -79,7 +79,7 @@ class NavBar extends React.Component {
               alt=""
               className="d-inline-block align-mid"
               height="50px"
-              src="kleros-logo-white.svg"
+              src="brand_white.svg"
             />
           </span>
         </a>
