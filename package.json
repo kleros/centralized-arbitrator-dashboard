@@ -26,14 +26,11 @@
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.5",
     "react-timeago": "^4.1.9",
-    "web3": "1.0.0-beta.33",
+    "web3": "1.0.0-beta.33"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
