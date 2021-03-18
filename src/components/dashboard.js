@@ -4,7 +4,7 @@ import Archon from '@kleros/archon'
 import DisputeList from './dispute-list'
 import Identicon from './identicon.js'
 import NavBar from './navbar.js'
-import { RateLimiter } from 'limiter'
+// import { RateLimiter } from 'limiter'
 import React from 'react'
 import { deployAutoAppealableArbitrator } from '../ethereum/auto-appealable-arbitrator'
 import web3 from '../ethereum/web3'
@@ -103,7 +103,6 @@ class Dashboard extends React.Component {
     $('*').on('click', () => {
       this.setState({ uglyFixtoBug13: '' })
     })
-    const { contractAddresses } = this.state
 
     if (window.ethereum) {
       const ethereum = window.ethereum
