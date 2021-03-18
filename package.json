@@ -42,7 +42,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "yarn": "^1.22.10"
+    "yarn": "^1.22.10",
     "ganache-cli": "^6.1.0",
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.0",
