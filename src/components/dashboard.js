@@ -289,7 +289,7 @@ class Dashboard extends React.Component {
                       <div className="dropdown-divider" />
 
                       {this.centralizedArbitratorButtons(
-                        lscache.get(this.state.wallet)
+                        lscache.get(this.state.wallet) ?   lscache.get(this.state.wallet): []
                       )}
                       <div className="dropdown-divider" />
                       <div className="px-3 m-3">
