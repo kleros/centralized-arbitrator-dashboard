@@ -11,14 +11,14 @@ import web3 from "../ethereum/web3";
 
 import lscache from "lscache";
 
+const NETWORKS = { 1: "mainnet", 3: "ropsten", 42: "kovan" };
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       arbitrationCost: "",
       notifications: [],
-      owner: "",
-      selectedAddress: undefined,
       uglyFixtoBug13: "", // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
     };
   }
@@ -107,24 +107,26 @@ class Dashboard extends React.Component {
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      if (lscache.get(accounts[0]))
-        this.setState({
-          selectedAddress: lscache.get(accounts[0])[0],
-        });
 
       web3.eth.net.getNetworkType((error, networkType) => {
         this.setState({ networkType: networkType });
         this.setState({ wallet: accounts[0] });
+        if (lscache.get(accounts[0]))
+          this.setState({
+            selectedAddress: lscache.get(accounts[0])[0] + this.state.networkType,
+          });
       });
     } else console.log("MetaMask account not detected :(");
 
     window.ethereum.on("accountsChanged", (accounts) => {
       web3.eth.net.getNetworkType((error, networkType) => {
         if (error) console.error(error);
-        console.log(accounts[0]);
-        this.setState({ networkType: networkType });
-        this.setState({ wallet: accounts[0] });
+        this.setState({ networkType: networkType, selectedAddress: "", wallet: accounts[0] });
       });
+    });
+
+    window.ethereum.on("networkChanged", (networkId) => {
+      this.setState({ networkType: NETWORKS[networkId], selectedAddress: "" });
     });
   }
 
@@ -134,11 +136,11 @@ class Dashboard extends React.Component {
     const result = await deployAutoAppealableArbitrator(account, web3.utils.toWei(arbitrationPrice, "ether"));
     this.setState({ selectedAddress: result._address });
 
-    if (!lscache.get(this.state.wallet)) lscache.set(this.state.wallet, [result._address]);
+    if (!lscache.get(this.state.wallet + this.state.networkType)) lscache.set(this.state.wallet + this.state.networkType, [result._address]);
     else {
-      const currentItem = lscache.get(this.state.wallet);
+      const currentItem = lscache.get(this.state.wallet + this.state.networkType);
       let newItem = [...currentItem, result._address];
-      lscache.set(this.state.wallet, newItem);
+      lscache.set(this.state.wallet + this.state.networkType, newItem);
     }
 
     this.setState({ state: this.state });
@@ -205,7 +207,7 @@ class Dashboard extends React.Component {
             <h4 className="text-center">Select A Deployed Centralized Arbitrator</h4>
             <div className="row mb-3">
               <div className="col-md-1 pb-10 mb-6 align-top">
-                <Identicon bgColor="#4004A3" className="identicon rounded-circle" color="#009AFF" networkType={networkType} scale={3} seed={selectedAddress} size={13} spotColor="white" />
+                <Identicon bgColor="#4004A3" className="identicon rounded-circle" color="#009AFF" networkType={networkType} scale={3} seed={selectedAddress || ""} size={13} spotColor="white" />
               </div>
               <div className="col p-0">
                 <div className="input-group">
@@ -218,7 +220,7 @@ class Dashboard extends React.Component {
                       <h5 className="text-center my-3">Contract Addresses</h5>
                       <div className="dropdown-divider" />
 
-                      {this.centralizedArbitratorButtons(lscache.get(this.state.wallet) ? lscache.get(this.state.wallet) : [])}
+                      {this.centralizedArbitratorButtons(lscache.get(this.state.wallet + this.state.networkType) ? lscache.get(this.state.wallet + this.state.networkType) : [])}
                       <div className="dropdown-divider" />
                       <div className="px-3 m-3">
                         <label className="px-3">
