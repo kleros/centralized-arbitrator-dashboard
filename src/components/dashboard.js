@@ -113,7 +113,7 @@ class Dashboard extends React.Component {
         this.setState({ wallet: accounts[0] });
         if (lscache.get(accounts[0]))
           this.setState({
-            selectedAddress: lscache.get(accounts[0])[0] + this.state.networkType,
+            selectedAddress: lscache.get(accounts[0] + this.state.networkType)[0],
           });
       });
     } else console.log("MetaMask account not detected :(");
