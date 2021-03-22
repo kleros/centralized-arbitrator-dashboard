@@ -1,81 +1,51 @@
-import {
-  autoAppealableArbitratorInstance,
-  getArbitrationCost,
-  setArbitrationPrice
-} from '../ethereum/auto-appealable-arbitrator'
-import PropTypes from 'prop-types'
-import React from 'react'
-import Web3 from '../ethereum/web3'
+import { autoAppealableArbitratorInstance, getArbitrationCost, setArbitrationPrice } from "../ethereum/auto-appealable-arbitrator";
+import PropTypes from "prop-types";
+import React from "react";
+import Web3 from "../ethereum/web3";
 
 class ArbitrationPrice extends React.Component {
   constructor(props) {
-    super(props)
-    console.log('ARBITRATIONPRICE PROPS')
-    console.log(props)
+    super(props);
     this.state = {
-      arbitrationCost: 'Fetching...'
-    }
+      arbitrationCost: "Fetching...",
+    };
   }
 
   async componentDidMount() {
-    const { contractAddress, web3 } = this.props
+    const { contractAddress, web3 } = this.props;
 
     this.setState({
-      arbitrationCost: web3.utils.fromWei(
-        await getArbitrationCost(
-          autoAppealableArbitratorInstance(contractAddress),
-          ''
-        ),
-        'ether'
-      )
-    })
+      arbitrationCost: web3.utils.fromWei(await getArbitrationCost(autoAppealableArbitratorInstance(contractAddress), ""), "ether"),
+    });
   }
 
   async componentDidUpdate(prevProps) {
-    const { activeWallet, contractAddress, web3 } = this.props
+    const { activeWallet, contractAddress, web3 } = this.props;
 
-    if (
-      contractAddress !== prevProps.contractAddress ||
-      activeWallet !== prevProps.activeWallet
-    )
+    if (contractAddress !== prevProps.contractAddress || activeWallet !== prevProps.activeWallet)
       this.setState({
-        arbitrationCost: web3.utils.fromWei(
-          await getArbitrationCost(
-            autoAppealableArbitratorInstance(contractAddress),
-            ''
-          ),
-          'ether'
-        )
-      })
+        arbitrationCost: web3.utils.fromWei(await getArbitrationCost(autoAppealableArbitratorInstance(contractAddress), ""), "ether"),
+      });
   }
 
-  handleSetArbitrationPriceButtonClick = newCost => async e => {
-    const { activeWallet, contractAddress, web3 } = this.props
+  handleSetArbitrationPriceButtonClick = (newCost) => async (e) => {
+    const { activeWallet, contractAddress, web3 } = this.props;
 
-    const autoAppealableArbitrator = autoAppealableArbitratorInstance(
-      contractAddress
-    )
-    e.preventDefault()
-    this.setState({ arbitrationCost: 'awaiting...' })
-    await setArbitrationPrice(
-      activeWallet,
-      autoAppealableArbitrator,
-      web3.utils.toWei(newCost, 'ether')
-    )
-    const arbitrationCost = web3.utils.fromWei(
-      await getArbitrationCost(autoAppealableArbitrator, ''),
-      'ether'
-    )
-    this.setState({ arbitrationCost })
-  }
+    const autoAppealableArbitrator = autoAppealableArbitratorInstance(contractAddress);
+    e.preventDefault();
+    this.setState({ arbitrationCost: "awaiting..." });
+    await setArbitrationPrice(activeWallet, autoAppealableArbitrator, web3.utils.toWei(newCost, "ether"));
+    const arbitrationCost = web3.utils.fromWei(await getArbitrationCost(autoAppealableArbitrator, ""), "ether");
+    this.setState({ arbitrationCost });
+  };
 
-  handleArbitrationPriceChange = () => e => {
-    console.log(e)
-    this.setState({ arbitrationCost: e.target.value })
-  }
+  handleArbitrationPriceChange = () => (e) => {
+    console.log(e);
+    this.setState({ arbitrationCost: e.target.value });
+  };
 
   render() {
-    const { arbitrationCost } = this.state
+    const { arbitrationCost } = this.state;
     return (
       <div className="input-group mb-3">
         <div className="input-group-append">
@@ -83,33 +53,21 @@ class ArbitrationPrice extends React.Component {
             Arbitration Price (ETH)
           </label>
         </div>
-        <input
-          aria-describedby="basic-addon"
-          aria-label=""
-          className="form-control"
-          onChange={this.handleArbitrationPriceChange()}
-          placeholder="Arbitration Price"
-          type="text"
-          value={arbitrationCost}
-        />
+        <input aria-describedby="basic-addon" aria-label="" className="form-control" onChange={this.handleArbitrationPriceChange()} placeholder="Arbitration Price" type="text" value={arbitrationCost} />
         <div className="input-group-prepend">
-          <button
-            className="btn btn-primary primary"
-            onClick={this.handleSetArbitrationPriceButtonClick(arbitrationCost)}
-            type="button"
-          >
+          <button className="btn btn-primary primary" onClick={this.handleSetArbitrationPriceButtonClick(arbitrationCost)} type="button">
             Change Arbitration Fee
           </button>
         </div>
       </div>
-    )
+    );
   }
 }
 
 ArbitrationPrice.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   contractAddress: PropTypes.string.isRequired,
-  web3: PropTypes.instanceOf(Web3).isRequired
-}
+  web3: PropTypes.instanceOf(Web3).isRequired,
+};
 
-export default ArbitrationPrice
+export default ArbitrationPrice;

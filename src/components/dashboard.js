@@ -81,8 +81,6 @@ class Dashboard extends React.Component {
   // }
 
   apiPrefix = (networkType) => {
-    console.log("apiPrefix");
-    console.log(networkType);
     switch (networkType) {
       case "main":
         return " ";
@@ -193,9 +191,6 @@ class Dashboard extends React.Component {
     const { arbitrationCost, archon, customAddressValue, networkType, notifications, selectedAddress, wallet } = this.state;
 
     if (!wallet) return <div>Please unlock your MetaMask and refresh the page to continue.</div>;
-    console.log("render");
-    console.log(lscache.get(this.state.wallet));
-    console.log(this.state);
     return (
       <div className="container-fluid">
         {wallet && (
