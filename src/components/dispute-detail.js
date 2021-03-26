@@ -1,77 +1,51 @@
-import {
-  giveAppealableRuling,
-  giveRuling
-} from '../ethereum/auto-appealable-arbitrator'
-import Archon from '@kleros/archon'
-import EvidenceList from './evidence-list'
-import Lodash from 'lodash'
-import PropTypes from 'prop-types'
-import React from 'react'
-import TimeAgo from 'react-timeago'
-import Web3 from '../ethereum/web3'
+import { giveAppealableRuling, giveRuling } from "../ethereum/auto-appealable-arbitrator";
+import Archon from "@kleros/archon";
+import EvidenceList from "./evidence-list";
+import Lodash from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import TimeAgo from "react-timeago";
+import Web3 from "../ethereum/web3";
 
 class DisputeDetail extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       appealFee: 0.1,
       appealable: true,
-      timeToAppeal: 240
-    }
+      timeToAppeal: 240,
+    };
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
-    const { appealFee, appealable, timeToAppeal } = this.state
-    if (appealable)
-      giveAppealableRuling(
-        account,
-        instance,
-        id,
-        ruling,
-        Web3.utils.toWei(appealFee.toString(), 'ether'),
-        timeToAppeal
-      )
-    /* Why don't we await? */ else
-      giveRuling(account, instance, id, ruling) /* Why don't we await? */
-  }
+    const { appealFee, appealable, timeToAppeal } = this.state;
+    if (appealable) giveAppealableRuling(account, instance, id, ruling, Web3.utils.toWei(appealFee.toString(), "ether"), timeToAppeal);
+    /* Why don't we await? */ else giveRuling(account, instance, id, ruling); /* Why don't we await? */
+  };
 
-  handleAppealableRulingCheckboxClick = () => _ => {
-    console.log('handlecheckbox')
-    this.setState(prevState => ({ appealable: !prevState.appealable }))
-  }
+  handleAppealableRulingCheckboxClick = () => (_) => {
+    console.log("handlecheckbox");
+    this.setState((prevState) => ({ appealable: !prevState.appealable }));
+  };
 
-  handleTimeToAppealChange = () => e => {
-    console.log('handletimetoappeal')
-    this.setState({ timeToAppeal: e.target.value })
-  }
+  handleTimeToAppealChange = () => (e) => {
+    console.log("handletimetoappeal");
+    this.setState({ timeToAppeal: e.target.value });
+  };
 
-  handleAppealFeeChange = () => e => {
-    console.log('handleAppealFeeChange')
-    this.setState({ appealFee: e.target.value })
-  }
+  handleAppealFeeChange = () => (e) => {
+    console.log("handleAppealFeeChange");
+    this.setState({ appealFee: e.target.value });
+  };
 
-  renderedRulingOptions = (
-    options,
-    activeWallet,
-    centralizedArbitratorInstance,
-    id
-  ) =>
+  renderedRulingOptions = (options, activeWallet, centralizedArbitratorInstance, id) =>
     Lodash.zip(options.titles, options.descriptions).map((option, key) => (
       <div className="col">
-        <button
-          className="btn btn-primary btn-lg primary "
-          key={key + 1}
-          onClick={this.handleGiveRulingButtonClick(
-            activeWallet,
-            centralizedArbitratorInstance,
-            id,
-            key + 1
-          )}
-        >
+        <button className="btn btn-primary btn-lg primary " key={key + 1} onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, key + 1)}>
           {option[0]}
         </button>
       </div>
-    ))
+    ));
 
   render() {
     const {
@@ -94,10 +68,10 @@ class DisputeDetail extends React.Component {
       ruling,
       rulingOptions,
       status,
-      title
-    } = this.props
+      title,
+    } = this.props;
 
-    const { appealFee, appealable, timeToAppeal } = this.state
+    const { appealFee, appealable, timeToAppeal } = this.state;
 
     return (
       <div className="container">
@@ -123,17 +97,12 @@ class DisputeDetail extends React.Component {
         {evidenceDisplayInterfaceURI && (
           <div className="row">
             <div className="col">
-              <div
-                className="embed-responsive embed-responsive-21by9"
-                style={{ height: '200px' }}
-              >
+              <div className="embed-responsive embed-responsive-21by9" style={{ height: "200px" }}>
                 <iframe
                   className="embed-responsive-item"
                   src={
-                    `${ipfsGateway}${evidenceDisplayInterfaceURI}?` +
-                    encodeURI(
-                      `{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${centralizedArbitratorInstance._address}","disputeID":"${id}"}`
-                    )
+                    (evidenceDisplayInterfaceURI.includes("://") ? evidenceDisplayInterfaceURI : `https://ipfs.kleros.io${evidenceDisplayInterfaceURI}`) +
+                    encodeURI(`{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${centralizedArbitratorInstance._address}","disputeID":"${id}"}`)
                   }
                   title="evidence-display"
                 />
@@ -144,11 +113,7 @@ class DisputeDetail extends React.Component {
         <br />
         <div className="row border p-3" id="fileURICard">
           <div className="col-md-1">
-            <a
-              href={ipfsGateway + fileURI}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <a href={ipfsGateway + fileURI} rel="noopener noreferrer" target="_blank">
               <img alt="" src="text.svg" />
             </a>
           </div>
@@ -173,51 +138,27 @@ class DisputeDetail extends React.Component {
           <div className="row">
             <div className="col-md-6 p-0" key={Object.keys(aliases)[0]}>
               <div className="col-md-11 border">
-                <EvidenceList
-                  address={Object.keys(aliases)[0]}
-                  aliases={aliases}
-                  archon={archon}
-                  evidences={evidences[Object.keys(aliases)[0]]}
-                  ipfsGateway={ipfsGateway}
-                  name={aliases[Object.keys(aliases)[0]]}
-                />
+                <EvidenceList address={Object.keys(aliases)[0]} aliases={aliases} archon={archon} evidences={evidences[Object.keys(aliases)[0]]} ipfsGateway={ipfsGateway} name={aliases[Object.keys(aliases)[0]]} />
               </div>
             </div>
 
             <div className="col-md-6 p-0" key={Object.keys(aliases)[1]}>
               <div className="offset-md-1 col-md-11 border">
-                <EvidenceList
-                  address={Object.keys(aliases)[1]}
-                  aliases={aliases}
-                  archon={archon}
-                  evidences={evidences[Object.keys(aliases)[1]]}
-                  ipfsGateway={ipfsGateway}
-                  name={aliases[Object.keys(aliases)[1]]}
-                />
+                <EvidenceList address={Object.keys(aliases)[1]} aliases={aliases} archon={archon} evidences={evidences[Object.keys(aliases)[1]]} ipfsGateway={ipfsGateway} name={aliases[Object.keys(aliases)[1]]} />
               </div>
             </div>
           </div>
         )}
         <br />
 
-        {status === '0' && (
+        {status === "0" && (
           <div>
             <div className="mb-5">
               <div className="row" id="appealable-ruling">
                 <div className="col">
                   <div className="custom-control custom-checkbox">
-                    <input
-                      aria-label="Checkbox for following text input"
-                      className="custom-control-input"
-                      defaultChecked={appealable}
-                      id={'appealable' + id}
-                      onClick={this.handleAppealableRulingCheckboxClick()}
-                      type="checkbox"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor={'appealable' + id}
-                    >
+                    <input aria-label="Checkbox for following text input" className="custom-control-input" defaultChecked={appealable} id={"appealable" + id} onClick={this.handleAppealableRulingCheckboxClick()} type="checkbox" />
+                    <label className="custom-control-label" htmlFor={"appealable" + id}>
                       <h4>Give an appealable ruling</h4>
                     </label>
                   </div>
@@ -229,52 +170,32 @@ class DisputeDetail extends React.Component {
                     <div className="col-4 offset-1">
                       <div className="input-group input-group-sm mb-3">
                         <div className="input-group-prepend">
-                          <span
-                            className="input-group-text background-shade border-0"
-                            id="inputGroup-sizing-sm"
-                          >
+                          <span className="input-group-text background-shade border-0" id="inputGroup-sizing-sm">
                             Appeal Fee(ETH)
                           </span>
                         </div>
-                        <input
-                          aria-describedby="inputGroup-sizing-sm"
-                          aria-label="Small"
-                          className="form-control"
-                          onChange={this.handleAppealFeeChange()}
-                          type="number"
-                          value={appealFee}
-                        />
+                        <input aria-describedby="inputGroup-sizing-sm" aria-label="Small" className="form-control" onChange={this.handleAppealFeeChange()} type="number" value={appealFee} />
                       </div>
                     </div>
                     <div className="col-2">
                       <hr
                         className="mt-0"
                         style={{
-                          background: '#CCCCCC',
-                          border: 'none',
-                          height: '30px',
-                          width: '1px'
+                          background: "#CCCCCC",
+                          border: "none",
+                          height: "30px",
+                          width: "1px",
                         }}
                       />
                     </div>
                     <div className="col-4">
                       <div className="input-group input-group-sm mb-3">
                         <div className="input-group-prepend">
-                          <span
-                            className="input-group-text background-shade border-0"
-                            id="inputGroup-sizing-sm"
-                          >
+                          <span className="input-group-text background-shade border-0" id="inputGroup-sizing-sm">
                             Time to Appeal(Seconds)
                           </span>
                         </div>
-                        <input
-                          aria-describedby="inputGroup-sizing-sm"
-                          aria-label="Small"
-                          className="form-control"
-                          onChange={this.handleTimeToAppealChange()}
-                          type="number"
-                          value={timeToAppeal}
-                        />
+                        <input aria-describedby="inputGroup-sizing-sm" aria-label="Small" className="form-control" onChange={this.handleTimeToAppealChange()} type="number" value={timeToAppeal} />
                       </div>
                     </div>
                   </div>
@@ -289,29 +210,13 @@ class DisputeDetail extends React.Component {
             <br />
             <div className="row">
               <div className="offset-md-2 col-md-3">
-                <button
-                  className="btn btn-primary btn-lg btn-block primary"
-                  onClick={this.handleGiveRulingButtonClick(
-                    activeWallet,
-                    centralizedArbitratorInstance,
-                    id,
-                    1
-                  )}
-                >
+                <button className="btn btn-primary btn-lg btn-block primary" onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, 1)}>
                   {rulingOptions && rulingOptions.titles[0]}
                 </button>
               </div>
               <div className="col-md-2">X</div>
               <div className="col-md-3">
-                <button
-                  className="btn btn-primary btn-lg btn-block primary"
-                  onClick={this.handleGiveRulingButtonClick(
-                    activeWallet,
-                    centralizedArbitratorInstance,
-                    id,
-                    2
-                  )}
-                >
+                <button className="btn btn-primary btn-lg btn-block primary" onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, 2)}>
                   {rulingOptions && rulingOptions.titles[1]}
                 </button>
               </div>
@@ -319,15 +224,7 @@ class DisputeDetail extends React.Component {
             <br />
             <div className="row">
               <div className="offset-md-4 col-md-4 mb-5">
-                <button
-                  className="btn btn-primary btn-lg btn-block secondary"
-                  onClick={this.handleGiveRulingButtonClick(
-                    activeWallet,
-                    centralizedArbitratorInstance,
-                    id,
-                    0
-                  )}
-                >
+                <button className="btn btn-primary btn-lg btn-block secondary" onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, 0)}>
                   {rulingOptions && `Refuse to Arbitrate`}
                 </button>
               </div>
@@ -335,35 +232,27 @@ class DisputeDetail extends React.Component {
           </div>
         )}
 
-        {status === '1' && (
+        {status === "1" && (
           <div className="row px-0">
             <div className="col px-0">
               <div
                 className="text-white pt-5"
                 style={{
-                  background:
-                    'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
-                  'background-position': 'center',
-                  'background-repeat': 'no-repeat, no-repeat',
-                  'background-size': 'auto, cover',
-                  height: '200px',
-                  width: '100%'
+                  background: "url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center",
+                  "background-position": "center",
+                  "background-repeat": "no-repeat, no-repeat",
+                  "background-size": "auto, cover",
+                  height: "200px",
+                  width: "100%",
                 }}
               >
                 <h1>
-                  <b>
-                    {' '}
-                    You voted for{' '}
-                    {ruling && aliases[Object.keys(aliases)[ruling - 1]]}{' '}
-                  </b>
+                  <b> You voted for {ruling && aliases[Object.keys(aliases)[ruling - 1]]} </b>
                 </h1>
-                {appealPeriodEnd * 1000 < new Date().getTime() && (
-                  <h2>Appeal period is over.</h2>
-                )}
+                {appealPeriodEnd * 1000 < new Date().getTime() && <h2>Appeal period is over.</h2>}
                 {appealPeriodEnd * 1000 > new Date().getTime() && (
                   <h2>
-                    The case can still be appealable until{' '}
-                    <TimeAgo date={appealPeriodEnd * 1000} />
+                    The case can still be appealable until <TimeAgo date={appealPeriodEnd * 1000} />
                   </h2>
                 )}
               </div>
@@ -371,25 +260,22 @@ class DisputeDetail extends React.Component {
           </div>
         )}
 
-        {status === '2' && (
+        {status === "2" && (
           <div className="row px-0">
             <div className="col px-0">
               <div
                 className="text-white pt-5"
                 style={{
-                  background:
-                    'url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center',
-                  'background-position': 'center',
-                  'background-repeat': 'no-repeat, no-repeat',
-                  'background-size': 'auto, cover',
-                  height: '200px',
-                  width: '100%'
+                  background: "url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center",
+                  "background-position": "center",
+                  "background-repeat": "no-repeat, no-repeat",
+                  "background-size": "auto, cover",
+                  height: "200px",
+                  width: "100%",
                 }}
               >
                 <h1>
-                  <b>
-                    {ruling && aliases[Object.keys(aliases)[ruling - 1]]} won
-                  </b>
+                  <b>{ruling && aliases[Object.keys(aliases)[ruling - 1]]} won</b>
                 </h1>
                 <h2>The case is closed</h2>
               </div>
@@ -397,7 +283,7 @@ class DisputeDetail extends React.Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 
@@ -408,8 +294,7 @@ DisputeDetail.propTypes = {
   arbitrableContractAddress: PropTypes.string.isRequired,
   archon: PropTypes.instanceOf(Archon).isRequired,
   category: PropTypes.number.isRequired,
-  centralizedArbitratorInstance: PropTypes.instanceOf(Web3.eth.Contract)
-    .isRequired,
+  centralizedArbitratorInstance: PropTypes.instanceOf(Web3.eth.Contract).isRequired,
   description: PropTypes.string.isRequired,
   evidenceDisplayInterfaceURI: PropTypes.string,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -422,9 +307,9 @@ DisputeDetail.propTypes = {
   ruling: PropTypes.string.isRequired,
   rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
-}
+  title: PropTypes.string.isRequired,
+};
 
-DisputeDetail.defaultProps = { evidenceDisplayInterfaceURI: '' }
+DisputeDetail.defaultProps = { evidenceDisplayInterfaceURI: "" };
 
-export default DisputeDetail
+export default DisputeDetail;
