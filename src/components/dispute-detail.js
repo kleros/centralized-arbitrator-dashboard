@@ -211,13 +211,13 @@ class DisputeDetail extends React.Component {
             <div className="row">
               <div className="offset-md-2 col-md-3">
                 <button className="btn btn-primary btn-lg btn-block primary" onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, 1)}>
-                  {rulingOptions && rulingOptions.titles[0]}
+                  {(rulingOptions && rulingOptions.titles && rulingOptions.titles[0]) || "Not Provided"}
                 </button>
               </div>
               <div className="col-md-2">X</div>
               <div className="col-md-3">
                 <button className="btn btn-primary btn-lg btn-block primary" onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, 2)}>
-                  {rulingOptions && rulingOptions.titles[1]}
+                  {(rulingOptions && rulingOptions.titles && rulingOptions.titles[1]) || "Not Provided"}
                 </button>
               </div>
             </div>
