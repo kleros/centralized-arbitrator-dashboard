@@ -275,7 +275,7 @@ class DisputeDetail extends React.Component {
                 }}
               >
                 <h1>
-                  <b>{ruling && aliases[Object.keys(aliases)[ruling - 1]]} won</b>
+                  <b>Decision: {ruling && rulingOptions && rulingOptions.titles[ruling - 1]}</b>
                 </h1>
                 <h2>The case is closed</h2>
               </div>
