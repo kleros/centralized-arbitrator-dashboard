@@ -70,7 +70,7 @@ class DisputeDetail extends React.Component {
       status,
       title,
     } = this.props;
-
+    console.log(evidences);
     const { appealFee, appealable, timeToAppeal } = this.state;
 
     return (
@@ -112,9 +112,10 @@ class DisputeDetail extends React.Component {
         )}
         <br />
         <div className="row border p-3" id="fileURICard">
-          <div className="col-md-1">
+          <div className="col">
             <a href={ipfsGateway + fileURI} rel="noopener noreferrer" target="_blank">
-              <img alt="" src="text.svg" />
+              <img className="mr-3" style={{ maxHeight: "1em", verticalAlign: "text-bottom" }} alt="Primary Document" title="Primary Document" src="text.svg" />
+              Primary Document
             </a>
           </div>
 
@@ -134,21 +135,11 @@ class DisputeDetail extends React.Component {
         </div>
 
         <br />
-        {aliases && (
-          <div className="row">
-            <div className="col-md-6 p-0" key={Object.keys(aliases)[0]}>
-              <div className="col-md-11 border">
-                <EvidenceList address={Object.keys(aliases)[0]} aliases={aliases} archon={archon} evidences={evidences[Object.keys(aliases)[0]]} ipfsGateway={ipfsGateway} name={aliases[Object.keys(aliases)[0]]} />
-              </div>
-            </div>
-
-            <div className="col-md-6 p-0" key={Object.keys(aliases)[1]}>
-              <div className="offset-md-1 col-md-11 border">
-                <EvidenceList address={Object.keys(aliases)[1]} aliases={aliases} archon={archon} evidences={evidences[Object.keys(aliases)[1]]} ipfsGateway={ipfsGateway} name={aliases[Object.keys(aliases)[1]]} />
-              </div>
-            </div>
+        <div className="row">
+          <div className="col">
+            <EvidenceList address={"0x0"} aliases={aliases} archon={archon} evidences={evidences[0]} ipfsGateway={ipfsGateway} name={"Evidences"} />
           </div>
-        )}
+        </div>
         <br />
 
         {status === "0" && (
