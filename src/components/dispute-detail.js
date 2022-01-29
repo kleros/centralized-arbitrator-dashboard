@@ -5,7 +5,8 @@ import Lodash from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import TimeAgo from "react-timeago";
-import Web3 from "../ethereum/web3";
+import web3 from "../ethereum/web3";
+import { getReadOnlyRpcUrl } from "../ethereum/web3";
 
 class DisputeDetail extends React.Component {
   constructor(props) {
@@ -14,12 +15,19 @@ class DisputeDetail extends React.Component {
       appealFee: 0.1,
       appealable: true,
       timeToAppeal: 240,
+      chainID: null,
+      jsonRpcUrl: null,
     };
+  }
+  
+  async componentDidMount() {
+    const currentChainID = await web3.eth.getChainId();
+    this.setState({ chainID: currentChainID.toString(), jsonRpcUrl: getReadOnlyRpcUrl({ chainId: currentChainID })});
   }
 
   handleGiveRulingButtonClick = (account, instance, id, ruling) => () => {
     const { appealFee, appealable, timeToAppeal } = this.state;
-    if (appealable) giveAppealableRuling(account, instance, id, ruling, Web3.utils.toWei(appealFee.toString(), "ether"), timeToAppeal);
+    if (appealable) giveAppealableRuling(account, instance, id, ruling, web3.utils.toWei(appealFee.toString(), "ether"), timeToAppeal);
     /* Why don't we await? */ else giveRuling(account, instance, id, ruling); /* Why don't we await? */
   };
 
@@ -69,9 +77,27 @@ class DisputeDetail extends React.Component {
       rulingOptions,
       status,
       title,
+      version,
     } = this.props;
-    console.log(evidences);
-    const { appealFee, appealable, timeToAppeal } = this.state;
+    const { appealFee, appealable, timeToAppeal, chainID, jsonRpcUrl } = this.state;
+
+    const injectedParams = {
+      disputeID: id.toString(),
+      arbitratorChainID: chainID, // Deprecated. Use arbitratorChainID and arbitrableChainID instead.
+      arbitrableChainID: chainID,
+      arbitratorContractAddress: centralizedArbitratorInstance._address,
+      arbitratorJsonRpcUrl: jsonRpcUrl,
+      arbitrableJsonRpcUrl: jsonRpcUrl,
+      arbitrableContractAddress: arbitrableContractAddress,
+    };
+
+    let searchParams;
+    if (version === "0") {
+      searchParams = `?${encodeURIComponent(JSON.stringify(injectedParams))}`;
+    } else {
+      const _searchParams = new URLSearchParams(injectedParams);
+      searchParams = `?${_searchParams.toString()}`;
+    }
 
     return (
       <div className="container">
@@ -83,7 +109,7 @@ class DisputeDetail extends React.Component {
           </div>
           <div className="col p-0">
             <h3 className="float-right">
-              <b>{`${category}`}</b>
+              <b>{`${category || ""}`}</b>
             </h3>
           </div>
         </div>
@@ -102,7 +128,7 @@ class DisputeDetail extends React.Component {
                   className="embed-responsive-item"
                   src={
                     (evidenceDisplayInterfaceURI.includes("://") ? evidenceDisplayInterfaceURI : `https://ipfs.kleros.io${evidenceDisplayInterfaceURI}`) +
-                    encodeURI(`{"arbitrableContractAddress":"${arbitrableContractAddress}","arbitratorContractAddress":"${centralizedArbitratorInstance._address}","disputeID":"${id}"}`)
+                    searchParams
                   }
                   title="evidence-display"
                 />
@@ -220,6 +246,19 @@ class DisputeDetail extends React.Component {
                 </button>
               </div>
             </div>
+            {rulingOptions && rulingOptions.reserved &&
+              Object.entries(rulingOptions.reserved).map(([ruling, title]) => (
+                <div className="row">
+                  <div key={ruling} className="offset-md-4 col-md-4 mb-5">
+                    <button 
+                      className="btn btn-primary btn-lg btn-block secondary"
+                      id={ruling}
+                      onClick={this.handleGiveRulingButtonClick(activeWallet, centralizedArbitratorInstance, id, ruling)}>
+                      {title}
+                    </button>
+                  </div>
+                </div>
+              ))}
           </div>
         )}
 
@@ -285,7 +324,7 @@ DisputeDetail.propTypes = {
   arbitrableContractAddress: PropTypes.string.isRequired,
   archon: PropTypes.instanceOf(Archon).isRequired,
   category: PropTypes.number.isRequired,
-  centralizedArbitratorInstance: PropTypes.instanceOf(Web3.eth.Contract).isRequired,
+  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract).isRequired,
   description: PropTypes.string.isRequired,
   evidenceDisplayInterfaceURI: PropTypes.string,
   evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -296,9 +335,10 @@ DisputeDetail.propTypes = {
   metaEvidenceJSONValid: PropTypes.bool.isRequired,
   question: PropTypes.string.isRequired,
   ruling: PropTypes.string.isRequired,
-  rulingOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  rulingOptions: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  version: PropTypes.string.isRequired,
 };
 
 DisputeDetail.defaultProps = { evidenceDisplayInterfaceURI: "" };

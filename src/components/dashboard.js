@@ -11,7 +11,7 @@ import web3 from "../ethereum/web3";
 
 import lscache from "lscache";
 
-const NETWORKS = { 1: "mainnet", 3: "ropsten", 42: "kovan" };
+const NETWORKS = { 1: "mainnet", 3: "ropsten", 4: "rinkeby", 42: "kovan" };
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
 
   async componentDidMount() {
     this.setState({
-      archon: new Archon(window.web3.currentProvider, "https://ipfs.kleros.io"),
+      archon: new Archon(window.ethereum, "https://ipfs.kleros.io"),
     });
 
     $("*").on("click", () => {
@@ -125,7 +125,7 @@ class Dashboard extends React.Component {
       });
     });
 
-    window.ethereum.on("networkChanged", (networkId) => {
+    window.ethereum.on("chainChanged", (networkId) => {
       this.setState({ networkType: NETWORKS[networkId], selectedAddress: "" });
     });
   }

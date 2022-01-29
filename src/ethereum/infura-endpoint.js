@@ -1,2 +1,2 @@
-export const INFURA_ENDPOINT =
-  'https://rinkeby.infura.io/v3/344bdb3c652c4ce6acc12f10a7557ba6'
+export const INFURA_ID=
+  'f1c9535b961648f7bd18209b00e11163'

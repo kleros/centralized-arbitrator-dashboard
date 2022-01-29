@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import React from "react";
 import { arbitrableInstanceAt } from "../ethereum/arbitrable";
+import { getReadOnlyRpcUrl } from '../ethereum/web3'
+import web3 from '../ethereum/web3'
 
 class DisputeList extends React.Component {
   constructor(props) {
@@ -100,30 +102,33 @@ class DisputeList extends React.Component {
       disputes: [...state.disputes, dispute],
     }));
 
-    const arbitrable = arbitrableInstanceAt(arbitrableAddress);
     const filter = { _arbitrator: contractAddress, _disputeID: disputeID };
-    const options = { filter, fromBlock: 0 };
 
-    arbitrable.getPastEvents("Dispute", options).then((events) =>
-      events.map((event) =>
-        archon.arbitrable
-          .getMetaEvidence(arbitrableAddress, event.returnValues._metaEvidenceID)
-          .then((x) => this.fetchAndAssignMetaevidence(disputeID, x))
-          .then(
-            archon.arbitrable.getEvidence(arbitrableAddress, contractAddress, event.returnValues._metaEvidenceID).then((evidences) => {
-              evidences.map((evidence) => this.fetchAndAssignEvidence(disputeID, evidence));
-            })
-          )
-      )
+    const currentChainID = (await web3.eth.getChainId()).toString();
+    archon.arbitrable.getDispute(arbitrableAddress, contractAddress, disputeID, { fromBlock: 0 }).then((event) =>{
+      return archon.arbitrable
+        .getMetaEvidence(
+          arbitrableAddress, 
+          event.metaEvidenceID,
+          {
+            strict: true,
+            getJsonRpcUrl: (chainId) => getReadOnlyRpcUrl({ chainId }),
+            scriptParameters: {
+              disputeID: disputeID.toString(),
+              arbitratorChainID: currentChainID,
+              arbitratorContractAddress: contractAddress,
+            }
+          }
+        )
+        .then((x) => {
+          this.fetchAndAssignMetaevidence(disputeID, x);})
+        .then(
+          archon.arbitrable.getEvidence(arbitrableAddress, contractAddress, event.evidenceGroupID).then((evidences) => {
+            evidences.map((evidence) => this.fetchAndAssignEvidence(disputeID, evidence));
+          })
+        );
+      }
     );
-
-    arbitrable.events
-      .Dispute({
-        filter,
-      })
-      .on("data", (event) => {
-        archon.arbitrable.getMetaEvidence(arbitrableAddress, event.returnValues._disputeID);
-      });
 
     this.subscriptions.push(
       arbitrableInstanceAt(arbitrableAddress)
@@ -132,7 +137,7 @@ class DisputeList extends React.Component {
         })
         .on("data", (event) => {
           archon.arbitrable
-            .getEvidence(arbitrableAddress, contractAddress, disputeID, {
+            .getEvidence(arbitrableAddress, contractAddress, event.returnValues._evidenceGroupID, {
               fromBlock: event.blockNumber,
             })
             .then((evidence) => this.fetchAndAssignEvidence(disputeID, evidence));
@@ -150,8 +155,8 @@ class DisputeList extends React.Component {
       .map((item) => (
         <Dispute
           activeWallet={activeWallet}
-          appealPeriodEnd={item.appealPeriodEnd || 0}
-          appealPeriodStart={item.appealPeriodStart || 0}
+          appealPeriodEnd={Number(item.appealPeriodEnd || 0)}
+          appealPeriodStart={Number(item.appealPeriodStart || 0)}
           arbitrated={item.arbitrated}
           archon={archon}
           autoAppealableArbitratorInstance={autoAppealableArbitratorInstance(contractAddress)}
