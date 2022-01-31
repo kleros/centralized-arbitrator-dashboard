@@ -83,7 +83,7 @@ class DisputeDetail extends React.Component {
 
     const injectedParams = {
       disputeID: id.toString(),
-      arbitratorChainID: chainID, // Deprecated. Use arbitratorChainID and arbitrableChainID instead.
+      arbitratorChainID: chainID,
       arbitrableChainID: chainID,
       arbitratorContractAddress: centralizedArbitratorInstance._address,
       arbitratorJsonRpcUrl: jsonRpcUrl,
