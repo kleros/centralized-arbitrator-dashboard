@@ -1,4 +1,4 @@
-import Mime from "mime-types";
+import Mime from "mime";
 import PropTypes from "prop-types";
 import React from "react";
 

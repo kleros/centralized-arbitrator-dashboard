@@ -144,7 +144,7 @@ NavBar.propTypes = {
   networkType: PropTypes.string.isRequired,
   notifications: PropTypes.arrayOf(NotificationItem).isRequired,
   wallet: PropTypes.string.isRequired,
-  web3: PropTypes.instanceOf(Web3).isRequired,
+  web3: PropTypes.object.isRequired,
 };
 
 export default NavBar;

@@ -1,4 +1,4 @@
-import { INFURA_ENDPOINT } from './infura-endpoint.js'
+import { INFURA_ID } from './infura-endpoint.js'
 import Web3 from 'web3'
 
 let web3
@@ -9,14 +9,14 @@ window.addEventListener('load', async () => {
     window.web3 = new Web3(window.ethereum)
     try {
       // Request account access if needed
-      await window.ethereum.enable()
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
       // Acccounts now exposed
     } catch (_) {
       // User denied account access...
     }
   }
   // Legacy dapp browsers...
-  else if (window.web3) window.web3 = new Web3(web3.currentProvider)
+  else if (window.web3) window.web3 = new Web3(window.ethereum)
   // Acccounts always exposed
   // Non-dapp browsers...
   else
@@ -25,17 +25,34 @@ window.addEventListener('load', async () => {
     )
 })
 
-if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
-  console.log('Using the web3 object of the window...')
-  web3 = new Web3(window.web3.currentProvider)
+if (typeof window !== "undefined" && typeof window.web3 !== "undefined") {
+  web3 = new Web3(window.ethereum);
 } else {
-  console.warn(
-    "Couldn't find the web3 object of the window, falling back to Infura."
-  )
-  Web3.providers.HttpProvider.prototype.sendAsync =
-    Web3.providers.HttpProvider.prototype.send
-  const provider = new Web3.providers.HttpProvider(INFURA_ENDPOINT)
-  web3 = new Web3(provider)
+  // Fallback provider.
+  web3 = new Web3(getReadOnlyRpcUrl);
 }
 
-export default web3
+export default web3;
+
+const chainIdToRpcEndpoint = {
+  1: 'https://mainnet.infura.io/v3/' + INFURA_ID,
+  3: 'https://ropsten.infura.io/v3/' + INFURA_ID,
+  4: 'https://rinkeby.infura.io/v3/' + INFURA_ID,
+  5: 'https://goerli.infura.io/v3/' + INFURA_ID,
+  42: 'https://kovan.infura.io/v3/' + INFURA_ID,
+  77: 'https://sokol.poa.network',
+  100: 'https://rpc.xdaichain.com',
+};
+
+export function getReadOnlyRpcUrl({ chainId }) {
+  const url = chainIdToRpcEndpoint[chainId];
+  if (!url) {
+    throw new Error(`Unsupported chain ID: ${chainId}`);
+  }
+
+  return url;
+}
+
+export function getReadOnlyWeb3({ chainId }) {
+  return new Web3(getReadOnlyRpcUrl({ chainId }));
+}

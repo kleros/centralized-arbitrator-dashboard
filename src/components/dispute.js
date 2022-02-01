@@ -1,8 +1,10 @@
 import DisputeDetail from './dispute-detail'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Archon from "@kleros/archon";
 import PropTypes from 'prop-types'
 import React from 'react'
-import web3 from '../ethereum/web3'
+import web3 from "../ethereum/web3";
+import { getReadOnlyRpcUrl } from '../ethereum/web3'
 
 class Dispute extends React.Component {
   constructor(props) {
@@ -44,18 +46,22 @@ class Dispute extends React.Component {
 
   apiPrefix = networkType => {
     switch (networkType) {
-      case 'main':
-        return ' '
-      case 'kovan':
-        return 'kovan.'
+      case "mainnet":
+        return " ";
+      case "kovan":
+        return "kovan.";
+      case "ropsten":
+        return "ropsten.";
+      case "goerli":
+        return "goerli.";
+      case "rinkeby":
+        return "rinkeby.";
       default:
-        return ' '
+        return " ";
     }
   }
 
   render() {
-    console.log('DISPUTE PROPS')
-    console.log(this.props)
     const {
       activeWallet,
       appealPeriodEnd,
@@ -119,8 +125,8 @@ class Dispute extends React.Component {
                   arbitrableContractAddress={arbitrated}
                   archon={archon}
                   category={
-                    metaevidenceObject &&
-                    metaevidenceObject.metaEvidenceJSON.category
+                    Number(metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON.category)
                   }
                   centralizedArbitratorInstance={
                     autoAppealableArbitratorInstance
@@ -140,7 +146,7 @@ class Dispute extends React.Component {
                     metaevidenceObject.metaEvidenceJSON.fileURI
                   }
                   fileValid={metaevidenceObject && metaevidenceObject.fileValid}
-                  id={id}
+                  id={Number(id)}
                   interfaceValid={
                     metaevidenceObject && metaevidenceObject.interfaceValid
                   }
@@ -163,6 +169,10 @@ class Dispute extends React.Component {
                     metaevidenceObject &&
                     metaevidenceObject.metaEvidenceJSON.title
                   }
+                  version={
+                    metaevidenceObject &&
+                    metaevidenceObject.metaEvidenceJSON._v || "0"
+                  }
                 />
               </div>
             </td>
@@ -178,7 +188,7 @@ Dispute.propTypes = {
   appealPeriodEnd: PropTypes.number.isRequired,
   appealPeriodStart: PropTypes.number.isRequired,
   arbitrated: PropTypes.string.isRequired,
-  archon: PropTypes.instanceOf.isRequired,
+  archon: PropTypes.instanceOf(Archon).isRequired,
   autoAppealableArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
     .isRequired,
   evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -203,7 +213,7 @@ Dispute.propTypes = {
   }).isRequired,
   networkType: PropTypes.string.isRequired,
   ruling: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
 }
 
 export default Dispute
