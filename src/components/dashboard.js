@@ -11,7 +11,7 @@ import web3 from "../ethereum/web3";
 
 import lscache from "lscache";
 
-const NETWORKS = { 1: "mainnet", 3: "ropsten", 4: "rinkeby", 42: "kovan" };
+const NETWORKS = { 1: "mainnet", 3: "ropsten", 4: "rinkeby", 5: "goerli", 42: "kovan" };
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -82,12 +82,16 @@ class Dashboard extends React.Component {
 
   apiPrefix = (networkType) => {
     switch (networkType) {
-      case "main":
+      case "mainnet":
         return " ";
       case "kovan":
         return "kovan.";
       case "ropsten":
         return "ropsten.";
+      case "goerli":
+        return "goerli.";
+      case "rinkeby":
+        return "rinkeby.";
       default:
         return " ";
     }
@@ -109,7 +113,7 @@ class Dashboard extends React.Component {
       });
 
       web3.eth.net.getNetworkType((error, networkType) => {
-        this.setState({ networkType: networkType });
+        this.setState({ networkType: networkType == 'main' ? 'mainnet' : networkType });
         this.setState({ wallet: accounts[0] });
         if (lscache.get(accounts[0]))
           this.setState({
@@ -121,12 +125,12 @@ class Dashboard extends React.Component {
     window.ethereum.on("accountsChanged", (accounts) => {
       web3.eth.net.getNetworkType((error, networkType) => {
         if (error) console.error(error);
-        this.setState({ networkType: networkType, selectedAddress: "", wallet: accounts[0] });
+        this.setState({ networkType: networkType == 'main' ? 'mainnet' : networkType, selectedAddress: "", wallet: accounts[0] });
       });
     });
 
     window.ethereum.on("chainChanged", (networkId) => {
-      this.setState({ networkType: NETWORKS[networkId], selectedAddress: "" });
+      this.setState({ networkType: NETWORKS[web3.utils.hexToNumber(networkId)], selectedAddress: "" });
     });
   }
 

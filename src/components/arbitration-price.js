@@ -1,7 +1,6 @@
 import { autoAppealableArbitratorInstance, getArbitrationCost, setArbitrationPrice } from "../ethereum/auto-appealable-arbitrator";
 import PropTypes from "prop-types";
 import React from "react";
-import Web3 from "../ethereum/web3";
 
 class ArbitrationPrice extends React.Component {
   constructor(props) {
@@ -67,7 +66,7 @@ class ArbitrationPrice extends React.Component {
 ArbitrationPrice.propTypes = {
   activeWallet: PropTypes.string.isRequired,
   contractAddress: PropTypes.string.isRequired,
-  web3: PropTypes.instanceOf(Web3).isRequired,
+  web3: PropTypes.object.isRequired,
 };
 
 export default ArbitrationPrice;

@@ -46,12 +46,18 @@ class Dispute extends React.Component {
 
   apiPrefix = networkType => {
     switch (networkType) {
-      case 'main':
-        return ' '
-      case 'kovan':
-        return 'kovan.'
+      case "mainnet":
+        return " ";
+      case "kovan":
+        return "kovan.";
+      case "ropsten":
+        return "ropsten.";
+      case "goerli":
+        return "goerli.";
+      case "rinkeby":
+        return "rinkeby.";
       default:
-        return ' '
+        return " ";
     }
   }
 

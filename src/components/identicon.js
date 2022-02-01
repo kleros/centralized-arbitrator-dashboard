@@ -14,9 +14,9 @@ const Identicon = ({
 }) => (
   <a
     href={
-      networkType === 'main'
+      networkType === 'mainnet'
         ? `https://etherscan.io/address/${seed}`
-        : `https://kovan.etherscan.io/address/${seed}`
+        : `https://${networkType}.etherscan.io/address/${seed}`
     }
     rel="noopener noreferrer"
     target="_blank"
