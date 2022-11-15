@@ -1,6 +1,4 @@
-import Blockies from 'react-blockies'
-import PropTypes from 'prop-types'
-import React from 'react'
+import Blockies from "react-blockies"
 
 const Identicon = ({
   bgColor,
@@ -10,11 +8,20 @@ const Identicon = ({
   scale,
   seed,
   size,
-  spotColor
+  spotColor,
+}: {
+  bgColor: string
+  className: string
+  color: string
+  networkType: string
+  scale: number
+  seed: string
+  size: number
+  spotColor: string
 }) => (
   <a
     href={
-      networkType === 'mainnet'
+      networkType === "mainnet"
         ? `https://etherscan.io/address/${seed}`
         : `https://${networkType}.etherscan.io/address/${seed}`
     }
@@ -32,16 +39,5 @@ const Identicon = ({
     />
   </a>
 )
-
-Identicon.propTypes = {
-  bgColor: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  networkType: PropTypes.string.isRequired,
-  scale: PropTypes.number.isRequired,
-  seed: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
-  spotColor: PropTypes.string.isRequired
-}
 
 export default Identicon

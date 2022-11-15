@@ -124,6 +124,15 @@ hr {
   align-items: center;
 }
 
+.custom-text-white-pt-5 {
+  background: url(kleros-gavel.svg), url(dispute_detail_rectangle.svg) no-repeat center center;
+  background-position: center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto, cover;
+  height: 200px;
+  width: 100%;
+}
+
 #fileURICard {
   background-color: #f8f8f8;
 }

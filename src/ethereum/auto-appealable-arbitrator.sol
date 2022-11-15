@@ -413,5 +413,4 @@ contract AutoAppealableArbitrator is Arbitrator {
         Dispute storage dispute = disputes[_disputeID];
         return (dispute.appealPeriodStart, dispute.appealPeriodEnd);
     }
-
 }
