@@ -1,43 +1,27 @@
 import DisputeDetail from "./DisputeDetail"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Archon from "@kleros/archon"
-import React from "react"
+import React, { FC } from "react"
 import web3 from "../ethereum/web3"
-import { Contract } from "ethers";
+import { Contract } from "ethers"
 import { EvidenceType, MetaevidenceObject } from "../types"
 
-const Dispute = ({
-  activeWallet,
-  appealPeriodEnd,
-  appealPeriodStart,
-  arbitrated,
-  archon,
-  autoAppealableArbitratorInstance,
-  evidences,
-  fee,
-  id,
-  ipfsGateway,
-  metaevidenceObject,
-  networkType,
-  ruling,
-  status,
-}: {
-  activeWallet: string,
-  appealPeriodEnd: number,
-  appealPeriodStart: number,
-  arbitrated: string,
-  archon: typeof Archon,
-  autoAppealableArbitratorInstance: Contract,
-  evidences: EvidenceType[],
-  fee: string,
-  id: number,
-  ipfsGateway: string,
-  metaevidenceObject: MetaevidenceObject,
-  networkType: string,
-  ruling: number,
+const Dispute: FC<{
+  activeWallet: string
+  appealPeriodEnd: number
+  appealPeriodStart: number
+  arbitrated: string
+  archon: typeof Archon
+  autoAppealableArbitratorInstance: Contract
+  evidences: EvidenceType[]
+  fee: string
+  id: number
+  ipfsGateway: string
+  metaevidenceObject: MetaevidenceObject
+  networkType: string
+  ruling: number
   status: string
-
-}) => {
+}> = (p) => {
   const disputeStatusElement = (code: string) => {
     switch (code) {
       case "0":
@@ -88,28 +72,28 @@ const Dispute = ({
     <React.Fragment>
       <tbody>
         <tr
-          aria-controls={`accordion${id}`}
+          aria-controls={`accordion${p.id}`}
           aria-expanded="false"
           className="clickable"
-          data-target={`#accordion${id}`}
+          data-target={`#accordion${p.id}`}
           data-toggle="collapse"
         >
-          <td>{id}</td>
+          <td>{p.id}</td>
           <td>
-            {metaevidenceObject && metaevidenceObject.metaEvidenceJSON.title}
+            {p.metaevidenceObject && p.metaevidenceObject.metaEvidenceJSON.title}
           </td>
           <td>
             <a
               href={`https://${apiPrefix(
-                networkType
-              )}etherscan.io/address/${arbitrated}`}
+                p.networkType
+              )}etherscan.io/address/${p.arbitrated}`}
               rel="noopener noreferrer"
               target="_blank"
             >
-              {`${arbitrated.substring(0, 8)}...`}
+              {`${p.arbitrated.substring(0, 8)}...`}
             </a>
           </td>
-          <td>{web3.utils.fromWei(fee, "ether")}</td>
+          <td>{web3.utils.fromWei(p.fee, "ether")}</td>
           {disputeStatusElement(status)}
           <td>
             <FontAwesomeIcon icon="caret-down" />
@@ -119,62 +103,62 @@ const Dispute = ({
       <tbody>
         <tr>
           <td colSpan={Number("6")}>
-            <div className="collapse mb-5" id={`accordion${id}`}>
+            <div className="collapse mb-5" id={`accordion${p.id}`}>
               <DisputeDetail
-                activeWallet={activeWallet}
+                activeWallet={p.activeWallet}
                 aliases={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.aliases
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.aliases
                 }
-                appealPeriodEnd={appealPeriodEnd}
-                appealPeriodStart={appealPeriodStart}
-                arbitrableContractAddress={arbitrated}
-                archon={archon}
+                appealPeriodEnd={p.appealPeriodEnd}
+                appealPeriodStart={p.appealPeriodStart}
+                arbitrableContractAddress={p.arbitrated}
+                archon={p.archon}
                 category={Number(
-                  metaevidenceObject &&
-                    metaevidenceObject.metaEvidenceJSON.category
+                  p.metaevidenceObject &&
+                    p.metaevidenceObject.metaEvidenceJSON.category
                 )}
-                centralizedArbitratorInstance={autoAppealableArbitratorInstance}
+                centralizedArbitratorInstance={p.autoAppealableArbitratorInstance}
                 description={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.description
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.description
                 }
                 evidenceDisplayInterfaceURI={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON
                     .evidenceDisplayInterfaceURI
                 }
-                evidences={evidences}
+                evidences={p.evidences}
                 fileURI={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.fileURI
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.fileURI
                 }
-                fileValid={metaevidenceObject && metaevidenceObject.fileValid}
-                id={Number(id)}
+                fileValid={p.metaevidenceObject && p.metaevidenceObject.fileValid}
+                id={Number(p.id)}
                 interfaceValid={
-                  metaevidenceObject && metaevidenceObject.interfaceValid
+                  p.metaevidenceObject && p.metaevidenceObject.interfaceValid
                 }
-                ipfsGateway={ipfsGateway}
+                ipfsGateway={p.ipfsGateway}
                 metaEvidenceJSONValid={
-                  metaevidenceObject && metaevidenceObject.metaEvidenceJSONValid
+                  p.metaevidenceObject && p.metaevidenceObject.metaEvidenceJSONValid
                 }
                 question={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.question
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.question
                 }
-                ruling={ruling}
+                ruling={p.ruling}
                 rulingOptions={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.rulingOptions
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.rulingOptions
                 }
                 status={status}
                 title={
-                  metaevidenceObject &&
-                  metaevidenceObject.metaEvidenceJSON.title
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSON.title
                 }
                 version={
-                  (metaevidenceObject &&
-                    metaevidenceObject.metaEvidenceJSON._v) ||
+                  (p.metaevidenceObject &&
+                    p.metaevidenceObject.metaEvidenceJSON._v) ||
                   "0"
                 }
               />
