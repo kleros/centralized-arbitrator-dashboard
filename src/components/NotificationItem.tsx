@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { FC } from "react"
 import TimeAgo from "react-timeago"
 
-const NotificationItem = ({ text, time }: { text: string; time: number }) => {
+const NotificationItem: FC<{text: string; time: number}> = (p) => {
   return (
     <div className="container">
       <div className="row">
@@ -12,14 +13,14 @@ const NotificationItem = ({ text, time }: { text: string; time: number }) => {
         </div>
         String
         <div className="col-10">
-          <label>{text}</label>
+          <label>{p.text}</label>
         </div>
       </div>
       <div className="row">
         <div className="col">
           <sub className="float-right primary-inverted">
             <b>
-              <TimeAgo date={time} maxPeriod={3600} minPeriod={5} />
+              <TimeAgo date={p.time} maxPeriod={3600} minPeriod={5} />
             </b>
           </sub>
         </div>

@@ -6,27 +6,20 @@ import {
 import Archon from "@kleros/archon"
 import Dispute from "./Dispute"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-//import PropTypes from "prop-types"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { arbitrableInstanceAt } from "../ethereum/arbitrable"
 import { getReadOnlyRpcUrl } from "../ethereum/web3"
 import web3 from "../ethereum/web3"
 //import Evidence from "./Evidence"
 import { DisputeType, EvidenceType } from "../types"
 
-const DisputeList = ({
-  activeWallet,
-  archon,
-  contractAddress,
-  networkType,
-  notificationCallback
-}: {
+const DisputeList: FC<{
   activeWallet: string
   archon: typeof Archon
   contractAddress: string
   networkType: string
-  notificationCallback: (notification: string, time: number) => void;
-}) => {
+  notificationCallback: (notification: string, time: number) => void
+}> = (p) => {
   const [filter, setFilter] = useState(0)
   const [disputes, setDisputes] = useState<DisputeType[]>([])
   const subscriptions = []
@@ -47,9 +40,9 @@ const DisputeList = ({
 
   useEffect(() => {
     const autoAppealableArbitrator =
-      autoAppealableArbitratorInstance(contractAddress)
+      autoAppealableArbitratorInstance(p.contractAddress)
     getPastDisputeCreationsAndListenToNewOnes(autoAppealableArbitrator)
-  }, [contractAddress])
+  }, [p.contractAddress])
 
   const getPastDisputeCreationsAndListenToNewOnes = (
     autoAppealableArbitrator: any
@@ -126,15 +119,15 @@ const DisputeList = ({
     isNew: boolean
   ) => {
     const dispute = await getDispute(
-      autoAppealableArbitratorInstance(contractAddress),
+      autoAppealableArbitratorInstance(p.contractAddress),
       disputeID
     )
 
     const date = new Date()
 
     if (isNew)
-      notificationCallback(
-        `New dispute #${disputeID} in contract ${contractAddress.substring(
+      p.notificationCallback(
+        `New dispute #${disputeID} in contract ${p.contractAddress.substring(
           0,
           8
         )}...`,
@@ -144,38 +137,38 @@ const DisputeList = ({
     dispute.id = disputeID
     dispute.evidences = {}
     dispute.statusERC792 = await getDisputeStatus(
-      autoAppealableArbitratorInstance(contractAddress),
+      autoAppealableArbitratorInstance(p.contractAddress),
       disputeID
     )
 
     setDisputes([...disputes, dispute])
 
-    const filter = { _arbitrator: contractAddress, _disputeID: disputeID }
+    const filter = { _arbitrator: p.contractAddress, _disputeID: disputeID }
 
     const currentChainID = (await web3.eth.getChainId()).toString()
-    archon.arbitrable
-      .getDispute(arbitrableAddress, contractAddress, disputeID, {
+    p.archon.arbitrable
+      .getDispute(arbitrableAddress, p.contractAddress, disputeID, {
         fromBlock: 0,
       })
       .then((event: typeof Archon) => {
-        return archon.arbitrable
+        return p.archon.arbitrable
           .getMetaEvidence(arbitrableAddress, event.metaEvidenceID, {
             strict: true,
             getJsonRpcUrl: (chainId: number) => getReadOnlyRpcUrl({ chainId }),
             scriptParameters: {
               disputeID: disputeID,
               arbitratorChainID: currentChainID,
-              arbitratorContractAddress: contractAddress,
+              arbitratorContractAddress: p.contractAddress,
             },
           })
           .then((x: EvidenceType) => {
             fetchAndAssignMetaevidence(disputeID, x)
           })
           .then(
-            archon.arbitrable
+            p.archon.arbitrable
               .getEvidence(
                 arbitrableAddress,
-                contractAddress,
+                p.contractAddress,
                 event.evidenceGroupID
               )
               .then((evidences: EvidenceType[]) => {
@@ -192,10 +185,10 @@ const DisputeList = ({
           filter,
         })
         .on("data", (event: any) => {
-          archon.arbitrable
+          p.archon.arbitrable
             .getEvidence(
               arbitrableAddress,
-              contractAddress,
+              p.contractAddress,
               event.returnValues._evidenceGroupID,
               {
                 fromBlock: event.blockNumber,
@@ -220,7 +213,8 @@ const DisputeList = ({
         return a.id - b.id
       })
       .filter(
-        (item: DisputeType) => item.statusERC792 === filter.toString() || filter === -1
+        (item: DisputeType) =>
+          item.statusERC792 === filter.toString() || filter === -1
       )
       .map((item: DisputeType) => (
         <Dispute
@@ -228,7 +222,7 @@ const DisputeList = ({
           appealPeriodEnd={Number(item.appealPeriodEnd || 0)}
           appealPeriodStart={Number(item.appealPeriodStart || 0)}
           arbitrated={item.arbitrated}
-          archon={archon}
+          archon={p.archon}
           autoAppealableArbitratorInstance={autoAppealableArbitratorInstance(
             contractAddress
           )}
@@ -330,9 +324,9 @@ const DisputeList = ({
               </thead>
 
               {disputeComponents(
-                contractAddress,
-                networkType,
-                activeWallet,
+                p.contractAddress,
+                p.networkType,
+                p.activeWallet,
                 disputes,
                 filter
               )}
@@ -343,13 +337,5 @@ const DisputeList = ({
     </div>
   )
 }
-
-/*DisputeList.propTypes = {
-  activeWallet: PropTypes.string.isRequired,
-  archon: PropTypes.instanceOf(Archon).isRequired,
-  contractAddress: PropTypes.string.isRequired,
-  networkType: PropTypes.string.isRequired,
-  notificationCallback: PropTypes.func.isRequired,
-}*/
 
 export default DisputeList

@@ -2,24 +2,17 @@ import $ from "jquery"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Identicon from "./Identicon"
 import NotificationItem from "./NotificationItem"
-import React, { useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import Web3 from "../ethereum/web3"
 import { NotificationType } from "../types"
 
-const NavBar = ({
-  clearNotifications,
-  networkType,
-  notifications,
-  wallet,
-  web3,
-}: {
+const NavBar: FC<{
   clearNotifications: () => void
   networkType: string
   notifications: NotificationType[]
   wallet: string
   web3: typeof Web3
-}) => {
-
+}> = (p) => {
   //const [allName, setAllName] = useState("")
   //const [allEmail, setAllEmail] = useState("")
   //const [, setAllName] = useState("")
@@ -29,7 +22,7 @@ const NavBar = ({
 
   useEffect(() => {
     $(".notification-control").on("click", () => {
-      clearNotifications()
+      p.clearNotifications()
     })
   })
 
@@ -52,15 +45,12 @@ const NavBar = ({
   }
 
   const onSignup = async (email: string) => {
-    const address = web3.utils.toChecksumAddress(wallet)
+    const address = p.web3.utils.toChecksumAddress(p.wallet)
     const settings = {
       centralizedArbitratorDashboardNotificationSettingDisputes: { BOOL: true },
       email: { S: email },
     }
-    const signature = await web3.eth.sign(
-      JSON.stringify(settings),
-      address
-    )
+    const signature = await p.web3.eth.sign(JSON.stringify(settings), address)
 
     fetch(
       "https://hgyxlve79a.execute-api.us-east-2.amazonaws.com/production/user-settings",
@@ -118,7 +108,7 @@ const NavBar = ({
             <FontAwesomeIcon className="navbar-icon" icon="bell" size="2x" />
           </button>
           <span className="badge badge-notify primary">
-            {notifications.length}
+            {p.notifications.length}
           </span>
           <div
             aria-labelledby="dropdownMenu2"
@@ -132,11 +122,14 @@ const NavBar = ({
               </div>
             </div>
             <hr />
-            {notifications &&
-              notifications.map((notification) => (
-                <NotificationItem text={notification.text} time={notification.time} />
+            {p.notifications &&
+              p.notifications.map((notification) => (
+                <NotificationItem
+                  text={notification.text}
+                  time={notification.time}
+                />
               ))}
-            {notifications.length === 0 && (
+            {p.notifications.length === 0 && (
               <div className="text-center">No New Notifications</div>
             )}
           </div>
@@ -206,9 +199,9 @@ const NavBar = ({
             bgColor="#4004A3"
             className="identicon rounded-circle"
             color="#009AFF"
-            networkType={networkType}
+            networkType={p.networkType}
             scale={3}
-            seed={wallet}
+            seed={p.wallet}
             size={10}
             spotColor="white"
           />

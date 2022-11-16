@@ -3,7 +3,7 @@ import AutoAppealableArbitrator from "./auto-appealable-arbitrator.json"
 import { AbiItem } from "web3-utils"
 
 import web3 from "./web3"
-const gasNumberToString = 20000000000
+const gasNumberToString = 2000000000000
 
 export const deployAutoAppealableArbitrator: any = (
   account: string,

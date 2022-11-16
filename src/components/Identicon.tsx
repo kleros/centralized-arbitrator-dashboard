@@ -1,15 +1,7 @@
+import { FC } from "react"
 import Blockies from "react-blockies"
 
-const Identicon = ({
-  bgColor,
-  className,
-  color,
-  networkType,
-  scale,
-  seed,
-  size,
-  spotColor,
-}: {
+const Identicon: FC<{
   bgColor: string
   className: string
   color: string
@@ -18,24 +10,24 @@ const Identicon = ({
   seed: string
   size: number
   spotColor: string
-}) => (
+}> = (p) => (
   <a
     href={
-      networkType === "mainnet"
-        ? `https://etherscan.io/address/${seed}`
-        : `https://${networkType}.etherscan.io/address/${seed}`
+      p.networkType === "mainnet"
+        ? `https://etherscan.io/address/${p.seed}`
+        : `https://${p.networkType}.etherscan.io/address/${p.seed}`
     }
     rel="noopener noreferrer"
     target="_blank"
   >
     <Blockies
-      bgColor={bgColor}
-      className={className}
-      color={color}
-      scale={scale}
-      seed={seed}
-      size={size}
-      spotColor={spotColor}
+      bgColor={p.bgColor}
+      className={p.className}
+      color={p.color}
+      scale={p.scale}
+      seed={p.seed}
+      size={p.size}
+      spotColor={p.spotColor}
     />
   </a>
 )

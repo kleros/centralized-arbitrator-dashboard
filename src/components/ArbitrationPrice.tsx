@@ -3,25 +3,21 @@ import {
   getArbitrationCost,
   setArbitrationPrice,
 } from "../ethereum/auto-appealable-arbitrator"
-import React, { useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import Web3 from "../ethereum/web3"
 
-const ArbitrationPrice = ({
-  activeWallet,
-  contractAddress,
-  web3,
-}: {
+const ArbitrationPrice: FC<{
   activeWallet: string
   contractAddress: string
   web3: typeof Web3
-}) => {
+}> = (p) => {
   const [arbitrationCost, setArbitrationCost] = useState("")
 
   useEffect(() => {
     const fromWeiGetArbitrationCost = async () => {
-      const result = web3.utils.fromWei(
+      const result = p.web3.utils.fromWei(
         await getArbitrationCost(
-          autoAppealableArbitratorInstance(contractAddress),
+          autoAppealableArbitratorInstance(p.contractAddress),
           ""
         ),
         "ether"
@@ -29,21 +25,20 @@ const ArbitrationPrice = ({
       setArbitrationCost(result)
     }
     fromWeiGetArbitrationCost()
-    
-  }, [contractAddress])
+  }, [p.contractAddress])
 
   const handleSetArbitrationPriceButtonClick =
     (newCost: string) => async (e: { preventDefault: () => void }) => {
       const autoAppealableArbitrator =
-        autoAppealableArbitratorInstance(contractAddress)
+        autoAppealableArbitratorInstance(p.contractAddress)
       e.preventDefault()
       setArbitrationCost("awaiting...")
       await setArbitrationPrice(
-        activeWallet,
+        p.activeWallet,
         autoAppealableArbitrator,
-        web3.utils.toWei(newCost, "ether")
+        p.web3.utils.toWei(newCost, "ether")
       )
-      const arbitrationCost = web3.utils.fromWei(
+      const arbitrationCost = p.web3.utils.fromWei(
         await getArbitrationCost(autoAppealableArbitrator, ""),
         "ether"
       )

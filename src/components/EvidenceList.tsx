@@ -1,23 +1,17 @@
 import Evidence from "./Evidence"
 //import Identicon from "./Identicon"
-import Archon from "@kleros/archon"
+//import Archon from "@kleros/archon"
 import { EvidenceType } from "../types"
+import { FC } from "react"
 
-const EvidenceList = ({
-  /*address,
-  aliases,
-  archon,*/
-  evidences,
-  ipfsGateway,
-}: //name,
-{
-  address: string
-  aliases: string[]
-  archon: typeof Archon
+const EvidenceList: FC<{
   evidences: EvidenceType[]
   ipfsGateway: string
-  name: string
-}) => {
+  //address
+  //aliases
+  //archon
+  //name
+}> = (p) => {
   const isEvidenceIntegrityOK = (evidences: EvidenceType[]) => {
     if (evidences.length === 0) return true
     return evidences
@@ -25,7 +19,7 @@ const EvidenceList = ({
       .reduce((op1, op2) => op1 && op2)
   }
 
-  if (evidences.length > 0)
+  if (p.evidences.length > 0)
     return (
       <div>
         <div className="row m-1">
@@ -58,20 +52,20 @@ const EvidenceList = ({
               >
                 <div className="row">
                   <div className="col-md-8 text-left">
-                    {evidences.length > 0 &&
-                      evidences.map((e: EvidenceType) => (
+                    {p.evidences.length > 0 &&
+                      p.evidences.map((e: EvidenceType) => (
                         <Evidence
                           //description={e.evidenceJSON.description}
                           //evidenceJSONValid={e.evidenceJSONValid}
                           //fileHash={e.evidenceJSON.fileHash}
                           fileURI={e.evidenceJSON.fileURI}
-                          ipfsGateway={ipfsGateway}
+                          ipfsGateway={p.ipfsGateway}
                           key={e.evidenceJSON.name + e.evidenceJSON.fileURI}
                           name={e.evidenceJSON.name}
                         />
                       ))}
                   </div>
-                  {!isEvidenceIntegrityOK(evidences) && (
+                  {!isEvidenceIntegrityOK(p.evidences) && (
                     <div className="col-md-4">
                       <div className="row">
                         <div className="col-md-8 py-2 ">
@@ -93,29 +87,5 @@ const EvidenceList = ({
     )
   else return null
 }
-
-/*EvidenceList.defaultProps = {
-  evidences: [],
-}
-
-EvidenceList.propTypes = {
-  address: PropTypes.string.isRequired,
-  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
-  evidences: PropTypes.arrayOf(
-    PropTypes.shape({
-      blockNumber: PropTypes.number,
-      evidenceJSON: PropTypes.shape({
-        fileURI: PropTypes.string,
-      }),
-      evidenceJSONValid: PropTypes.bool,
-      fileValid: PropTypes.bool,
-      submittedAt: PropTypes.number,
-      submittedBy: PropTypes.string,
-      transactionHash: PropTypes.string,
-    })
-  ),
-  ipfsGateway: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-}*/
 
 export default EvidenceList

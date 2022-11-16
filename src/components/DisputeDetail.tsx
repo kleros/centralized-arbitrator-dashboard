@@ -6,38 +6,14 @@ import Archon from "@kleros/archon"
 import EvidenceList from "./EvidenceList"
 //import Lodash from "lodash"
 //import PropTypes from "prop-types"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import web3 from "../ethereum/web3"
 import { getReadOnlyRpcUrl } from "../ethereum/web3"
 import { EvidenceType, RulingOptions } from "../types"
 import { Contract } from "ethers"
 
-const DisputeDetail = ({
-  activeWallet,
-  aliases,
-  appealPeriodEnd,
-  //appealPeriodStart,
-  arbitrableContractAddress,
-  archon,
-  category,
-  centralizedArbitratorInstance,
-  description,
-  evidenceDisplayInterfaceURI,
-  evidences,
-  fileURI,
-  fileValid,
-  id,
-  //interfaceValid,
-  ipfsGateway,
-  metaEvidenceJSONValid,
-  question,
-  ruling,
-  rulingOptions,
-  status,
-  title,
-  version,
-}: {
+const DisputeDetail: FC<{
   activeWallet: string
   aliases: string[]
   appealPeriodEnd: number
@@ -61,7 +37,9 @@ const DisputeDetail = ({
   status: string
   title: string
   version: string
-}) => {
+  //appealPeriodStart
+  //interfaceValid
+}> = (p) => {
   const [appealFee, setAppealFee] = useState(0.1)
   const [appealable, setAppealable] = useState(true)
   const [timeToAppeal, setTimeToAppeal] = useState(240)
@@ -133,17 +111,17 @@ const DisputeDetail = ({
     )*/
 
   const injectedParams = {
-    disputeID: id.toString(),
+    disputeID: p.id.toString(),
     arbitratorChainID: chainID,
     arbitrableChainID: chainID,
-    arbitratorContractAddress: centralizedArbitratorInstance._address,
+    arbitratorContractAddress: p.centralizedArbitratorInstance._address,
     arbitratorJsonRpcUrl: jsonRpcUrl,
     arbitrableJsonRpcUrl: jsonRpcUrl,
-    arbitrableContractAddress: arbitrableContractAddress,
+    arbitrableContractAddress: p.arbitrableContractAddress,
   }
 
   let searchParams
-  if (version === "0") {
+  if (p.version === "0") {
     searchParams = `?${encodeURIComponent(JSON.stringify(injectedParams))}`
   } else {
     const _searchParams = new URLSearchParams(injectedParams)
@@ -155,23 +133,23 @@ const DisputeDetail = ({
       <div className="row p-0">
         <div className="col p-0">
           <h3 className="float-left">
-            <b>{`${title}`}</b>
+            <b>{`${p.title}`}</b>
           </h3>
         </div>
         <div className="col p-0">
           <h3 className="float-right">
-            <b>{`${category || ""}`}</b>
+            <b>{`${p.category || ""}`}</b>
           </h3>
         </div>
       </div>
       <br />
       <div className="row p-0">
         <div className="col p-0 text-left">
-          <h4 className="">{description}</h4>
+          <h4 className="">{p.description}</h4>
         </div>
       </div>
       <br />
-      {evidenceDisplayInterfaceURI && (
+      {p.evidenceDisplayInterfaceURI && (
         <div className="row">
           <div className="col">
             <div
@@ -181,9 +159,9 @@ const DisputeDetail = ({
               <iframe
                 className="embed-responsive-item"
                 src={
-                  (evidenceDisplayInterfaceURI.includes("://")
-                    ? evidenceDisplayInterfaceURI
-                    : `https://ipfs.kleros.io${evidenceDisplayInterfaceURI}`) +
+                  (p.evidenceDisplayInterfaceURI.includes("://")
+                    ? p.evidenceDisplayInterfaceURI
+                    : `https://ipfs.kleros.io${p.evidenceDisplayInterfaceURI}`) +
                   searchParams
                 }
                 title="evidence-display"
@@ -196,7 +174,7 @@ const DisputeDetail = ({
       <div className="row border p-3" id="fileURICard">
         <div className="col">
           <a
-            href={ipfsGateway + fileURI}
+            href={p.ipfsGateway + p.fileURI}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -211,7 +189,7 @@ const DisputeDetail = ({
           </a>
         </div>
 
-        {(!fileValid || !metaEvidenceJSONValid) && (
+        {(!p.fileValid || !p.metaEvidenceJSONValid) && (
           <div className="col-md-2">
             <div className="row">
               <div className="col-md-8 py-2 ">
@@ -230,12 +208,13 @@ const DisputeDetail = ({
       <div className="row">
         <div className="col">
           <EvidenceList
-            address={"0x0"}
-            aliases={aliases}
-            archon={archon}
-            evidences={evidences}
-            ipfsGateway={ipfsGateway}
-            name={"Evidences"}
+            //address={"0x0"}
+            //aliases={p.aliases}
+            //archon={p.archon}
+            //name={"Evidences"}
+            evidences={p.evidences}
+            ipfsGateway={p.ipfsGateway}
+            
           />
         </div>
       </div>
@@ -251,13 +230,13 @@ const DisputeDetail = ({
                     aria-label="Checkbox for following text input"
                     className="custom-control-input"
                     defaultChecked={appealable}
-                    id={"appealable" + id}
+                    id={"appealable" + p.id}
                     onClick={() => handleAppealableRulingCheckboxClick()}
                     type="checkbox"
                   />
                   <label
                     className="custom-control-label"
-                    htmlFor={"appealable" + id}
+                    htmlFor={"appealable" + p.id}
                   >
                     <h4>Give an appealable ruling</h4>
                   </label>
@@ -324,7 +303,7 @@ const DisputeDetail = ({
           </div>
           <div className="row">
             <div className="col">
-              <h4 className="">{question}</h4>
+              <h4 className="">{p.question}</h4>
             </div>
           </div>
           <br />
@@ -333,15 +312,15 @@ const DisputeDetail = ({
               <button
                 className="btn btn-primary btn-lg btn-block primary"
                 onClick={handleGiveRulingButtonClick(
-                  activeWallet,
-                  centralizedArbitratorInstance,
-                  id,
+                  p.activeWallet,
+                  p.centralizedArbitratorInstance,
+                  p.id,
                   1
                 )}
               >
-                {(rulingOptions &&
-                  rulingOptions.titles &&
-                  rulingOptions.titles[0]) ||
+                {(p.rulingOptions &&
+                  p.rulingOptions.titles &&
+                  p.rulingOptions.titles[0]) ||
                   "Not Provided"}
               </button>
             </div>
@@ -350,15 +329,15 @@ const DisputeDetail = ({
               <button
                 className="btn btn-primary btn-lg btn-block primary"
                 onClick={handleGiveRulingButtonClick(
-                  activeWallet,
-                  centralizedArbitratorInstance,
-                  id,
+                  p.activeWallet,
+                  p.centralizedArbitratorInstance,
+                  p.id,
                   2
                 )}
               >
-                {(rulingOptions &&
-                  rulingOptions.titles &&
-                  rulingOptions.titles[1]) ||
+                {(p.rulingOptions &&
+                  p.rulingOptions.titles &&
+                  p.rulingOptions.titles[1]) ||
                   "Not Provided"}
               </button>
             </div>
@@ -369,28 +348,28 @@ const DisputeDetail = ({
               <button
                 className="btn btn-primary btn-lg btn-block secondary"
                 onClick={handleGiveRulingButtonClick(
-                  activeWallet,
-                  centralizedArbitratorInstance,
-                  id,
+                  p.activeWallet,
+                  p.centralizedArbitratorInstance,
+                  p.id,
                   0
                 )}
               >
-                {rulingOptions && `Refuse to Arbitrate`}
+                {p.rulingOptions && `Refuse to Arbitrate`}
               </button>
             </div>
           </div>
-          {rulingOptions &&
-            rulingOptions.reserved &&
-            Object.entries(rulingOptions.reserved).map(([ruling, title]) => (
+          {p.rulingOptions &&
+            p.rulingOptions.reserved &&
+            Object.entries(p.rulingOptions.reserved).map(([ruling, title]) => (
               <div className="row">
                 <div key={ruling} className="offset-md-4 col-md-4 mb-5">
                   <button
                     className="btn btn-primary btn-lg btn-block secondary"
                     id={ruling}
                     onClick={handleGiveRulingButtonClick(
-                      activeWallet,
-                      centralizedArbitratorInstance,
-                      id,
+                      p.activeWallet,
+                      p.centralizedArbitratorInstance,
+                      p.id,
                       Number(ruling)
                     )}
                   >
@@ -408,19 +387,15 @@ const DisputeDetail = ({
             <div className="text-white pt-5">
               <div className="custom-text-white-pt-5">
                 <h1>
-                  <b>
-                    {" "}
-                    You voted for{" "}
-                    {ruling && aliases[ruling - 1]}{" "}
-                  </b>
+                  <b> You voted for {p.ruling && p.aliases[p.ruling - 1]} </b>
                 </h1>
-                {appealPeriodEnd * 1000 < new Date().getTime() && (
+                {p.appealPeriodEnd * 1000 < new Date().getTime() && (
                   <h2>Appeal period is over.</h2>
                 )}
-                {appealPeriodEnd * 1000 > new Date().getTime() && (
+                {p.appealPeriodEnd * 1000 > new Date().getTime() && (
                   <h2>
                     The case can still be appealable until{" "}
-                    <TimeAgo date={appealPeriodEnd * 1000} />
+                    <TimeAgo date={p.appealPeriodEnd * 1000} />
                   </h2>
                 )}
               </div>
@@ -437,9 +412,9 @@ const DisputeDetail = ({
                 <h1>
                   <b>
                     Decision:{" "}
-                    {ruling &&
-                      rulingOptions &&
-                      rulingOptions.titles[ruling - 1]}
+                    {p.ruling &&
+                      p.rulingOptions &&
+                      p.rulingOptions.titles[p.ruling - 1]}
                   </b>
                 </h1>
                 <h2>The case is closed</h2>
@@ -451,32 +426,5 @@ const DisputeDetail = ({
     </div>
   )
 }
-
-/*DisputeDetail.propTypes = {
-  activeWallet: PropTypes.string.isRequired,
-  aliases: PropTypes.arrayOf(PropTypes.string).isRequired,
-  appealPeriodEnd: PropTypes.number.isRequired,
-  arbitrableContractAddress: PropTypes.string.isRequired,
-  archon: PropTypes.instanceOf(Archon).isRequired,
-  category: PropTypes.number.isRequired,
-  centralizedArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
-    .isRequired,
-  description: PropTypes.string.isRequired,
-  evidenceDisplayInterfaceURI: PropTypes.string,
-  evidences: PropTypes.arrayOf(PropTypes.string).isRequired,
-  fileURI: PropTypes.string.isRequired,
-  fileValid: PropTypes.bool.isRequired,
-  id: PropTypes.number.isRequired,
-  ipfsGateway: PropTypes.string.isRequired,
-  metaEvidenceJSONValid: PropTypes.bool.isRequired,
-  question: PropTypes.string.isRequired,
-  ruling: PropTypes.string.isRequired,
-  rulingOptions: PropTypes.object.isRequired,
-  status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  version: PropTypes.string.isRequired,
-}
-
-DisputeDetail.defaultProps = { evidenceDisplayInterfaceURI: "" }*/
 
 export default DisputeDetail

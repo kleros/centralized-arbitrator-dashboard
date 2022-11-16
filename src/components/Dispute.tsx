@@ -170,37 +170,4 @@ const Dispute: FC<{
   )
 }
 
-/*Dispute.propTypes = {
-  activeWallet: PropTypes.string.isRequired,
-  appealPeriodEnd: PropTypes.number.isRequired,
-  appealPeriodStart: PropTypes.number.isRequired,
-  arbitrated: PropTypes.string.isRequired,
-  archon: PropTypes.instanceOf(Archon).isRequired,
-  autoAppealableArbitratorInstance: PropTypes.instanceOf(web3.eth.Contract)
-    .isRequired,
-  evidences: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fee: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  ipfsGateway: PropTypes.string.isRequired,
-  metaevidenceObject: PropTypes.shape({
-    aliases: PropTypes.shape({
-      [PropTypes.string]: PropTypes.string,
-    }),
-    category: PropTypes.string,
-    description: PropTypes.string,
-    fileHash: PropTypes.string,
-    fileTypeExtension: PropTypes.string,
-    fileURI: PropTypes.string,
-    rulingOptions: PropTypes.shape({
-      description: PropTypes.arrayOf(PropTypes.string).isRequired,
-      titles: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }),
-    selfHash: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
-  networkType: PropTypes.string.isRequired,
-  ruling: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-}*/
-
 export default Dispute
