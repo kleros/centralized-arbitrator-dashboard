@@ -38,7 +38,7 @@ const Evidence: FC<{
             mime.lookup(p.fileURI.split(".")[1]).toString().split("/")[0]
           )}
         />
-        {name}
+        {p.name}
       </>
     </a>
   )

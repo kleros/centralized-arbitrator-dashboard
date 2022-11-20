@@ -220,7 +220,7 @@ const DisputeDetail: FC<{
       </div>
       <br />
 
-      {status === "0" && (
+      {p.status === "0" && (
         <div>
           <div className="mb-5">
             <div className="row" id="appealable-ruling">
@@ -381,7 +381,7 @@ const DisputeDetail: FC<{
         </div>
       )}
 
-      {status === "1" && (
+      {p.status === "1" && (
         <div className="row px-0">
           <div className="col px-0">
             <div className="text-white pt-5">
@@ -404,7 +404,7 @@ const DisputeDetail: FC<{
         </div>
       )}
 
-      {status === "2" && (
+      {p.status === "2" && (
         <div className="row px-0">
           <div className="col px-0">
             <div className="text-white pt-5">
