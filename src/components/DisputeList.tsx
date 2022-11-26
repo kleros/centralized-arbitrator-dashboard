@@ -82,7 +82,7 @@ const DisputeList: FC<{
       .getPastEvents("DisputeCreation", { fromBlock: 0 })
       .then((events: any[]) =>
         events.map(async (event) => {
-          addDispute(event.returnValues._disputeID, false)
+          addDispute(event.returnValues._disputeID, event.returnValues._arbitrable, false)
         })
       )
 
@@ -90,7 +90,7 @@ const DisputeList: FC<{
       autoAppealableArbitrator.events
         .DisputeCreation()
         .on("data", (event: any) =>
-          addDispute(event.returnValues._disputeID, true)
+          addDispute(event.returnValues._disputeID, event.returnValues._arbitrable, true)
         )
     )
   }
@@ -150,7 +150,7 @@ const DisputeList: FC<{
 
   //const assignMetaEvidenceUsingArchon = () => {}
 
-  const addDispute = async (disputeID: number, isNew: boolean) => {
+  const addDispute = async (disputeID: number, arbitrableAddress: string, isNew: boolean) => {
     const dispute = await getDispute(
       autoAppealableArbitratorInstance(p.contractAddress),
       disputeID
@@ -185,6 +185,74 @@ const DisputeList: FC<{
     )
 
     setDisputes([...disputes, disputeWithMetaevidenceField])
+
+    const filter = { _arbitrator: p.contractAddress, _disputeID: disputeID }
+
+        const currentChainID = (await web3.eth.getChainId()).toString()
+
+        p.archon.arbitrable
+          .getDispute(
+            arbitrableAddress.toLowerCase(),
+            p.contractAddress,
+            disputeID,
+            {
+              fromBlock: 0,
+            }
+          )
+          .then((event: any) => {
+            return p.archon.arbitrable
+              .getMetaEvidence(arbitrableAddress, event.metaEvidenceID, {
+                strict: true,
+                getJsonRpcUrl: (chainId: number) =>
+                  getReadOnlyRpcUrl({ chainId }),
+                scriptParameters: {
+                  disputeID: disputeID,
+                  arbitratorChainID: currentChainID,
+                  arbitratorContractAddress: p.contractAddress,
+                },
+              })
+              .then((x: EvidenceType) => {
+                if (disputes) {
+                  fetchAndAssignMetaevidence(disputeID, x)
+                }
+              })
+              .then(
+                p.archon.arbitrable
+                  .getEvidence(
+                    arbitrableAddress.toLowerCase(),
+                    p.contractAddress,
+                    event.evidenceGroupID
+                  )
+                  .then((evidences: EvidenceType[]) => {
+                    if (disputes) {
+                      evidences.map((evidence: EvidenceType) =>
+                        fetchAndAssignEvidence(disputeID, evidence)
+                      )
+                    }
+                  })
+              )
+          })
+
+        subscriptions.push(
+          arbitrableInstanceAt(arbitrableAddress.toLowerCase())
+            .events.Evidence({
+              filter,
+            })
+            .on("data", (event: any) => {
+              p.archon.arbitrable
+                .getEvidence(
+                  arbitrableAddress.toLowerCase(),
+                  p.contractAddress,
+                  event.returnValues._evidenceGroupID,
+                  {
+                    fromBlock: event.blockNumber,
+                  }
+                )
+                .then((evidence: EvidenceType) =>
+                  fetchAndAssignEvidence(disputeID, evidence)
+                )
+            })
+        )
   }
 
   const disputeComponents = (
@@ -202,74 +270,8 @@ const DisputeList: FC<{
         (item: DisputeType) =>
           item.statusERC792 === filter.toString() || filter === -1
       )
-      .map(async (item: DisputeType) => {
-        const filter = { _arbitrator: p.contractAddress, _disputeID: item.id }
-
-        const currentChainID = (await web3.eth.getChainId()).toString()
-
-        p.archon.arbitrable
-          .getDispute(
-            item.arbitrated.toLowerCase(),
-            p.contractAddress,
-            item.id,
-            {
-              fromBlock: 0,
-            }
-          )
-          .then((event: any) => {
-            return p.archon.arbitrable
-              .getMetaEvidence(item.arbitrated, event.metaEvidenceID, {
-                strict: true,
-                getJsonRpcUrl: (chainId: number) =>
-                  getReadOnlyRpcUrl({ chainId }),
-                scriptParameters: {
-                  disputeID: item.id,
-                  arbitratorChainID: currentChainID,
-                  arbitratorContractAddress: p.contractAddress,
-                },
-              })
-              .then((x: EvidenceType) => {
-                if (disputes) {
-                  fetchAndAssignMetaevidence(item.id, x)
-                }
-              })
-              .then(
-                p.archon.arbitrable
-                  .getEvidence(
-                    item.arbitrated.toLowerCase(),
-                    p.contractAddress,
-                    event.evidenceGroupID
-                  )
-                  .then((evidences: EvidenceType[]) => {
-                    if (disputes) {
-                      evidences.map((evidence: EvidenceType) =>
-                        fetchAndAssignEvidence(item.id, evidence)
-                      )
-                    }
-                  })
-              )
-          })
-
-        subscriptions.push(
-          arbitrableInstanceAt(item.arbitrated.toLowerCase())
-            .events.Evidence({
-              filter,
-            })
-            .on("data", (event: any) => {
-              p.archon.arbitrable
-                .getEvidence(
-                  item.arbitrated.toLowerCase(),
-                  p.contractAddress,
-                  event.returnValues._evidenceGroupID,
-                  {
-                    fromBlock: event.blockNumber,
-                  }
-                )
-                .then((evidence: EvidenceType) =>
-                  fetchAndAssignEvidence(item.id, evidence)
-                )
-            })
-        )
+      .map((item: DisputeType) => {
+        
         console.log("si llegas hasta aquí, porque pollas no ejecutas Dispute?")
         return (
           <Dispute
