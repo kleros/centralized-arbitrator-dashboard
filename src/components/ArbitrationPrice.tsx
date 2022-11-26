@@ -48,7 +48,6 @@ const ArbitrationPrice: FC<{
   const handleArbitrationPriceChange = (e: {
     target: { value: React.SetStateAction<string> }
   }) => {
-    console.log(e)
     setArbitrationCost(e.target.value)
   }
 

@@ -39,7 +39,6 @@ const NavBar: FC<{
   const onEmailChange = (e: {
     target: { value: React.SetStateAction<string> }
   }) => {
-    console.log(e)
     setEmail(e.target.value)
     setSuccessful(false)
   }

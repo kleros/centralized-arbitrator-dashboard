@@ -17,7 +17,7 @@ export interface EvidenceType {
   submittedBy: string
   transactionHash: string
   description: string
-  aliases: string[]
+  aliases: any
   category: string,
   fileHash: string,
   fileTypeExtension: string,
@@ -31,7 +31,7 @@ export interface EvidenceType {
     evidenceDisplayInterfaceURI: string,
     description: string
     category: string
-    aliases: string[]
+    aliases: any
     question: string
     rulingOptions: RulingOptions
     title: string
@@ -45,6 +45,7 @@ export interface NotificationType {
 }
 
 export interface DisputeType {
+  arbitrableAddress: any
   statusERC792: string
   activeWallet: string
   appealPeriodEnd: number
@@ -52,14 +53,15 @@ export interface DisputeType {
   arbitrated: string
   //archon: typeof Archon
   autoAppealableArbitratorInstance: Contract
-  evidences: EvidenceType[]
-  fee: string
+  evidenceArray: EvidenceType[]
+  fees: string
   id: number
   ipfsGateway: string
   metaevidenceObject: MetaevidenceObject
   networkType: string
   ruling: number
   status: string
+  metaEvidence: MetaevidenceObject
 }
 
 export interface RulingOptions {
@@ -69,7 +71,7 @@ export interface RulingOptions {
 }
 
 export interface MetaevidenceObject {
-  aliases: string[]
+  aliases: any
   category: string,
   description: string,
   fileHash: string,
@@ -86,7 +88,7 @@ export interface MetaevidenceObject {
     evidenceDisplayInterfaceURI: string,
     description: string
     category: string
-    aliases: string[]
+    aliases: any
     question: string
     rulingOptions: RulingOptions
     title: string

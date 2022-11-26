@@ -106,9 +106,11 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    let cancel = false
     setArchon(new Archon(window.ethereum, "https://ipfs.kleros.io"))
-    
+
     $("*").on("click", () => {
+      if (cancel) return
       setUglyFixtoBug13("")
     })
 
@@ -119,10 +121,13 @@ const Dashboard = () => {
       })
 
       web3.eth.net.getNetworkType((_error, networkTypeGet) => {
+        
         setNetworkType(networkTypeGet == "main" ? "mainnet" : networkTypeGet)
-        setWallet(accounts[0])
+        setWallet(accounts[0].toLowerCase())
         if (lscache.get(accounts[0]))
-          setSelectedAddress(lscache.get(accounts[0] + networkType)[0])
+          setSelectedAddress(
+            lscache.get(accounts[0] + networkType)[0].toLowerCase()
+          )
       })
     }
 
@@ -135,7 +140,7 @@ const Dashboard = () => {
         if (error) console.error(error)
         setNetworkType(networkTypeGet == "main" ? "mainnet" : networkTypeGet)
         setSelectedAddress("")
-        setWallet(accounts[0])
+        setWallet(accounts[0].toLowerCase())
       })
     })
 
@@ -143,6 +148,9 @@ const Dashboard = () => {
       setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId)])
       setSelectedAddress("")
     })
+    return () => {
+      cancel = true
+    }
   }, [])
 
   const deploy =
@@ -154,13 +162,13 @@ const Dashboard = () => {
         account,
         web3.utils.toWei(arbitrationPrice, "ether")
       )
-      setSelectedAddress(result._address)
+      setSelectedAddress(result._address.toLowerCase())
 
       if (!lscache.get(wallet + networkType))
-        lscache.set(wallet + networkType, [result._address])
+        lscache.set(wallet + networkType, [result._address.toLowerCase()])
       else {
         const currentItem = lscache.get(wallet + networkType)
-        const newItem = [...currentItem, result._address]
+        const newItem = [...currentItem, result._address.toLowerCase()]
         lscache.set(wallet + networkType, newItem)
       }
 
@@ -218,7 +226,6 @@ const Dashboard = () => {
   const handleArbitrationPriceChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e)
     setArbitrationCost(e.target.value)
   }
 

@@ -10,8 +10,6 @@ const Evidence: FC<{
   //fileHash: string
 }> = (p) => {
   const typeToIcon = (type: string) => {
-    console.log("typetoicon")
-    console.log(type)
     switch (type) {
       case "video":
         return "video.svg"

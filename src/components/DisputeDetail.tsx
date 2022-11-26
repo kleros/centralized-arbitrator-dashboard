@@ -24,7 +24,7 @@ const DisputeDetail: FC<{
   centralizedArbitratorInstance: Contract
   description: string
   evidenceDisplayInterfaceURI: string
-  evidences: EvidenceType[]
+  evidenceArray: EvidenceType[]
   fileURI: string
   fileValid: boolean
   id: number
@@ -55,6 +55,8 @@ const DisputeDetail: FC<{
     getChainIdAndSetValues()
   }, [])
 
+  console.log(p.title)
+
   const handleGiveRulingButtonClick =
     (account: string, instance: any, id: number, ruling: number) => () => {
       if (appealable)
@@ -71,17 +73,14 @@ const DisputeDetail: FC<{
     }
 
   const handleAppealableRulingCheckboxClick = () => {
-    console.log("handlecheckbox")
     setAppealable(!appealable)
   }
 
   const handleTimeToAppealChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handletimetoappeal")
     setTimeToAppeal(Number(e.target.value))
   }
 
   const handleAppealFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleAppealFeeChange")
     setAppealFee(Number(e.target.value))
   }
 
@@ -212,9 +211,8 @@ const DisputeDetail: FC<{
             //aliases={p.aliases}
             //archon={p.archon}
             //name={"Evidences"}
-            evidences={p.evidences}
+            evidences={p.evidenceArray}
             ipfsGateway={p.ipfsGateway}
-            
           />
         </div>
       </div>

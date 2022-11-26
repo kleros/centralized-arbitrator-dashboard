@@ -1,7 +1,7 @@
 import DisputeDetail from "./DisputeDetail"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Archon from "@kleros/archon"
-import React, { FC } from "react"
+import { FC } from "react"
 import web3 from "../ethereum/web3"
 import { Contract } from "ethers"
 import { EvidenceType, MetaevidenceObject } from "../types"
@@ -13,8 +13,8 @@ const Dispute: FC<{
   arbitrated: string
   archon: typeof Archon
   autoAppealableArbitratorInstance: Contract
-  evidences: EvidenceType[]
-  fee: string
+  evidenceArray: EvidenceType[]
+  fees: string
   id: number
   ipfsGateway: string
   metaevidenceObject: MetaevidenceObject
@@ -22,6 +22,12 @@ const Dispute: FC<{
   ruling: number
   status: string
 }> = (p) => {
+  console.log('bueno, ya sabemos que Dispute no es ejecutado, aun no sabemos porque tho')
+  console.log(p.activeWallet)
+  console.log(p.evidenceArray)
+  console.log(p.status)
+  console.log(p.ruling)
+  console.log('nose tio en teoria estamos en Dispute ahora mismo')
   const disputeStatusElement = (code: string) => {
     switch (code) {
       case "0":
@@ -67,9 +73,9 @@ const Dispute: FC<{
         return " "
     }
   }
-
+  
   return (
-    <React.Fragment>
+    <>
       <tbody>
         <tr
           aria-controls={`accordion${p.id}`}
@@ -80,21 +86,22 @@ const Dispute: FC<{
         >
           <td>{p.id}</td>
           <td>
-            {p.metaevidenceObject && p.metaevidenceObject.metaEvidenceJSON.title}
+            {p.metaevidenceObject &&
+              p.metaevidenceObject.metaEvidenceJSON.title}
           </td>
           <td>
             <a
-              href={`https://${apiPrefix(
-                p.networkType
-              )}etherscan.io/address/${p.arbitrated}`}
+              href={`https://${apiPrefix(p.networkType)}etherscan.io/address/${
+                p.arbitrated
+              }`}
               rel="noopener noreferrer"
               target="_blank"
             >
               {`${p.arbitrated.substring(0, 8)}...`}
             </a>
           </td>
-          <td>{web3.utils.fromWei(p.fee, "ether")}</td>
-          {disputeStatusElement(status)}
+          <td>{web3.utils.fromWei(p.fees, "ether")}</td>
+          {disputeStatusElement(p.status)}
           <td>
             <FontAwesomeIcon icon="caret-down" />
           </td>
@@ -118,7 +125,9 @@ const Dispute: FC<{
                   p.metaevidenceObject &&
                     p.metaevidenceObject.metaEvidenceJSON.category
                 )}
-                centralizedArbitratorInstance={p.autoAppealableArbitratorInstance}
+                centralizedArbitratorInstance={
+                  p.autoAppealableArbitratorInstance
+                }
                 description={
                   p.metaevidenceObject &&
                   p.metaevidenceObject.metaEvidenceJSON.description
@@ -128,19 +137,22 @@ const Dispute: FC<{
                   p.metaevidenceObject.metaEvidenceJSON
                     .evidenceDisplayInterfaceURI
                 }
-                evidences={p.evidences}
+                evidenceArray={p.evidenceArray}
                 fileURI={
                   p.metaevidenceObject &&
                   p.metaevidenceObject.metaEvidenceJSON.fileURI
                 }
-                fileValid={p.metaevidenceObject && p.metaevidenceObject.fileValid}
+                fileValid={
+                  p.metaevidenceObject && p.metaevidenceObject.fileValid
+                }
                 id={Number(p.id)}
                 interfaceValid={
                   p.metaevidenceObject && p.metaevidenceObject.interfaceValid
                 }
                 ipfsGateway={p.ipfsGateway}
                 metaEvidenceJSONValid={
-                  p.metaevidenceObject && p.metaevidenceObject.metaEvidenceJSONValid
+                  p.metaevidenceObject &&
+                  p.metaevidenceObject.metaEvidenceJSONValid
                 }
                 question={
                   p.metaevidenceObject &&
@@ -151,7 +163,7 @@ const Dispute: FC<{
                   p.metaevidenceObject &&
                   p.metaevidenceObject.metaEvidenceJSON.rulingOptions
                 }
-                status={status}
+                status={p.status}
                 title={
                   p.metaevidenceObject &&
                   p.metaevidenceObject.metaEvidenceJSON.title
@@ -166,7 +178,7 @@ const Dispute: FC<{
           </td>
         </tr>
       </tbody>
-    </React.Fragment>
+    </>
   )
 }
 
