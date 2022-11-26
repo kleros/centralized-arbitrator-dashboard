@@ -10,4 +10,3 @@ interface Mime {
 }
 
 declare module "@kleros/archon"
-declare module 'mime'

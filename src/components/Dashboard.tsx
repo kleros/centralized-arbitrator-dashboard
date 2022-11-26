@@ -106,11 +106,9 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    let cancel = false
     setArchon(new Archon(window.ethereum, "https://ipfs.kleros.io"))
 
     $("*").on("click", () => {
-      if (cancel) return
       setUglyFixtoBug13("")
     })
 
@@ -148,9 +146,6 @@ const Dashboard = () => {
       setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId)])
       setSelectedAddress("")
     })
-    return () => {
-      cancel = true
-    }
   }, [])
 
   const deploy =

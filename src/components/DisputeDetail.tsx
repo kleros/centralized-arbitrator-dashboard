@@ -55,8 +55,6 @@ const DisputeDetail: FC<{
     getChainIdAndSetValues()
   }, [])
 
-  console.log(p.title)
-
   const handleGiveRulingButtonClick =
     (account: string, instance: any, id: number, ruling: number) => () => {
       if (appealable)
@@ -211,7 +209,7 @@ const DisputeDetail: FC<{
             //aliases={p.aliases}
             //archon={p.archon}
             //name={"Evidences"}
-            evidences={p.evidenceArray}
+            evidenceArray={p.evidenceArray}
             ipfsGateway={p.ipfsGateway}
           />
         </div>

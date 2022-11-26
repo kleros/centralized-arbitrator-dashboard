@@ -82,7 +82,10 @@ const DisputeList: FC<{
       .getPastEvents("DisputeCreation", { fromBlock: 0 })
       .then((events: any[]) =>
         events.map(async (event) => {
-          addDispute(event.returnValues._disputeID, event.returnValues._arbitrable, false)
+          addDispute(
+            event.returnValues._disputeID,
+            false
+          )
         })
       )
 
@@ -90,7 +93,10 @@ const DisputeList: FC<{
       autoAppealableArbitrator.events
         .DisputeCreation()
         .on("data", (event: any) =>
-          addDispute(event.returnValues._disputeID, event.returnValues._arbitrable, true)
+          addDispute(
+            event.returnValues._disputeID,
+            true
+          )
         )
     )
   }
@@ -150,7 +156,10 @@ const DisputeList: FC<{
 
   //const assignMetaEvidenceUsingArchon = () => {}
 
-  const addDispute = async (disputeID: number, arbitrableAddress: string, isNew: boolean) => {
+  const addDispute = async (
+    disputeID: number,
+    isNew: boolean
+  ) => {
     const dispute = await getDispute(
       autoAppealableArbitratorInstance(p.contractAddress),
       disputeID
@@ -185,74 +194,75 @@ const DisputeList: FC<{
     )
 
     setDisputes([...disputes, disputeWithMetaevidenceField])
+  }
 
+  const functionToAssignAllEvidences = async (disputeID: number, arbitrableAddress: string) => {
     const filter = { _arbitrator: p.contractAddress, _disputeID: disputeID }
 
-        const currentChainID = (await web3.eth.getChainId()).toString()
+    const currentChainID = (await web3.eth.getChainId()).toString()
 
-        p.archon.arbitrable
-          .getDispute(
-            arbitrableAddress.toLowerCase(),
-            p.contractAddress,
-            disputeID,
-            {
-              fromBlock: 0,
+    p.archon.arbitrable
+      .getDispute(
+        arbitrableAddress.toLowerCase(),
+        p.contractAddress,
+        disputeID,
+        {
+          fromBlock: 0,
+        }
+      )
+      .then((event: any) => {
+        return p.archon.arbitrable
+          .getMetaEvidence(arbitrableAddress, event.metaEvidenceID, {
+            strict: true,
+            getJsonRpcUrl: (chainId: number) => getReadOnlyRpcUrl({ chainId }),
+            scriptParameters: {
+              disputeID: disputeID,
+              arbitratorChainID: currentChainID,
+              arbitratorContractAddress: p.contractAddress,
+            },
+          })
+          .then((x: EvidenceType) => {
+            if (disputes) {
+              fetchAndAssignMetaevidence(disputeID, x)
             }
-          )
-          .then((event: any) => {
-            return p.archon.arbitrable
-              .getMetaEvidence(arbitrableAddress, event.metaEvidenceID, {
-                strict: true,
-                getJsonRpcUrl: (chainId: number) =>
-                  getReadOnlyRpcUrl({ chainId }),
-                scriptParameters: {
-                  disputeID: disputeID,
-                  arbitratorChainID: currentChainID,
-                  arbitratorContractAddress: p.contractAddress,
-                },
-              })
-              .then((x: EvidenceType) => {
+          })
+          .then(
+            p.archon.arbitrable
+              .getEvidence(
+                arbitrableAddress.toLowerCase(),
+                p.contractAddress,
+                event.evidenceGroupID
+              )
+              .then((evidences: EvidenceType[]) => {
                 if (disputes) {
-                  fetchAndAssignMetaevidence(disputeID, x)
+                  evidences.map((evidence: EvidenceType) =>
+                    fetchAndAssignEvidence(disputeID, evidence)
+                  )
                 }
               })
-              .then(
-                p.archon.arbitrable
-                  .getEvidence(
-                    arbitrableAddress.toLowerCase(),
-                    p.contractAddress,
-                    event.evidenceGroupID
-                  )
-                  .then((evidences: EvidenceType[]) => {
-                    if (disputes) {
-                      evidences.map((evidence: EvidenceType) =>
-                        fetchAndAssignEvidence(disputeID, evidence)
-                      )
-                    }
-                  })
-              )
-          })
+          )
+      })
 
-        subscriptions.push(
-          arbitrableInstanceAt(arbitrableAddress.toLowerCase())
-            .events.Evidence({
-              filter,
-            })
-            .on("data", (event: any) => {
-              p.archon.arbitrable
-                .getEvidence(
-                  arbitrableAddress.toLowerCase(),
-                  p.contractAddress,
-                  event.returnValues._evidenceGroupID,
-                  {
-                    fromBlock: event.blockNumber,
-                  }
-                )
-                .then((evidence: EvidenceType) =>
-                  fetchAndAssignEvidence(disputeID, evidence)
-                )
-            })
-        )
+    subscriptions.push(
+      arbitrableInstanceAt(arbitrableAddress.toLowerCase())
+        .events.Evidence({
+          filter,
+        })
+        .on("data", (event: any) => {
+          p.archon.arbitrable
+            .getEvidence(
+              arbitrableAddress.toLowerCase(),
+              p.contractAddress,
+              event.returnValues._evidenceGroupID,
+              {
+                fromBlock: event.blockNumber,
+              }
+            )
+            .then((evidence: EvidenceType) =>
+              fetchAndAssignEvidence(disputeID, evidence)
+            )
+        })
+    )
   }
 
   const disputeComponents = (
@@ -271,8 +281,7 @@ const DisputeList: FC<{
           item.statusERC792 === filter.toString() || filter === -1
       )
       .map((item: DisputeType) => {
-        
-        console.log("si llegas hasta aquí, porque pollas no ejecutas Dispute?")
+        functionToAssignAllEvidences(item.id, item.arbitrated)
         return (
           <Dispute
             activeWallet={activeWallet}
@@ -296,13 +305,7 @@ const DisputeList: FC<{
         )
       })
   }
-  disputeComponents(
-    p.contractAddress,
-    p.networkType,
-    p.activeWallet,
-    disputes,
-    filter
-  )
+  console.log(disputes)
 
   return (
     <div className="row">
@@ -387,6 +390,13 @@ const DisputeList: FC<{
                   </th>
                 </tr>
               </thead>
+              {disputeComponents(
+                p.contractAddress,
+                p.networkType,
+                p.activeWallet,
+                disputes,
+                filter
+              )}
             </table>
           </div>
         </div>

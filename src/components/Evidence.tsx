@@ -1,5 +1,6 @@
-import mime from "mime"
 import { FC } from "react"
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+//import mime from 'mime-types'
 
 const Evidence: FC<{
   fileURI: string
@@ -9,7 +10,7 @@ const Evidence: FC<{
   //evidenceJSONValid: boolean
   //fileHash: string
 }> = (p) => {
-  const typeToIcon = (type: string) => {
+  /*const typeToIcon = (type: string) => {
     switch (type) {
       case "video":
         return "video.svg"
@@ -18,7 +19,7 @@ const Evidence: FC<{
       default:
         return "text.svg"
     }
-  }
+  }*/
 
   return (
     <a
@@ -32,9 +33,9 @@ const Evidence: FC<{
           alt=""
           className="mr-3"
           style={{ maxHeight: "1em", verticalAlign: "text-bottom" }}
-          src={typeToIcon(
+          /*src={typeToIcon(
             mime.lookup(p.fileURI.split(".")[1]).toString().split("/")[0]
-          )}
+          )}*/
         />
         {p.name}
       </>

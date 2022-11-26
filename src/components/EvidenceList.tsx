@@ -5,7 +5,7 @@ import { EvidenceType } from "../types"
 import { FC } from "react"
 
 const EvidenceList: FC<{
-  evidences: EvidenceType[]
+  evidenceArray: EvidenceType[]
   ipfsGateway: string
   //address
   //aliases
@@ -19,7 +19,7 @@ const EvidenceList: FC<{
       .reduce((op1, op2) => op1 && op2)
   }
 
-  if (p.evidences.length > 0)
+  if (p.evidenceArray.length > 0)
     return (
       <div>
         <div className="row m-1">
@@ -52,20 +52,20 @@ const EvidenceList: FC<{
               >
                 <div className="row">
                   <div className="col-md-8 text-left">
-                    {p.evidences.length > 0 &&
-                      p.evidences.map((e: EvidenceType) => (
+                    {p.evidenceArray.length > 0 &&
+                      p.evidenceArray.map((e: EvidenceType) => (
                         <Evidence
                           //description={e.evidenceJSON.description}
                           //evidenceJSONValid={e.evidenceJSONValid}
                           //fileHash={e.evidenceJSON.fileHash}
-                          fileURI={e.evidenceJSON.fileURI}
+                          fileURI={e.evidenceJSON.fileURI && e.evidenceJSON.fileURI}
                           ipfsGateway={p.ipfsGateway}
                           key={e.evidenceJSON.name + e.evidenceJSON.fileURI}
                           name={e.evidenceJSON.name}
                         />
                       ))}
                   </div>
-                  {!isEvidenceIntegrityOK(p.evidences) && (
+                  {!isEvidenceIntegrityOK(p.evidenceArray) && (
                     <div className="col-md-4">
                       <div className="row">
                         <div className="col-md-8 py-2 ">

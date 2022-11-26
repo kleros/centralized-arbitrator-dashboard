@@ -22,12 +22,6 @@ const Dispute: FC<{
   ruling: number
   status: string
 }> = (p) => {
-  console.log('bueno, ya sabemos que Dispute no es ejecutado, aun no sabemos porque tho')
-  console.log(p.activeWallet)
-  console.log(p.evidenceArray)
-  console.log(p.status)
-  console.log(p.ruling)
-  console.log('nose tio en teoria estamos en Dispute ahora mismo')
   const disputeStatusElement = (code: string) => {
     switch (code) {
       case "0":
