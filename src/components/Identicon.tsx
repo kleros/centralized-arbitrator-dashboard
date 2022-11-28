@@ -10,26 +10,28 @@ const Identicon: FC<{
   seed: string
   size: number
   spotColor: string
-}> = (p) => (
-  <a
-    href={
-      p.networkType === "mainnet"
-        ? `https://etherscan.io/address/${p.seed}`
-        : `https://${p.networkType}.etherscan.io/address/${p.seed}`
-    }
-    rel="noopener noreferrer"
-    target="_blank"
-  >
-    <Blockies
-      bgColor={p.bgColor}
-      className={p.className}
-      color={p.color}
-      scale={p.scale}
-      seed={p.seed}
-      size={p.size}
-      spotColor={p.spotColor}
-    />
-  </a>
-)
+}> = (p) => {
+  return (
+    <a
+      href={
+        p.networkType === "mainnet"
+          ? `https://etherscan.io/address/${p.seed}`
+          : `https://${p.networkType}.etherscan.io/address/${p.seed}`
+      }
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <Blockies
+        bgColor={p.bgColor}
+        className={p.className}
+        color={p.color}
+        scale={p.scale}
+        seed={p.seed}
+        size={p.size}
+        spotColor={p.spotColor}
+      />
+    </a>
+  )
+}
 
 export default Identicon

@@ -3,13 +3,13 @@ import { Contract } from "ethers"
 export interface EvidenceType {
   fileURI: string
   ipfsGateway: string
-  name: string
   blockNumber: number
   evidenceJSON: {
     fileURI: string
     name: string
     fileHash: string
     description: string
+    title: string
   }
   evidenceJSONValid: boolean
   fileValid: boolean
@@ -18,17 +18,17 @@ export interface EvidenceType {
   transactionHash: string
   description: string
   aliases: any
-  category: string,
-  fileHash: string,
-  fileTypeExtension: string,
+  category: string
+  fileHash: string
+  fileTypeExtension: string
   title: string
   rulingOptions: RulingOptions
-  selfHash: string,
+  selfHash: string
   interfaceValid: boolean
   metaEvidenceJSONValid: boolean
   metaEvidenceJSON: {
-    fileURI: string,
-    evidenceDisplayInterfaceURI: string,
+    fileURI: string
+    evidenceDisplayInterfaceURI: string
     description: string
     category: string
     aliases: any
@@ -40,12 +40,12 @@ export interface EvidenceType {
 }
 
 export interface NotificationType {
-  text: string,
+  text: string
   time: number
 }
 
 export interface DisputeType {
-  arbitrableAddress: any
+  arbitrableAddress: string
   statusERC792: string
   activeWallet: string
   appealPeriodEnd: number
@@ -57,7 +57,7 @@ export interface DisputeType {
   fees: string
   id: number
   ipfsGateway: string
-  metaevidenceObject: MetaevidenceObject
+  metaevidenceObject: any
   networkType: string
   ruling: number
   status: string
@@ -72,20 +72,20 @@ export interface RulingOptions {
 
 export interface MetaevidenceObject {
   aliases: any
-  category: string,
-  description: string,
-  fileHash: string,
-  fileTypeExtension: string,
-  fileURI: string,
+  category: string
+  description: string
+  fileHash: string
+  fileTypeExtension: string
+  fileURI: string
   rulingOptions: RulingOptions
-  selfHash: string,
+  selfHash: string
   title: string
   fileValid: boolean
   interfaceValid: boolean
   metaEvidenceJSONValid: boolean
   metaEvidenceJSON: {
-    fileURI: string,
-    evidenceDisplayInterfaceURI: string,
+    fileURI: string
+    evidenceDisplayInterfaceURI: string
     description: string
     category: string
     aliases: any
@@ -94,4 +94,35 @@ export interface MetaevidenceObject {
     title: string
     _v: string
   }
+}
+
+export interface DisputeEvent {
+  address: string
+  blockHash: string
+  blockNumber: number
+  event: string
+  id: string
+  logIndex: number
+  returnValues: {
+    _arbitrable: string
+    _disputeID: number
+  }
+}
+
+export interface ReturnPastEvents {
+  returnValues: {
+    _disputeID: number
+  }
+}
+
+export interface ReturnEvidence {
+  evidenceGroupID: number
+  returnValues: {
+    _evidenceGroupID: number
+  }
+  blockNumber: number
+}
+
+export interface ReturnMetaevidence {
+  metaEvidenceID: number
 }

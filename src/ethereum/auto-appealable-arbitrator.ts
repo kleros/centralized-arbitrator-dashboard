@@ -1,11 +1,11 @@
 // import AutoAppealableArbitrator from "@kleros/kleros-interaction/build/contracts/AutoAppealableArbitrator.json";
 import AutoAppealableArbitrator from "./auto-appealable-arbitrator.json"
 import { AbiItem } from "web3-utils"
-
 import web3 from "./web3"
+import { Contract } from "ethers"
 const gasNumberToString = 2000000000000
 
-export const deployAutoAppealableArbitrator: any = (
+export const deployAutoAppealableArbitrator: (account: string, arbitrationPrice: string) => any = (
   account: string,
   arbitrationPrice: string
 ) =>
@@ -21,11 +21,11 @@ export const autoAppealableArbitratorInstance: any = (address: string) =>
     gasPrice: gasNumberToString.toString(),
   })
 
-export const getOwner = async (arbitratorInstance: any) =>
+export const getOwner = async (arbitratorInstance: Contract) =>
   await arbitratorInstance.methods.owner().call()
 
 export const getArbitrationCost = async (
-  arbitratorInstance: any,
+  arbitratorInstance: Contract,
   extraData: string
 ) =>
   await arbitratorInstance.methods
@@ -34,24 +34,24 @@ export const getArbitrationCost = async (
 
 export const setArbitrationPrice = async (
   account: string,
-  arbitratorInstance: any,
+  arbitratorInstance: Contract,
   arbitrationPrice: string
 ) =>
   await arbitratorInstance.methods
     .setArbitrationPrice(arbitrationPrice)
     .send({ from: account })
 
-export const getDispute = async (arbitratorInstance: any, index: number) =>
+export const getDispute = async (arbitratorInstance: Contract, index: number) =>
   await arbitratorInstance.methods.disputes(index).call()
 
 export const getDisputeStatus = async (
-  arbitratorInstance: any,
+  arbitratorInstance: Contract,
   index: number
 ) => await arbitratorInstance.methods.disputeStatus(index).call()
 
 export const giveRuling = async (
   account: string,
-  arbitratorInstance: any,
+  arbitratorInstance: Contract,
   disputeID: number,
   ruling: number
 ) =>
@@ -61,7 +61,7 @@ export const giveRuling = async (
 
 export const giveAppealableRuling = async (
   account: string,
-  arbitratorInstance: any,
+  arbitratorInstance: Contract,
   disputeID: number,
   ruling: number,
   appealCost: string,

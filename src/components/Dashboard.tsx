@@ -22,62 +22,6 @@ const NETWORKS = {
 } as unknown as string[]
 
 const Dashboard = () => {
-  // eventNotificationServiceRoute(address, eventName, networkName) {
-  //   if (networkName === "main") return `https://events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`;
-  //   else return `https://kovan-events.kleros.io/contracts/${address}/listeners/${eventName}/callbacks`;
-  // }
-
-  // scanContracts(networkType, account) {
-  //   const limiter = new RateLimiter(1, 250);
-  //   const api = {
-  //     kovan: "api-kovan.",
-  //     mainnet: "api.",
-  //   };
-  //   console.log(networkType);
-  //   const apiPrefix = networkType === "main" ? api.mainnet : api.kovan;
-  //
-  //   fetch(
-  //     `https://${apiPrefix}etherscan.io/api?module=account&action=txlist&address=${account}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  //       data.result
-  //         .filter(({ to }) => to === "")
-  //         .map((item) => item.contractAddress)
-  //     )
-  //     .then((addresses) =>
-  //       addresses.map((address) =>
-  //         limiter.removeTokens(1, async () =>
-  //           fetch(
-  //             `https://${apiPrefix}etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=YHYC1VSRWMQ3M5BF1TV1RRS3N7QZ8FQPEV`
-  //           )
-  //             .then((response) => response.json())
-  //             .then((data) => {
-  //               if (
-  //                 data.result[0].ContractName === "AutoAppealableArbitrator"
-  //               ) {
-  //                 this.setState((state) => ({
-  //                   contractAddresses: [...state.contractAddresses, address],
-  //                 }));
-  //
-  //                 // Call eventNotificationService here
-  //
-  //                 if (!window.localStorage.getItem(account))
-  //                   window.localStorage.setItem(account, address);
-  //                 else
-  //                   window.localStorage.setItem(
-  //                     account,
-  //                     window.localStorage
-  //                       .getItem(account)
-  //                       .concat(" ")
-  //                       .concat(address)
-  //                   );
-  //               }
-  //             })
-  //         )
-  //       )
-  //     );
-  // }
 
   const [archon, setArchon] = useState({})
   const [uglyFixtoBug13, setUglyFixtoBug13] = useState("") // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
@@ -176,10 +120,6 @@ const Dashboard = () => {
       setNotifications(notifications)
       setCustomAddressValue(customAddressValue)
     }
-
-  /*const handleCentralizedArbitratorDropdownKeyEnter = (e: { keyCode: number; target: { value: React.SetStateAction<string> } }) => {
-    if (e.keyCode === 13) setSelectedAddress(e.target.value)
-  }*/
 
   const handleCentralizedArbitratorDropdownButtonClick = (
     address: React.SetStateAction<string>

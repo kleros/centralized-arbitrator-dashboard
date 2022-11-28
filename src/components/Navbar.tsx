@@ -13,10 +13,6 @@ const NavBar: FC<{
   wallet: string
   web3: typeof Web3
 }> = (p) => {
-  //const [allName, setAllName] = useState("")
-  //const [allEmail, setAllEmail] = useState("")
-  //const [, setAllName] = useState("")
-  //const [, setAllEmail] = useState("")
   const [email, setEmail] = useState("")
   const [successful, setSuccessful] = useState(false)
 
@@ -25,16 +21,6 @@ const NavBar: FC<{
       p.clearNotifications()
     })
   })
-
-  /*const onAllNameChange = (e: { target: { value: any } }) => {
-    console.log(e)
-    setAllName(e.target.value)
-  }*/
-
-  /*const onAllEmailChange = (e: { target: { value: any } }) => {
-    console.log(e)
-    setAllEmail(e.target.value)
-  }*/
 
   const onEmailChange = (e: {
     target: { value: React.SetStateAction<string> }

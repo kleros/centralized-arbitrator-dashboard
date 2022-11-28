@@ -47,16 +47,21 @@ const DisputeDetail: FC<{
   const [jsonRpcUrl, setJsonRpcUrl] = useState("")
 
   useEffect(() => {
+    let cancel = false
     const getChainIdAndSetValues = async () => {
+      if (cancel) return
       const currentChainID = await web3.eth.getChainId()
       setChainID(currentChainID.toString())
       setJsonRpcUrl(getReadOnlyRpcUrl({ chainId: currentChainID }))
     }
     getChainIdAndSetValues()
+    return () => {
+      cancel = true
+    }
   }, [])
 
   const handleGiveRulingButtonClick =
-    (account: string, instance: any, id: number, ruling: number) => () => {
+    (account: string, instance: Contract, id: number, ruling: number) => () => {
       if (appealable)
         giveAppealableRuling(
           account,
@@ -205,10 +210,6 @@ const DisputeDetail: FC<{
       <div className="row">
         <div className="col">
           <EvidenceList
-            //address={"0x0"}
-            //aliases={p.aliases}
-            //archon={p.archon}
-            //name={"Evidences"}
             evidenceArray={p.evidenceArray}
             ipfsGateway={p.ipfsGateway}
           />

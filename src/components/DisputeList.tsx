@@ -3,20 +3,16 @@ import {
   getDispute,
   getDisputeStatus,
 } from "../ethereum/auto-appealable-arbitrator"
-//import Archon from "@kleros/archon"
 import Dispute from "./Dispute"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { FC, useEffect, useState } from "react"
-import { arbitrableInstanceAt } from "../ethereum/arbitrable"
-import { getReadOnlyRpcUrl } from "../ethereum/web3"
-import web3 from "../ethereum/web3"
-//import Evidence from "./Evidence"
-import { DisputeType, EvidenceType } from "../types"
-import { cloneDeep } from "lodash"
+import { DisputeType, ReturnPastEvents } from "../types"
+import Archon from "@kleros/archon"
+import { Contract } from "ethers"
 
 const DisputeList: FC<{
   activeWallet: string
-  archon: any
+  archon: typeof Archon
   contractAddress: string
   networkType: string
   notificationCallback: (notification: string, time: number) => void
@@ -51,122 +47,37 @@ const DisputeList: FC<{
     }
   }, [p.contractAddress])
 
-  //console.info(`Fetching meta evidence and TCR data of TCR at ${tcr.address}`)
-
-  // Fetch meta evidence. (Make this an independent function)
-  // const logs = (
-  //   await provider.getLogs({
-  //     ...tcr.filters.MetaEvidence(),
-  //     fromBlock: deploymentBlock
-  //   })
-  // ).map(log => tcr.interface.parseLog(log))
-  // const { _evidence: metaEvidencePath } = logs[logs.length - 1].values
-  // const tcrMetaEvidence = await (
-  //   await fetch(process.env.IPFS_GATEWAY + metaEvidencePath)
-  // ).json()
-
-  // Fetch TCR data. (Make this an independent function)
-  // let data
-  // try {
-  //   data = await gtcrView.fetchArbitrable(tcr.address)
-  // } catch (err) {
-  //   console.warn(`Error fetching arbitrable data for TCR @ ${tcr.address}`, err)
-  //   console.warn(`This TCR will not be tracked by the bot.`)
-  //   return
-  // }
-
   const getPastDisputeCreationsAndListenToNewOnes = (
-    autoAppealableArbitrator: any
+    autoAppealableArbitrator: Contract
   ) => {
     autoAppealableArbitrator
       .getPastEvents("DisputeCreation", { fromBlock: 0 })
-      .then((events: any[]) =>
-        events.map(async (event) => {
-          addDispute(
-            event.returnValues._disputeID,
-            false
-          )
-        })
+      .then(
+        async (events: ReturnPastEvents[]) =>
+          await addAllDisputes(events, false)
       )
 
     subscriptions.push(
       autoAppealableArbitrator.events
         .DisputeCreation()
-        .on("data", (event: any) =>
-          addDispute(
-            event.returnValues._disputeID,
-            true
-          )
-        )
+        .on("data", async (event: ReturnPastEvents) => {
+          await addOneDispute(event, true)
+        })
     )
   }
 
-  const fetchAndAssignEvidence = async (
-    disputeID: number,
-    evidence: EvidenceType
-  ) => {
-    const targetIndex = disputes.findIndex(
-      (d: DisputeType) => d.id === disputeID
-    )
-
-    if (disputes[targetIndex]) {
-      const evidenceArrayToModify = cloneDeep(
-        disputes[targetIndex].evidenceArray
-      )
-      const evidenceArrayModified = evidenceArrayToModify.concat(evidence)
-      const evidenceUniqueArray = [
-        ...new Map(
-          evidenceArrayModified.map((item: EvidenceType) => [
-            item["submittedAt"],
-            item,
-          ])
-        ).values(),
-      ]
-      const allDisputesClone = cloneDeep(disputes)
-      const disputeModified = {
-        ...allDisputesClone[targetIndex],
-        evidenceArray: evidenceUniqueArray,
-      }
-      const disputesArrayModified = allDisputesClone.map((d) =>
-        d.id === disputeID ? disputeModified : d
-      )
-      setDisputes(disputesArrayModified)
-    }
-  }
-
-  const fetchAndAssignMetaevidence = async (
-    disputeID: number,
-    evidence: EvidenceType
-  ) => {
-    const targetIndex = disputes.findIndex(
-      (d: DisputeType) => d.id === disputeID
-    )
-    if (disputes[targetIndex] !== undefined) {
-      const allDisputesClone = cloneDeep(disputes)
-      const disputeModified = {
-        ...allDisputesClone[targetIndex],
-        metaevidenceObject: evidence,
-      }
-      const disputesArrayModified = allDisputesClone.map((d) =>
-        d.id === disputeID ? disputeModified : d
-      )
-      setDisputes(disputesArrayModified)
-    }
-  }
-
-  //const assignMetaEvidenceUsingArchon = () => {}
-
-  const addDispute = async (
-    disputeID: number,
-    isNew: boolean
-  ) => {
+  const addOneDispute = async (event: ReturnPastEvents, isNew: boolean) => {
     const dispute = await getDispute(
       autoAppealableArbitratorInstance(p.contractAddress),
-      disputeID
+      event.returnValues._disputeID
     )
-
-    const disputeWithMetaevidenceField = {
+    const disputeModified = {
       ...dispute,
+      id: event.returnValues._disputeID,
+      statusERC792: await getDisputeStatus(
+        autoAppealableArbitratorInstance(p.contractAddress),
+        event.returnValues._disputeID
+      ),
       metaevidenceObject: {
         metaEvidenceJSON: {
           title: "",
@@ -174,104 +85,62 @@ const DisputeList: FC<{
       },
       evidenceArray: [],
     }
+    const date = new Date()
+
+    if (isNew)
+      p.notificationCallback(
+        `New dispute in contract ${p.contractAddress.substring(0, 8)}...`,
+        date.getTime()
+      )
+    setDisputes([...disputes, disputeModified])
+  }
+
+  const addAllDisputes = async (events: ReturnPastEvents[], isNew: boolean) => {
+    const readyDisputes: DisputeType[] = []
+    let allowedToContinue = false
+    const prepareDisputes = async () => {
+      for (let i = 0; i < events.length; i++) {
+        const dispute = await getDispute(
+          autoAppealableArbitratorInstance(p.contractAddress),
+          events[i].returnValues._disputeID
+        )
+        const disputeModified = {
+          ...dispute,
+          id: events[i].returnValues._disputeID,
+          statusERC792: await getDisputeStatus(
+            autoAppealableArbitratorInstance(p.contractAddress),
+            events[i].returnValues._disputeID
+          ),
+          metaevidenceObject: {
+            metaEvidenceJSON: {
+              title: "",
+            },
+          },
+          evidenceArray: [],
+        }
+        readyDisputes.push(disputeModified)
+      }
+      allowedToContinue = true
+    }
+
+    await prepareDisputes()
+
+    if (!allowedToContinue) return
 
     const date = new Date()
 
     if (isNew)
       p.notificationCallback(
-        `New dispute #${disputeID} in contract ${p.contractAddress.substring(
-          0,
-          8
-        )}...`,
+        `New dispute in contract ${p.contractAddress.substring(0, 8)}...`,
         date.getTime()
       )
-
-    disputeWithMetaevidenceField.id = disputeID
-    disputeWithMetaevidenceField.evidences = {}
-    disputeWithMetaevidenceField.statusERC792 = await getDisputeStatus(
-      autoAppealableArbitratorInstance(p.contractAddress),
-      disputeID
-    )
-
-    setDisputes([...disputes, disputeWithMetaevidenceField])
+    setDisputes(readyDisputes)
   }
 
-  const functionToAssignAllEvidences = async (disputeID: number, arbitrableAddress: string) => {
-    const filter = { _arbitrator: p.contractAddress, _disputeID: disputeID }
-
-    const currentChainID = (await web3.eth.getChainId()).toString()
-
-    p.archon.arbitrable
-      .getDispute(
-        arbitrableAddress.toLowerCase(),
-        p.contractAddress,
-        disputeID,
-        {
-          fromBlock: 0,
-        }
-      )
-      .then((event: any) => {
-        return p.archon.arbitrable
-          .getMetaEvidence(arbitrableAddress, event.metaEvidenceID, {
-            strict: true,
-            getJsonRpcUrl: (chainId: number) => getReadOnlyRpcUrl({ chainId }),
-            scriptParameters: {
-              disputeID: disputeID,
-              arbitratorChainID: currentChainID,
-              arbitratorContractAddress: p.contractAddress,
-            },
-          })
-          .then((x: EvidenceType) => {
-            if (disputes) {
-              fetchAndAssignMetaevidence(disputeID, x)
-            }
-          })
-          .then(
-            p.archon.arbitrable
-              .getEvidence(
-                arbitrableAddress.toLowerCase(),
-                p.contractAddress,
-                event.evidenceGroupID
-              )
-              .then((evidences: EvidenceType[]) => {
-                if (disputes) {
-                  evidences.map((evidence: EvidenceType) =>
-                    fetchAndAssignEvidence(disputeID, evidence)
-                  )
-                }
-              })
-          )
-      })
-
-    subscriptions.push(
-      arbitrableInstanceAt(arbitrableAddress.toLowerCase())
-        .events.Evidence({
-          filter,
-        })
-        .on("data", (event: any) => {
-          p.archon.arbitrable
-            .getEvidence(
-              arbitrableAddress.toLowerCase(),
-              p.contractAddress,
-              event.returnValues._evidenceGroupID,
-              {
-                fromBlock: event.blockNumber,
-              }
-            )
-            .then((evidence: EvidenceType) =>
-              fetchAndAssignEvidence(disputeID, evidence)
-            )
-        })
-    )
-  }
-
-  const disputeComponents = (
-    contractAddress: string,
-    networkType: string,
-    activeWallet: string,
-    items: DisputeType[],
-    filter: number
-  ) => {
+  const disputeComponents = (items: DisputeType[], filter: number) => {
+    if (items.length === 0) {
+      return "Loading..."
+    }
     return items
       .sort((a: DisputeType, b: DisputeType) => {
         return a.id - b.id
@@ -280,33 +149,34 @@ const DisputeList: FC<{
         (item: DisputeType) =>
           item.statusERC792 === filter.toString() || filter === -1
       )
-      .map((item: DisputeType) => {
-        functionToAssignAllEvidences(item.id, item.arbitrated)
+      .map((d: DisputeType) => {
         return (
           <Dispute
-            activeWallet={activeWallet}
-            appealPeriodEnd={Number(item.appealPeriodEnd || 0)}
-            appealPeriodStart={Number(item.appealPeriodStart || 0)}
-            arbitrated={item.arbitrated.toLocaleLowerCase()}
+            contractAddress={p.contractAddress}
+            activeWallet={p.activeWallet}
+            appealPeriodEnd={Number(d.appealPeriodEnd || 0)}
+            appealPeriodStart={Number(d.appealPeriodStart || 0)}
+            arbitrated={d.arbitrated.toLocaleLowerCase()}
             archon={p.archon}
             autoAppealableArbitratorInstance={autoAppealableArbitratorInstance(
-              contractAddress
+              p.contractAddress
             )}
-            evidenceArray={item.evidenceArray}
-            fees={item.fees}
-            id={item.id}
+            evidenceArray={d.evidenceArray}
+            fees={d.fees}
+            id={d.id}
             ipfsGateway={gateway}
-            key={item.id}
-            metaevidenceObject={item.metaevidenceObject}
-            networkType={networkType}
-            ruling={item.ruling || 0}
-            status={item.statusERC792 || "0"}
+            key={d.id}
+            metaevidenceObject={d.metaevidenceObject}
+            networkType={p.networkType}
+            ruling={d.ruling || 0}
+            status={d.statusERC792 || "0"}
           />
         )
       })
   }
-  console.log(disputes)
-
+  if (disputes.length === 0) {
+    return <div>disputes loading...</div>
+  }
   return (
     <div className="row">
       <div className="col">
@@ -390,13 +260,7 @@ const DisputeList: FC<{
                   </th>
                 </tr>
               </thead>
-              {disputeComponents(
-                p.contractAddress,
-                p.networkType,
-                p.activeWallet,
-                disputes,
-                filter
-              )}
+              {disputeComponents(disputes, filter)}
             </table>
           </div>
         </div>

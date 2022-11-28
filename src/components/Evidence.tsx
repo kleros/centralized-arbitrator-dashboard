@@ -1,45 +1,37 @@
 import { FC } from "react"
+import { EvidenceType } from "../types"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 //import mime from 'mime-types'
 
 const Evidence: FC<{
-  fileURI: string
+  evidence: EvidenceType
   ipfsGateway: string
-  name: string
-  //description: string
-  //evidenceJSONValid: boolean
-  //fileHash: string
 }> = (p) => {
-  /*const typeToIcon = (type: string) => {
-    switch (type) {
-      case "video":
-        return "video.svg"
-      case "image":
-        return "image.svg"
-      default:
-        return "text.svg"
+  const showOptions = () => {
+    if (!p.evidence.evidenceJSON.fileURI) {
+      return null
     }
-  }*/
+    return (
+      <a
+        href={p.ipfsGateway + p.evidence.evidenceJSON.fileURI}
+        rel="noopener noreferrer"
+        target="_blank"
+        style={{ fontSize: "0.8em" }}
+      >
+        <>- See attached file</>
+      </a>
+    )
+  }
 
   return (
-    <a
-      href={p.ipfsGateway + p.fileURI}
-      rel="noopener noreferrer"
-      target="_blank"
-      style={{ fontSize: "0.6em" }}
-    >
-      <>
-        <img
-          alt=""
-          className="mr-3"
-          style={{ maxHeight: "1em", verticalAlign: "text-bottom" }}
-          /*src={typeToIcon(
-            mime.lookup(p.fileURI.split(".")[1]).toString().split("/")[0]
-          )}*/
-        />
-        {p.name}
-      </>
-    </a>
+    <div style={{ fontSize: "0.6em" }}>
+      <br></br>
+      <strong>• {p.evidence.evidenceJSON.title}</strong> {showOptions()}
+      <br></br>
+      {p.evidence.evidenceJSON.description}
+      <br></br>
+      <br></br>
+    </div>
   )
 }
 
