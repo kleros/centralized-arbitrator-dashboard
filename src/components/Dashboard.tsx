@@ -22,7 +22,6 @@ const NETWORKS = {
 } as unknown as string[]
 
 const Dashboard = () => {
-
   const [archon, setArchon] = useState({})
   const [uglyFixtoBug13, setUglyFixtoBug13] = useState("") // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
   const [networkType, setNetworkType] = useState("")
@@ -50,6 +49,21 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    // Get the query parameter named 'arbitrator' from the URL
+    const params = new URLSearchParams(window.location.search)
+
+    const arbitrator = params.get("arbitrator")
+
+    const regex = /^(0x)?[0-9a-fA-F]{40}$/
+
+    if (arbitrator && regex.test(arbitrator)) {
+      console.log("Arbitrator:", arbitrator)
+      //set address of arbitrator and fetch disputes
+      setSelectedAddress(arbitrator)
+    }
+  }, [])
+
+  useEffect(() => {
     setArchon(new Archon(window.ethereum, "https://ipfs.kleros.io"))
 
     $("*").on("click", () => {
@@ -63,7 +77,6 @@ const Dashboard = () => {
       })
 
       web3.eth.net.getNetworkType((_error, networkTypeGet) => {
-        
         setNetworkType(networkTypeGet == "main" ? "mainnet" : networkTypeGet)
         setWallet(accounts[0].toLowerCase())
         if (lscache.get(accounts[0]))
