@@ -8,12 +8,12 @@ const Evidence: FC<{
   ipfsGateway: string
 }> = (p) => {
   const showOptions = () => {
-    if (!p.evidence.evidenceJSON.fileURI) {
+    if (!p.evidence.evidenceJSON?.fileURI) {
       return null
     }
     return (
       <a
-        href={p.ipfsGateway + p.evidence.evidenceJSON.fileURI}
+        href={p.ipfsGateway + p.evidence.evidenceJSON?.fileURI}
         rel="noopener noreferrer"
         target="_blank"
         style={{ fontSize: "0.8em" }}
@@ -26,9 +26,9 @@ const Evidence: FC<{
   return (
     <div style={{ fontSize: "0.6em" }}>
       <br></br>
-      <strong>• {p.evidence.evidenceJSON.title}</strong> {showOptions()}
+      <strong>• {p.evidence.evidenceJSON?.name}</strong> {showOptions()}
       <br></br>
-      {p.evidence.evidenceJSON.description}
+      {p.evidence.evidenceJSON?.description}
       <br></br>
       <br></br>
     </div>
