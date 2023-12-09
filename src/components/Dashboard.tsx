@@ -100,7 +100,7 @@ const Dashboard = () => {
     })
 
     window.ethereum.on("chainChanged", (networkId: string) => {
-      setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId)])
+      setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId) as number])
       setSelectedAddress("")
     })
   }, [])

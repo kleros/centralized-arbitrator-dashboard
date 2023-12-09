@@ -42,6 +42,7 @@ const chainIdToRpcEndpoint = {
   42: "https://kovan.infura.io/v3/" + INFURA_ID,
   77: "https://sokol.poa.network",
   100: "https://rpc.gnosischain.com",
+  8001: "https://polygon-mumbai.infura.io/v3/" + INFURA_ID,
 }
 
 export function getReadOnlyRpcUrl({ chainId }: { chainId: number }) {
