@@ -156,14 +156,8 @@ const Dispute: FC<{
     switch (networkType) {
       case "mainnet":
         return " "
-      case "kovan":
-        return "kovan."
-      case "ropsten":
-        return "ropsten."
-      case "goerli":
-        return "goerli."
-      case "rinkeby":
-        return "rinkeby."
+      case "sepolia":
+        return "sepolia."
       default:
         return " "
     }

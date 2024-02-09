@@ -36,13 +36,8 @@ export default web3
 
 const chainIdToRpcEndpoint = {
   1: "https://mainnet.infura.io/v3/" + INFURA_ID,
-  3: "https://ropsten.infura.io/v3/" + INFURA_ID,
-  4: "https://rinkeby.infura.io/v3/" + INFURA_ID,
-  5: "https://goerli.infura.io/v3/" + INFURA_ID,
-  42: "https://kovan.infura.io/v3/" + INFURA_ID,
-  77: "https://sokol.poa.network",
   100: "https://rpc.gnosischain.com",
-  8001: "https://polygon-mumbai.infura.io/v3/" + INFURA_ID,
+  11155111: "https://sepolia.infura.io/v3/" + INFURA_ID,
 }
 
 export function getReadOnlyRpcUrl({ chainId }: { chainId: number }) {

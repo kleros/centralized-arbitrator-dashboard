@@ -15,10 +15,7 @@ import { NotificationType } from "../types"
 
 const NETWORKS = {
   1: "mainnet",
-  3: "ropsten",
-  4: "rinkeby",
-  5: "goerli",
-  42: "kovan",
+  11155111: "sepolia",
 } as unknown as string[]
 
 const Dashboard = () => {
@@ -35,14 +32,8 @@ const Dashboard = () => {
     switch (networkType) {
       case "mainnet":
         return " "
-      case "kovan":
-        return "kovan."
-      case "ropsten":
-        return "ropsten."
-      case "goerli":
-        return "goerli."
-      case "rinkeby":
-        return "rinkeby."
+      case "sepolia":
+        return "sepolia."
       default:
         return " "
     }
