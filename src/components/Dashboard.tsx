@@ -15,14 +15,10 @@ import { NotificationType } from "../types"
 
 const NETWORKS = {
   1: "mainnet",
-  3: "ropsten",
-  4: "rinkeby",
-  5: "goerli",
-  42: "kovan",
+  11155111: "sepolia",
 } as unknown as string[]
 
 const Dashboard = () => {
-
   const [archon, setArchon] = useState({})
   const [uglyFixtoBug13, setUglyFixtoBug13] = useState("") // See https://github.com/kleros/centralized-arbitrator-dashboard/issues/13
   const [networkType, setNetworkType] = useState("")
@@ -36,14 +32,8 @@ const Dashboard = () => {
     switch (networkType) {
       case "mainnet":
         return " "
-      case "kovan":
-        return "kovan."
-      case "ropsten":
-        return "ropsten."
-      case "goerli":
-        return "goerli."
-      case "rinkeby":
-        return "rinkeby."
+      case "sepolia":
+        return "sepolia."
       default:
         return " "
     }
@@ -63,7 +53,6 @@ const Dashboard = () => {
       })
 
       web3.eth.net.getNetworkType((_error, networkTypeGet) => {
-        
         setNetworkType(networkTypeGet == "main" ? "mainnet" : networkTypeGet)
         setWallet(accounts[0].toLowerCase())
         if (lscache.get(accounts[0]))
@@ -87,7 +76,7 @@ const Dashboard = () => {
     })
 
     window.ethereum.on("chainChanged", (networkId: string) => {
-      setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId)])
+      setNetworkType(NETWORKS[web3.utils.hexToNumber(networkId) as number])
       setSelectedAddress("")
     })
   }, [])

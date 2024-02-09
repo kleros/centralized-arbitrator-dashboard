@@ -4,7 +4,11 @@ import Archon from "@kleros/archon"
 import { FC, useEffect, useState } from "react"
 import web3 from "../ethereum/web3"
 import { Contract } from "ethers"
-import { MetaevidenceObject, ReturnEvidence, ReturnMetaevidence } from "../types"
+import {
+  MetaevidenceObject,
+  ReturnEvidence,
+  ReturnMetaevidence,
+} from "../types"
 //import { arbitrableInstanceAt } from "../ethereum/arbitrable"
 import { getReadOnlyRpcUrl } from "../ethereum/web3"
 import { EvidenceType } from "../types"
@@ -62,6 +66,12 @@ const Dispute: FC<{
           .then((evidences: EvidenceType[]) => {
             setEvidenceArrayState(evidences)
           })
+          .catch((err: Error) => {
+            console.log("error getting evidences", { id: p.id, error: err })
+          })
+      })
+      .catch((err: Error) => {
+        console.log("error getting disputes", { id: p.id, error: err })
       })
   }
 
@@ -85,6 +95,12 @@ const Dispute: FC<{
           .then((x: MetaevidenceObject) => {
             setMetaevidenceState(x)
           })
+          .catch((err: Error) => {
+            console.log("Error getting metaevidence", err)
+          })
+      })
+      .catch((err: Error) => {
+        console.log("Error getting dispute", err)
       })
   }
 
@@ -143,14 +159,8 @@ const Dispute: FC<{
     switch (networkType) {
       case "mainnet":
         return " "
-      case "kovan":
-        return "kovan."
-      case "ropsten":
-        return "ropsten."
-      case "goerli":
-        return "goerli."
-      case "rinkeby":
-        return "rinkeby."
+      case "sepolia":
+        return "sepolia."
       default:
         return " "
     }
