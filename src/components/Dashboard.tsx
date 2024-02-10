@@ -46,6 +46,17 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+
+    const arbitrator = params.get("arbitrator")
+    const regex = /^(0x)?[0-9a-fA-F]{40}$/
+
+    if (arbitrator && regex.test(arbitrator)) {
+      setSelectedAddress(arbitrator)
+    }
+  }, [])
+
+  useEffect(() => {
     setArchon(new Archon(window.ethereum, "https://ipfs.kleros.io"))
 
     $("*").on("click", () => {
