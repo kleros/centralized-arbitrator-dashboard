@@ -161,6 +161,10 @@ const Dispute: FC<{
         return " "
       case "sepolia":
         return "sepolia."
+      case "gnosis":
+        return "gnosis."
+      case "gnosis-chiado":
+        return "gnosis chiado."
       default:
         return " "
     }
