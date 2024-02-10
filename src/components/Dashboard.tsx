@@ -16,6 +16,8 @@ import { NotificationType } from "../types"
 const NETWORKS = {
   1: "mainnet",
   11155111: "sepolia",
+  10200: "gnosis-chiado",
+  100: "gnosis",
 } as unknown as string[]
 
 const Dashboard = () => {
@@ -34,6 +36,10 @@ const Dashboard = () => {
         return " "
       case "sepolia":
         return "sepolia."
+      case "gnosis":
+        return "gnosis."
+      case "gnosis-chiado":
+        return "gnosis chiado."
       default:
         return " "
     }

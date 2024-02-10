@@ -38,6 +38,7 @@ const chainIdToRpcEndpoint = {
   1: "https://mainnet.infura.io/v3/" + INFURA_ID,
   11155111: "https://sepolia.infura.io/v3/" + INFURA_ID,
   100: "https://rpc.gnosischain.com",
+  10200: "https://rpc.chiadochain.net",
 }
 
 export function getReadOnlyRpcUrl({ chainId }: { chainId: number }) {
