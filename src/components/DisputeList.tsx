@@ -20,7 +20,7 @@ const DisputeList: FC<{
   const [filter, setFilter] = useState(0)
   const [disputes, setDisputes] = useState<DisputeType[]>([])
   const subscriptions = []
-  const gateway = "https://ipfs.kleros.io"
+  const gateway = "https://cdn.kleros.link"
 
   const disputeStatusToString = (code: number) => {
     switch (code) {

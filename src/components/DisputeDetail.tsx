@@ -163,7 +163,7 @@ const DisputeDetail: FC<{
                 src={
                   (p.evidenceDisplayInterfaceURI.includes("://")
                     ? p.evidenceDisplayInterfaceURI
-                    : `https://ipfs.kleros.io${p.evidenceDisplayInterfaceURI}`) +
+                    : `https://cdn.kleros.link${p.evidenceDisplayInterfaceURI}`) +
                   searchParams
                 }
                 title="evidence-display"

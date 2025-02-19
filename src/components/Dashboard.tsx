@@ -57,7 +57,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    setArchon(new Archon(window.ethereum, "https://ipfs.kleros.io"))
+    setArchon(new Archon(window.ethereum, "https://cdn.kleros.link"))
 
     $("*").on("click", () => {
       setUglyFixtoBug13("")
