@@ -34,7 +34,7 @@
     "react": "^18.2.0",
     "react-blockies": "^1.4.1",
     "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-timeago": "^6.2.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
